@@ -1,0 +1,39 @@
+format: jb-book
+root: intro
+parts:
+  - caption: "Course"
+    chapters:
+      - file: appendix/syllabus
+  - caption: "Module 1: Hypothesis testing"
+    chapters:
+      - file: modules/module1
+        sections:
+          - file: lectures/Lecture1.1
+          - file: lectures/Lecture1.1-slides
+          - file: lectures/Lecture1.2
+          - file: lectures/Lecture1.3
+          - file: lectures/Lecture1.4
+          - file: lectures/Lecture1.5
+          - file: lectures/Lecture1.6
+      - file: homework/HW1
+  - caption: "Module 2: Regression and model fitting"
+    chapters:
+      - file: modules/module2
+      - file: homework/HW2
+  - caption: "Module 3: Classification and clustering"
+    chapters:
+      - file: modules/module3
+        sections:
+          - file: lectures/Lecture3.1
+          - file: lectures/Lecture3.2
+          - file: lectures/Lecture3.4
+          - file: lectures/Lecture3.5
+      - file: homework/HW3
+  - caption: "Module 4: Dimensionality reduction"
+    chapters:
+      - file: modules/module4
+      - file: homework/HW4
+  - caption: "Module 5: Neural networks"
+    chapters:
+      - file: modules/module5
+      - file: homework/HW5

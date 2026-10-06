@@ -1,0 +1,12 @@
+title: "BE 559"
+author: "Brian DePasquale, Michael Economo"
+execute:
+  execute_notebooks: "off"
+launch_buttons:
+  colab_url: "https://colab.research.google.com"
+repository:
+  url: "https://github.com/depasquale-lab/BE559"
+  branch: main
+
+# Instructor-only material is never part of the built book.
+exclude_patterns: ["README.md", "archive/*", "archive/**/*", "lectures/pdf_src/*", "homework/_src/*"]
