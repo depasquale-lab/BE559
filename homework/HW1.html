@@ -1,0 +1,1935 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Homework 1: Hypothesis testing &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'homework/HW1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module 2: Regression and model fitting" href="../modules/module2.html" />
+    <link rel="prev" title="Lecture 1.6: Sampling-based Methods" href="../lectures/Lecture1.6.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.1-slides.html">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.3.html">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.4.html">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW2.html">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.1.html">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.2.html">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="HW3.html">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW4.html">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/depasquale-lab/BE559/blob/main/homework/HW1.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/homework/HW1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Homework 1: Hypothesis testing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-1-1-24-points">Homework 1.1 (24 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-2-points">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-2-points">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-2-points">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-2-points">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-2-points">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-2-points">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-2-points">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-2-points">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-2-points">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-2-points">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-2-points">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-2-points">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-1-2-34-points">Homework 1.2 (34 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Part 12 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-13-2-points">Part 13 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-14-2-points">Part 14 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-15-2-points">Part 15 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-16-2-points">Part 16 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-17-2-points">Part 17 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-1-3-28-points">Homework 1.3 (28 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-1-4-18-points">Homework 1.4 (18 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1">Part 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">Part 10 (2 points)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="homework-1-hypothesis-testing">
+<h1>Homework 1: Hypothesis testing<a class="headerlink" href="#homework-1-hypothesis-testing" title="Link to this heading">#</a></h1>
+<p>This assignment has 4 parts. Each part is graded as listed in its heading.</p>
+<section id="homework-1-1-24-points">
+<h2>Homework 1.1 (24 points)<a class="headerlink" href="#homework-1-1-24-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will get started using Python in a Google Colab notebook.  We will explore how to:</p>
+<ul class="simple">
+<li><p>load data</p></li>
+<li><p>manipulate arrays</p></li>
+<li><p>visualize probability density functions (PDFs) and cumulative distribution functions (CDFs)</p></li>
+<li><p>z-score data</p></li>
+</ul>
+<hr class="docutils" />
+<section id="part-1-2-points">
+<h3>Part 1 (2 points)<a class="headerlink" href="#part-1-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>First, load the package ‘numpy’.</p></li>
+</ul>
+<p>Numpy is a widely used python package that contains a large number of mathematical functions that we will use for various analyses throughout the course.  It also adds support for multidimensional arrays that we will store data in.  Give numpy the alias ‘np’ for brevity.  To do this, type:</p>
+<p><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">numpy</span> <span class="pre">as</span> <span class="pre">np</span></code></p>
+<p>For those who are familiar with Matlab but just getting started with Python, here is a useful cheat sheet:</p>
+<p><a class="reference external" href="https://numpy.org/doc/stable/user/numpy-for-matlab-users.html">https://numpy.org/doc/stable/user/numpy-for-matlab-users.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-2-2-points">
+<h3>Part 2 (2 points)<a class="headerlink" href="#part-2-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Next, load <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> and call it <code class="docutils literal notranslate"><span class="pre">plt</span></code> for brevity.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">pyplot</span></code> is a part of the larger <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> package, which contains powerful functionality for plotting data using similar synatx to Matlab.  Thus, <code class="docutils literal notranslate"><span class="pre">pyplot</span></code> is a subpackage of<code class="docutils literal notranslate"> <span class="pre">matplotlib</span></code>.</p>
+<ul class="simple">
+<li><p>Similarly, load in <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> and call it <code class="docutils literal notranslate"><span class="pre">stats</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-3-2-points">
+<h3>Part 3 (2 points)<a class="headerlink" href="#part-3-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Load a dataset that includes height and weight data from 25,000 18-year-olds.  These data are stored in a .csv (comma separated values) file at the following URL:</p></li>
+</ul>
+<p><a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework1/SOCR-HeightWeight.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework1/SOCR-HeightWeight.csv</a></p>
+<p>To do this, use the <code class="docutils literal notranslate"><span class="pre">genfromtxt</span></code> function in numpy (i.e. <code class="docutils literal notranslate"><span class="pre">np.genfromtxt</span></code>) to load the data directly from this URL into a variable called <code class="docutils literal notranslate"><span class="pre">HeightsAndWeights</span></code>.  Since this is a .csv file, you will need to set the delimiter to ‘,’ (a comma in single quotes).  The first row in the file contains column labels.  You can use the option <code class="docutils literal notranslate"><span class="pre">skip_header=1</span></code> to skip the first line and only read the numerical data.</p>
+<p>You should be able to mouse over the function name in your code to see more information about it.  Select ‘open in tab’ to see more information about <code class="docutils literal notranslate"><span class="pre">genfromtxt</span></code> or view the help page online <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.genfromtxt.html">https://numpy.org/doc/stable/reference/generated/numpy.genfromtxt.html</a></p>
+<p>You can get additional information about other fuctions in a similar manner.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-4-2-points">
+<h3>Part 4 (2 points)<a class="headerlink" href="#part-4-2-points" title="Link to this heading">#</a></h3>
+<p>Make some easy-to-use variables.</p>
+<ul class="simple">
+<li><p>Assign the height data (in the second column of HeightsAndWeights) to a variable called <code class="docutils literal notranslate"><span class="pre">heights</span></code>.  Similarly, assign the weight data (the third column) to a variable called <code class="docutils literal notranslate"><span class="pre">weights</span></code>.</p></li>
+<li><p>Calculate the mean and standard deviation of the heights data and assign these values variables called <code class="docutils literal notranslate"><span class="pre">meanHeight</span></code> and <code class="docutils literal notranslate"><span class="pre">stdHeight</span></code> using the numpy functions <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">std</span></code>.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> Python counts from 0, so the “second column” of an array is index 1, not 2. Indexing with the wrong number runs without error but silently gives you the wrong variable (or fails at the last column), so check what you extracted, for example by looking at its first few values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-5-2-points">
+<h3>Part 5 (2 points)<a class="headerlink" href="#part-5-2-points" title="Link to this heading">#</a></h3>
+<p>Next, lets plot some things that allow us to get a sense of our data.</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">subplots</span></code> function in <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> to create a 1x3 row of three axes like this:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">fig,</span> <span class="pre">axs</span> <span class="pre">=</span> <span class="pre">plt.subplots(1,</span> <span class="pre">3)</span></code></p>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">axs</span></code> is a vector of axes handles.  A handle is an identifier for a graphics object that can be used to refer to and modify that object. If you click the <code class="docutils literal notranslate"><span class="pre">{x}</span> </code>icon on the left hand side of your notebook, you will see all of the variables in your workspace.  You should see, for example that this command created an n-dimensional array (ndarray)  called <code class="docutils literal notranslate"><span class="pre">axs</span></code> with three elements.</p>
+<ul class="simple">
+<li><p>Plot a histogram of the height data in the first subplot.  Make a histogram with 50 bins.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">axs[0].hist(heights,</span> <span class="pre">bins</span> <span class="pre">=</span> <span class="pre">50)</span></code></p>
+<ul class="simple">
+<li><p>Plot a histgram of the weight data in the second subplot.  Again, use 50 bins.</p></li>
+<li><p>Make a scatter plot (using <code class="docutils literal notranslate"><span class="pre">axs[].plot</span></code> instead of <code class="docutils literal notranslate"><span class="pre">axs[].hist</span></code>) with the height data on the x-axis and the weight data on the y-axis in the third subplot.  Show each data point as a black dot and set the alpha (transparency) of the points to 0.1.</p></li>
+</ul>
+<hr class="docutils" />
+<p>In all cases, label your axes appropriately.  You can use the following commands to size your plots nicely:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also use this command to change the fontsize associated with axes you create (must be run before you call plot commands).</p>
+<p><code class="docutils literal notranslate"><span class="pre">plt.rcParams.update({'font.size':</span> <span class="pre">16})</span></code></p>
+<p>Your plots should look like the ones below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/81c29fe9366cd6ee5990493e494f433cd7049c5259035f5783122ffd8979a249.png" src="../_images/81c29fe9366cd6ee5990493e494f433cd7049c5259035f5783122ffd8979a249.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-6-2-points">
+<h3>Part 6 (2 points)<a class="headerlink" href="#part-6-2-points" title="Link to this heading">#</a></h3>
+<p>Are heights normally distributed?  No need for statistical tests yet, lets just take a look by eye.</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code> to make a histogram of the height data just as you did above.  This time, apply the option <code class="docutils literal notranslate"><span class="pre">density=true</span></code>, which normalizes bin counts so that the sum of all bins equals 1.</p></li>
+<li><p>On the same plot, display the probability density function (PDF) of a normal distribution that has the same mean and standard deviation as your data. We’ll do it two ways.</p></li>
+</ul>
+<p><strong>Method 1:</strong> First, we will calculate the PDF based on the familiar equation for a normal distribution.</p>
+<p><span class="math notranslate nohighlight">\( P(x,\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{(-\frac{{(x - \mu)}^{2}}{2\sigma^{2}})}\)</span></p>
+<blockquote>
+<div><p><strong>Step 1:</strong> Create a vector of heights at which we will calculate probabilities.  Use the numpy function <code class="docutils literal notranslate"><span class="pre">arrange</span></code> to create a vector called <code class="docutils literal notranslate"><span class="pre">xdata</span></code> with a minimum value of <code class="docutils literal notranslate"><span class="pre">meanHeight</span></code>-5, a maximum value of <code class="docutils literal notranslate"><span class="pre">meanHeight</span></code>+5, and increments of 0.1.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Step 2:</strong> Find the probability density at each point using the equation above.  You may need to use numpy functions such as <code class="docutils literal notranslate"><span class="pre">np.sqrt</span></code>, <code class="docutils literal notranslate"><span class="pre">np.pi</span></code>, and <code class="docutils literal notranslate"><span class="pre">np.exp</span></code>.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Step 3:</strong> Plot the normal pdf as a black line with a width of 2.</p>
+</div></blockquote>
+<p><strong>Method 2:</strong> Second, we will find the probability density function using built in functionality of <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code>.</p>
+<blockquote>
+<div><p><strong>Step 1:</strong> Create a normal random variable called <code class="docutils literal notranslate"><span class="pre">heightDist</span></code> with the same mean and standard deviation as your data using <code class="docutils literal notranslate"><span class="pre">stats.norm</span></code>.</p>
+</div></blockquote>
+<blockquote>
+<div><p>**Step 2:**Create a variable that contains the probability densities at each point in <code class="docutils literal notranslate"><span class="pre">xdata</span></code> by calling <code class="docutils literal notranslate"><span class="pre">heightDist.pdf</span></code> with <code class="docutils literal notranslate"><span class="pre">xdata</span></code> as the argument.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Step 3:</strong> Plot the normal pdf determined using the stats package as a red dotted line with width 3.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Add a legend to this plot that labels the curves determined using <strong>Method 1</strong> and <strong>Method 2</strong>.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> <code class="docutils literal notranslate"><span class="pre">density=True</span></code> makes the bar <em>areas</em> (height times bin width) sum to 1, not the bar heights. If you leave it off, the histogram is in raw counts and a PDF drawn on the same axes will look flat near zero.</p>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.1.html#the-normal-distribution">The normal distribution</a> for the normal PDF.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b62bdc040e4fe787a31909533418f52791e412d6917b6a6abd53f0c5c9f474e3.png" src="../_images/b62bdc040e4fe787a31909533418f52791e412d6917b6a6abd53f0c5c9f474e3.png" />
+</div>
+</div>
+<p>It seems these data are normally distributed!</p>
+</section>
+<hr class="docutils" />
+<section id="part-7-2-points">
+<h3>Part 7 (2 points)<a class="headerlink" href="#part-7-2-points" title="Link to this heading">#</a></h3>
+<p>Now, suppose you meet someone named Bob. Bob is 5’4”.  What is the chance that Bob is 18 years old (i.e. that this value was drawn from the same distribution) based solely on their height?</p>
+<p>First, lets see where Bob falls in the normal distribution.</p>
+<ul class="simple">
+<li><p>Use either method above to plot the pdf of the normal distribution, just as you did above.</p></li>
+<li><p>Calculate the probability density at 5’4” (64 inches) using the normal equation or <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code>.</p></li>
+<li><p>Plot the probability density at 64 inches on the same axes as a blue dot with <code class="docutils literal notranslate"><span class="pre">markersize</span></code> set to 20.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> Heights in this dataset are in inches, so 5’4” is 5 x 12 + 4 inches, not 5.4. Entering the wrong number runs fine but places Bob at the wrong spot on the distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/325f789fab5aadb8de895d17336851eaf67b9bb5e73a6b54e4e944c15781a4a3.png" src="../_images/325f789fab5aadb8de895d17336851eaf67b9bb5e73a6b54e4e944c15781a4a3.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-8-2-points">
+<h3>Part 8 (2 points)<a class="headerlink" href="#part-8-2-points" title="Link to this heading">#</a></h3>
+<p>Lets calculate how far Bob’s height is from the mean height in our dataset</p>
+<ul class="simple">
+<li><p>Calculate the difference between Bob’s height and <code class="docutils literal notranslate"><span class="pre">meanHeight</span></code> and assign this value to a variable called <code class="docutils literal notranslate"><span class="pre">deltaHeight</span></code>.</p></li>
+<li><p>Display the answer in plain text using a strategy like this:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">print(&quot;Individual</span> <span class="pre">is</span> <span class="pre">&quot;</span> <span class="pre">+</span> <span class="pre">str(deltaHeight)</span> <span class="pre">+</span> <span class="pre">&quot;</span> <span class="pre">shorter</span> <span class="pre">than</span> <span class="pre">average&quot;)</span></code></p>
+<p>or, if you want to format the output better…</p>
+<p><code class="docutils literal notranslate"><span class="pre">print(f'Individual</span> <span class="pre">is</span> <span class="pre">{deltaHeight:.2f}</span> <span class="pre">inches</span> <span class="pre">shorter</span> <span class="pre">than</span> <span class="pre">average')</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Individual is 3.9931135967999865 shorter than average
+Individual is 3.99 inches shorter than average
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-9-2-points">
+<h3>Part 9 (2 points)<a class="headerlink" href="#part-9-2-points" title="Link to this heading">#</a></h3>
+<p>Is this a lot?  It is more informative to think about this in terms of the width of the distribution - the standard deviation.</p>
+<p>How far is Bob’s height from the mean of the distribution in terms of standard deviations?</p>
+<ul class="simple">
+<li><p>Divide <code class="docutils literal notranslate"><span class="pre">deltaHeight</span></code> by the standard deviation of the height measurements, <code class="docutils literal notranslate"><span class="pre">stdHeight</span></code>.</p></li>
+</ul>
+<p>This is the z-score of Bob’s height relative to the normal distribution you determined.</p>
+<p><span class="math notranslate nohighlight">\( z = \frac{(x - \mu)}{\sigma} \)</span></p>
+<ul class="simple">
+<li><p>Report the z-score of Bob’s height using a <code class="docutils literal notranslate"><span class="pre">print</span></code> statement and appropriate text.</p></li>
+</ul>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.2.html#the-z-score">The Z-score</a> for how z-scores are defined and used.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>z score: x.xx
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-10-2-points">
+<h3>Part 10 (2 points)<a class="headerlink" href="#part-10-2-points" title="Link to this heading">#</a></h3>
+<p>If we apply the same math to our original <code class="docutils literal notranslate"><span class="pre">heights</span></code> data, the distribution now looks like a normal distribution with mean 0 and standard deviation 1.  This is the <strong>standard normal distribution</strong>.</p>
+<ul class="simple">
+<li><p>Plot a histogram of the full z-scored <code class="docutils literal notranslate"><span class="pre">heights</span></code> data.</p></li>
+<li><p>Plot the PDF of the standard normal distribution using <strong>Method 2</strong> from <strong>Part 6</strong> as a black line.  You’ll need to create a standard normal random variable object like this:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">zDist</span> <span class="pre">=</span> <span class="pre">stats.norm(0,</span> <span class="pre">1)</span></code></p>
+<p>and then find its PDF using code such as this:</p>
+<p><code class="docutils literal notranslate"><span class="pre">zPDF</span> <span class="pre">=</span> <span class="pre">zDist.pdf(x)</span></code></p>
+<p>where x now spans the interval from -4 to 4.</p>
+<ul class="simple">
+<li><p>Plot the z-scored measurement of Bob’s height on the same axis as a red dot of size 20.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/36e594e1b35b6693d945ffb77f645bbff90b7fbd6d14481038fce31bbfd541fb.png" src="../_images/36e594e1b35b6693d945ffb77f645bbff90b7fbd6d14481038fce31bbfd541fb.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-11-2-points">
+<h3>Part 11 (2 points)<a class="headerlink" href="#part-11-2-points" title="Link to this heading">#</a></h3>
+<p>OK, now we are getting close to an answer!</p>
+<p>Next, lets visualize the cumulative distribution function (CDF) of the standard normal.  This is:</p>
+<p><span class="math notranslate nohighlight">\( P(X&lt;x) = {\frac{1}{\sqrt {2\pi}}} \int _{-\infty }^{x}e^{-x^{2}/2} dx \)</span></p>
+<p>We’ll use <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to calculate this integral for us.</p>
+<ul class="simple">
+<li><p>You’ve already created a standard normal random variable, <code class="docutils literal notranslate"><span class="pre">zDist</span></code>, which we’ll use.  Find the CDF of the standard normal and plot just as you did for the PDF in <strong>part 10</strong>,  but using <code class="docutils literal notranslate"><span class="pre">Zdist.cdf</span></code> instead of <code class="docutils literal notranslate"><span class="pre">zDist.pdf</span></code>.</p></li>
+<li><p>Plot the PDF on the same axes in blue with <code class="docutils literal notranslate"><span class="pre">alpha=0.2</span></code> for reference</p></li>
+<li><p>On the same axes, plot the cumulative probability at the location of Bob’s z-scored height as a red dot.</p></li>
+</ul>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.1.html#pdfs-and-cdfs">PDFs and CDFs</a> for the relationship between a PDF and a CDF.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ff825c0c3d2fd557f42df2231a44c9b1430efbb6386aa17a4e8fd162485a520c.png" src="../_images/ff825c0c3d2fd557f42df2231a44c9b1430efbb6386aa17a4e8fd162485a520c.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-12-2-points">
+<h3>Part 12 (2 points)<a class="headerlink" href="#part-12-2-points" title="Link to this heading">#</a></h3>
+<p>Now, we will find the likelihood of Bob’s height being 64 inches or less under the assumption that Bob’s height was drawn randomly from a population of 18 year olds.</p>
+<p>We’ll do this two ways.</p>
+<p><strong>Method 1:</strong> Find the probability using <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code>.</p>
+<ul class="simple">
+<li><p>Calculate the area under the standard normal pdf to the left of our data point (Bob’s height, z-scored).  This is the value of the cdf at the same point point.  Use <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to find this value and print it.</p></li>
+</ul>
+<p><strong>Method 2:</strong> Calculate the proportion of data points in our <code class="docutils literal notranslate"><span class="pre">heights</span></code> dataset that are 64 inches or less.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>There is a = x.x % chance of randomly choosing a height 64 inches or lower using Method 1
+There is a = x.x % chance of randomly choosing a height 64 inches or lower using Method 2
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="homework-1-2-34-points">
+<h2>Homework 1.2 (34 points)<a class="headerlink" href="#homework-1-2-34-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will refine our python skills and delve into hypothesis testing.  We will explore:</p>
+<ul class="simple">
+<li><p>Sampling</p></li>
+<li><p>Sample statistics and their distributions</p></li>
+<li><p>The t distribution and t-test</p></li>
+</ul>
+<p><strong>NOTE:</strong>  Include axis labels in all plots!</p>
+<hr class="docutils" />
+<section id="id1">
+<h3>Part 1 (2 points)<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Load the same libraries that we used in <em>Homework 1.1</em>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> (as <code class="docutils literal notranslate"><span class="pre">stats</span></code>)</p></li>
+</ul>
+<p>Now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id2">
+<h3>Part 2 (2 points)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Load the same height and weight data taken from 25,000 18-year-olds as in <em>Homework 1.1</em>.  These data are stored in a .csv (comma separated values) file at the following URL:</p></li>
+</ul>
+<p><a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework1/SOCR-HeightWeight.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework1/SOCR-HeightWeight.csv</a></p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">genfromtxt</span></code> function in numpy (i.e. <code class="docutils literal notranslate"><span class="pre">np.genfromtxt</span></code>) to load the data directly from this URL into a variable called <code class="docutils literal notranslate"><span class="pre">HeightsAndWeights</span></code>.</p>
+<ul class="simple">
+<li><p>Make an easy-to-use variable called <code class="docutils literal notranslate"><span class="pre">heights</span></code> form the second column of <code class="docutils literal notranslate"><span class="pre">HeightsAndWeights</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3>Part 3 (2 points)<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Suppose we measure the heights of three students taking BE 700 to be 70.5”, 72”, and 68”.</p>
+<ul class="simple">
+<li><p>Create a numpy array containing these values called <code class="docutils literal notranslate"><span class="pre">classHeights</span></code>.</p></li>
+<li><p>Print the array</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[70.5 72.  68. ]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>Part 4 (2 points)<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Visualize our measurements (<code class="docutils literal notranslate"><span class="pre">classHeights</span></code>) and the distribution of the reference data (<code class="docutils literal notranslate"><span class="pre">heights</span></code>) on the same axis.</p>
+<ul class="simple">
+<li><p>Create a normal random variable with the same mean and standard deviation as the <code class="docutils literal notranslate"><span class="pre">heights</span></code> dataset and call it <code class="docutils literal notranslate"><span class="pre">heightDist</span></code>.</p></li>
+<li><p>Plot the probability density function (PDF) of <code class="docutils literal notranslate"><span class="pre">heightDist</span></code> over the relevant range of heights.</p></li>
+<li><p>On the same axes, plot a histogram of <code class="docutils literal notranslate"><span class="pre">classHeights</span></code>.  Set  <code class="docutils literal notranslate"><span class="pre">density=True</span></code> and <code class="docutils literal notranslate"><span class="pre">alpha=0.2</span></code>.  For this histogram, set the bin edges explicitly as <code class="docutils literal notranslate"><span class="pre">bins=np.arange(60,</span> <span class="pre">74)</span></code> so that each bin has a width of 1 inch</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bce7935dc903dcddc44cd77fa364f1f2e1e5895c33759e58a33ed2b51ec189ba.png" src="../_images/bce7935dc903dcddc44cd77fa364f1f2e1e5895c33759e58a33ed2b51ec189ba.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p>##Step 5 (2 points)</p>
+<p>Calculate some descriptive statistics and print them.</p>
+<ul class="simple">
+<li><p>Mean value of <code class="docutils literal notranslate"><span class="pre">heights</span></code></p></li>
+<li><p>Mean value of <code class="docutils literal notranslate"><span class="pre">classheights</span></code></p></li>
+<li><p>Standard deviation of values in <code class="docutils literal notranslate"><span class="pre">heights</span></code></p></li>
+<li><p>Standard deviation of values in <code class="docutils literal notranslate"><span class="pre">classHeights</span></code></p></li>
+</ul>
+<p>Display them as below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Mean height in dataset = xx.xx inches'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Mean height in class = xx.xx inches'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Standard deviation of heights in dataset = x.xx inches'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Standard deviation of heights in class = x.xx inches'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean height in dataset = xx.xx inches
+Mean height in class = xx.xx inches
+ 
+Standard deviation of heights in dataset = x.xx inches
+Standard deviation of heights in class = x.xx inches
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3>Part 6 (2 points)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>z-score <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> using the mean and standard deviation of <code class="docutils literal notranslate"><span class="pre">heights</span></code>.  Call this variable <code class="docutils literal notranslate"><span class="pre">ZclassHeights</span></code>.</p></li>
+<li><p>Plot a histogram of <code class="docutils literal notranslate"><span class="pre">ZclassHeights</span></code>.</p></li>
+<li><p>Overlay the PDF of the standard normal distribution. For this you can use <code class="docutils literal notranslate"><span class="pre">stats.norm.pdf</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d469b5f6a05ae902aa4a0eda9557087f10ad6598bd8bca71d0267556a6706f4c.png" src="../_images/d469b5f6a05ae902aa4a0eda9557087f10ad6598bd8bca71d0267556a6706f4c.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h3>Part 7 (2 points)<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>Let’s start to do some more rigorous comparisons of our sample data (<code class="docutils literal notranslate"><span class="pre">classHeights</span></code>) and our reference dataset (<code class="docutils literal notranslate"><span class="pre">heights</span></code>).</p>
+<p>First, consider the mean of our sample data.</p>
+<ul class="simple">
+<li><p>Calculate the z-score of our sample data’s mean and print it.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Z-scored mean height = x.xx'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Z-scored mean height = x.xx
+</pre></div>
+</div>
+</div>
+</div>
+<p>The mean of these measurements is well within the reference distribution of heights.</p>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3>Part 8 (2 points)<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>Where does the z-score of the sample mean fall within the standard normal distribution?</p>
+<ul class="simple">
+<li><p>Plot the CDF of the standard normal distribution and display the location of the sample mean as a red dot with <code class="docutils literal notranslate"><span class="pre">markersize=20</span></code>. In order to get the CDF you can use <code class="docutils literal notranslate"><span class="pre">stats.norm.cdf</span></code></p></li>
+<li><p>Calculate the value of the CDF at the location of the sample mean and display this value.</p></li>
+<li><p>What percent of the standard normal distribution is as large or larger than the sample mean?  Print this value.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xx.xx% of the standard normal distribution lies to the right of the sample mean
+</pre></div>
+</div>
+<img alt="../_images/9bc6689fe5bef9bb8c471c108c7bad69a1c31b3d14282cf5f642172331e58e5c.png" src="../_images/9bc6689fe5bef9bb8c471c108c7bad69a1c31b3d14282cf5f642172331e58e5c.png" />
+</div>
+</div>
+<p>Does this tell us the likelihood of drawing a sample from the reference dataset of 18-year-old heights that has this mean?</p>
+<p>NO!</p>
+<p>Why?  The distribution of the <code class="docutils literal notranslate"><span class="pre">heights</span></code> data is different than the distribution of the means of random samples drawn from those data.</p>
+<p>The mean of our sample is our <strong>sample statistic</strong>.  So what is the distribution of this sample statistic, if not the distribution from which we drew the samples?  Let’s try to find out!</p>
+<p>First, we’ll randomly select samples from <code class="docutils literal notranslate"><span class="pre">heights</span></code> with the same number of elements as <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> and find out empirically what the distribution of the sample means should look like.</p>
+<ul class="simple">
+<li><p>Draw a random sample from <code class="docutils literal notranslate"><span class="pre">heights</span></code> with the same number of elements as <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> and find the mean. You can draw random samples from an array using <code class="docutils literal notranslate"><span class="pre">np.random.choice</span></code>.</p></li>
+<li><p>Calculate the mean of this random sample and z-score it.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Mean of random sample = xx.xx inches'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Z-scored mean = x.xx'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean of random sample = xx.xx inches
+Z-scored mean = x.xx
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3>Part 9 (2 points)<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>OK, now that we know how to draw random samples, we’ll use this to gain some intuition about the values that we expect sample means to take.</p>
+<ul class="simple">
+<li><p>Repeat this calculation 5000 times using a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop and store the random sample means as a numpy array.</p></li>
+<li><p>Plot a histogram of the random sample means.</p></li>
+<li><p>Overlay the PDF of the normal distribution with the mean and standard deviation of <code class="docutils literal notranslate"><span class="pre">heights</span></code>.</p></li>
+</ul>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.2.html#central-limit-theorem">Central Limit Theorem</a> for the distribution of sample means.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/64a9c201c0ed9638f8d60ffcd3c4cd96605f01e1c32cf79aeff4af7ca89ee87c.png" src="../_images/64a9c201c0ed9638f8d60ffcd3c4cd96605f01e1c32cf79aeff4af7ca89ee87c.png" />
+</div>
+</div>
+<p>These look different!</p>
+<p>This is the <strong>central limit theorem</strong> in action!</p>
+<p>To recall, if we calculate the mean of a sample of random variables</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle {\bar {X}}_{n}\equiv {\frac {X_{1}+\cdots +X_{n}}{n}}\)</span></p>
+<p>the distribution of sample means is a normal distribution with mean, <span class="math notranslate nohighlight">\({\mu}\)</span>, and standard deviation, <span class="math notranslate nohighlight">\({\frac{\sigma}{\sqrt {n}}}\)</span>.  Here <span class="math notranslate nohighlight">\( n \)</span> is the size of the random sample and <span class="math notranslate nohighlight">\({\sigma}\)</span> is the standard deviation of the population.</p>
+<p>The width of this distribution is the standard error of the measurement of the mean, <span class="math notranslate nohighlight">\({\frac{\sigma}{\sqrt {n}}}\)</span>, rather than the standard deviation of the population,
+<span class="math notranslate nohighlight">\({\sigma}\)</span>.</p>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3>Part 10 (2 points)<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>Let’s see if this prediction holds true.</p>
+<ul class="simple">
+<li><p>Plot the histogram of sample means.</p></li>
+<li><p>Overlay the PDF of a normal distribution with the mean, <span class="math notranslate nohighlight">\({\mu}\)</span>, and standard deviation, <span class="math notranslate nohighlight">\(\sigma\)</span>, of the <code class="docutils literal notranslate"><span class="pre">heights</span></code> data, as above.</p></li>
+<li><p>Finally, overlay the PDF of a normal distribution with mean, <span class="math notranslate nohighlight">\({\mu}\)</span>, and standard deviation , <span class="math notranslate nohighlight">\({\frac{\sigma}{\sqrt {n}}}\)</span>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3d324b1a1f1737f6c211f6de9e588393e570e0fb572d438a1690d18f8e59d1ba.png" src="../_images/3d324b1a1f1737f6c211f6de9e588393e570e0fb572d438a1690d18f8e59d1ba.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>Part 11 (2 points)<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>OK!  Let’s re-examine where our measurement falls in this new distribution - the distribution of means of random samples of this size (N=3) drawn from the <code class="docutils literal notranslate"><span class="pre">heights</span></code> dataset.</p>
+<ul class="simple">
+<li><p>Plot the PDF of the distribution you found in <strong>Part 10</strong>.</p></li>
+<li><p>Now plot where the mean of <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> falls in this distribution as a red dot.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/17b86f9503784bdf5482573243374c69b7d55dd0661c395081649ebf5bada3c3.png" src="../_images/17b86f9503784bdf5482573243374c69b7d55dd0661c395081649ebf5bada3c3.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3>Part 12 (2 points)<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>Now, calculate the probability that the mean of classHeights is as large or larger than the measured value.  Do this two ways:</p>
+<ul class="simple">
+<li><p><strong>Method 1 (Monte Carlo):</strong> Directly find the proportion of random sample means  larger than the class sample mean.  This is the estimated probability of drawing a sample from <code class="docutils literal notranslate"><span class="pre">heights</span></code> with a mean as large (or larger) than the mean of <code class="docutils literal notranslate"><span class="pre">classHeights</span></code>.</p></li>
+<li><p><strong>Method 2 (analytical):</strong> Use the cdf of the normal distribution with the same mean as <code class="docutils literal notranslate"><span class="pre">heights</span></code> and standard deviation equal to <span class="math notranslate nohighlight">\({\frac{\sigma}{\sqrt {n}}}\)</span> (the predicted distribution of sample means) to determine the probability of measuring a set of class heights with this mean.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Probability (Monte Carlo) = x.xx% chance'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Probability (analytical) = x.xx% chance'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Probability (Monte Carlo) = x.xx% chance
+Probability (analytical) = x.xx% chance
+</pre></div>
+</div>
+</div>
+</div>
+<p>These probabilities may not be exactly th same, but if you increased the number of random samples drawn in <strong>Part 9</strong>, then these values would eventually converge.</p>
+</section>
+<hr class="docutils" />
+<section id="part-13-2-points">
+<h3>Part 13 (2 points)<a class="headerlink" href="#part-13-2-points" title="Link to this heading">#</a></h3>
+<p>This is great!  But we still haven’t <em>quite</em> gotten to where we need to be.</p>
+<p>Why? In this case, we are comparing against a reference datset with a huge number of measurements, and we can estimate the population mean and standard deviation from these data with very high accuracy.  But this is not usually the case!</p>
+<p>Instead, lets consider a slightly different scenario:</p>
+<p><strong>Problem:</strong>  What is the probability that our classHeights data were drawn from a normal distribution with mean of 67.99 (the mean of <code class="docutils literal notranslate"><span class="pre">heights</span></code>), when all we have is our measurements?</p>
+<p>Importantly, now we do not know the expected standard deviation of a sample of size N, because we don’t know the standard deviation of values in the the whole population.  All we have is the standard deviation of our measurements, which we could use as an imperfect estimate of the standard deviation of the population.</p>
+<p>This is where the <strong>‘t’ distribution</strong> and <strong>t tests</strong> come in.  We’ve seen that the z statistic:</p>
+<p><span class="math notranslate nohighlight">\({\displaystyle {z = \frac {{\bar {X}}-\mu }{\sigma /{\sqrt {n}}}}}\)</span></p>
+<p>follows the standard normal distribution.  But we often don’t know <span class="math notranslate nohighlight">\(\sigma\)</span>.  Instead, we can calculate a related statistic, the <strong>t statistic:</strong></p>
+<p><span class="math notranslate nohighlight">\({\displaystyle {t = \frac {{\bar {X}}-\mu }{S/{\sqrt {n}}}}}\)</span></p>
+<p>Where S is the <strong>sample</strong> standard deviation, which we can calculate directly from our sample data (<code class="docutils literal notranslate"><span class="pre">classHeights</span></code>).  The PDF of the t distribution is given by:</p>
+<p><span class="math notranslate nohighlight">\(f(t)={\frac {\Gamma ({\frac {\nu +1}{2}})}{{\sqrt {\nu \pi }}\,\Gamma ({\frac {\nu }{2}})}}\left(1+{\frac {t^{2}}{\nu }}\right)^{-(\nu +1)/2} \)</span></p>
+<p>We won’t derive this equation, but it is important to point out that it is parameterized by a single number, the degrees of freedom of the distribution, <span class="math notranslate nohighlight">\(\nu\)</span>.</p>
+<p>That is, the t distribution has a shape that depends only on this parameter.</p>
+<p>Here, the degrees of freedom is typically equal to the number of observations minus one <span class="math notranslate nohighlight">\((n-1)\)</span>, for reasons that we will discuss in class.</p>
+<p>On the same axes, plot:</p>
+<ul class="simple">
+<li><p>The PDF of the standard normal distribution</p></li>
+<li><p>The PDF of the t distribution (<code class="docutils literal notranslate"><span class="pre">stats.t</span></code>) with the appropriate dof for the <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> data</p></li>
+<li><p>Include a legend.</p></li>
+</ul>
+<p>In both cases, use <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to find the PDF.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4ce84466bcae3c33c2936992c721eb7b7797ccb94c1ae93b37e24fda8cebff04.png" src="../_images/4ce84466bcae3c33c2936992c721eb7b7797ccb94c1ae93b37e24fda8cebff04.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-14-2-points">
+<h3>Part 14 (2 points)<a class="headerlink" href="#part-14-2-points" title="Link to this heading">#</a></h3>
+<p>Examine the shape of the t distribution for different degrees of freedom compared to the standard normal distribution</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to generate t distributions with dof= 2, 4, 8, 16, 32.</p></li>
+<li><p>Plot the PDFs on the same axes and label them.</p></li>
+<li><p>On the same axes, plot the standard normal distribution as a black line with <code class="docutils literal notranslate"><span class="pre">linewidth=2</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/17e58cc070170b6c1d8d74dbf0aad20a450911a9db438ce5c014dc3c1b5ff1e1.png" src="../_images/17e58cc070170b6c1d8d74dbf0aad20a450911a9db438ce5c014dc3c1b5ff1e1.png" />
+</div>
+</div>
+<p>You should see that the t distribution coverges to the stanadard normal distribution as the number of observations (degrees of freedom) increases as the sample standard deviation becomes a better and better estimate of the population standard deviation.</p>
+</section>
+<hr class="docutils" />
+<section id="part-15-2-points">
+<h3>Part 15 (2 points)<a class="headerlink" href="#part-15-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Repeat <strong>Part 9</strong>, but instead of calculating the z statistic for each random sample, compute the t statistic.  To calculate S appropriately, you will need to use <code class="docutils literal notranslate"><span class="pre">np.std</span></code> and set the option <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> (essentially dividing by <code class="docutils literal notranslate"><span class="pre">n-1</span></code> instead of <code class="docutils literal notranslate"><span class="pre">n</span></code>). This will give you an unbiased estimate of the population standard deviation.</p></li>
+<li><p>Plot a histogram of these t statistics.</p></li>
+<li><p>Overlay the standard normal distribution and the t distribution with the appropriate degrees of freedom.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> <code class="docutils literal notranslate"><span class="pre">np.std</span></code> divides by <code class="docutils literal notranslate"><span class="pre">n</span></code> by default (<code class="docutils literal notranslate"><span class="pre">ddof=0</span></code>). For a t statistic computed from a small sample you need <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code>; forgetting it runs without error but makes S too small and every t statistic too large.</p>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.4.html#t-statistic">t statistic</a> for how the t statistic is computed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/52c8faa432e0a5de3acf89a19aa0123dd55cb1f4af4e7181df4dbe526a809e21.png" src="../_images/52c8faa432e0a5de3acf89a19aa0123dd55cb1f4af4e7181df4dbe526a809e21.png" />
+</div>
+</div>
+<p>Great!  Now you should see that the histogram of t statistics you calculated by randomly sampling <code class="docutils literal notranslate"><span class="pre">heights</span></code> matches the t distribution.</p>
+<p>The t distribution and normal distribution look somewhat similar, even when the degrees of freedom is low, but the t distribution has much ‘heavier’ tails - more extreme values are much more likely to be observed by chance.</p>
+</section>
+<hr class="docutils" />
+<section id="part-16-2-points">
+<h3>Part 16 (2 points)<a class="headerlink" href="#part-16-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Now, calculate the t statistic for <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> and print it.</p></li>
+</ul>
+<p>Determine the probability of drawing a random sample from <code class="docutils literal notranslate"><span class="pre">heights</span></code> with a t statistic at least as large as you measured.  As, before, do this two ways:</p>
+<ul class="simple">
+<li><p><strong>Method 1 (Monte Carlo):</strong> Directly find the proportion of random sample t statistics larger than the class sample t statistic.  This is the estimated probability of drawing a sample with a mean as large (or larger) than the mean of <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> when the population standard deviation is not known <em>a priori</em>.  To calculate S appropriately, you will need to use <code class="docutils literal notranslate"><span class="pre">np.std</span></code> and set the option <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> (essentially dividing by <code class="docutils literal notranslate"><span class="pre">n-1</span></code> instead of <code class="docutils literal notranslate"><span class="pre">n</span></code>).  This will give you an unbiased estimate of the population standard deviation.</p></li>
+<li><p><strong>Method 2 (analytical):</strong> Find the value of the CDF of the t distribution (with the correct degrees of freedom) at the measured t value using <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code>.</p></li>
+</ul>
+<p>In both cases, the value calculated - the probability of drawing a random sample from <code class="docutils literal notranslate"><span class="pre">heights</span></code> with a mean (and t statistic) at least as large as the observed value - is the p-value associated with the test.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'t statistic = x.xx'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Probability (Monte Carlo) = xx.xx%'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Probability (analytical) = xx.xx%'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t statistic = x.xx
+Probability (Monte Carlo) = xx.xx%
+Probability (analytical) = xx.xx%
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-17-2-points">
+<h3>Part 17 (2 points)<a class="headerlink" href="#part-17-2-points" title="Link to this heading">#</a></h3>
+<p>Finally, let’s run some t-tests using <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code>.</p>
+<ul class="simple">
+<li><p><strong>Step 1:</strong> Use the <code class="docutils literal notranslate"><span class="pre">stats.ttest_ind</span></code> function to find the probability that  <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> is drawn from a normal distribution with the mean and standard deviation of the <code class="docutils literal notranslate"><span class="pre">heights</span></code> dataset using a two-sample t test.  Set <code class="docutils literal notranslate"><span class="pre">equal_var=True</span></code> and <code class="docutils literal notranslate"><span class="pre">alternative=greater</span></code> to run a one-sided test.  What is the p-value for this test?</p></li>
+<li><p><strong>Step 2:</strong> Use the <code class="docutils literal notranslate"><span class="pre">ttest_1samp</span></code> function to find the probability that the measured <code class="docutils literal notranslate"><span class="pre">classHeights</span></code> are drawn from a normal distribution with a mean value equal to 66.99” (the mean of <code class="docutils literal notranslate"><span class="pre">heights</span></code>).  What is the p-value for this test?</p></li>
+</ul>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.4.html#the-one-sample-t-test">The one-sample t-test</a> for the one-sample test.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'p-value #1: x.xxxx'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'p-value #2: x.xxxx'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p-value #1: x.xxxx
+p-value #2: x.xxxx
+</pre></div>
+</div>
+</div>
+</div>
+<p>These values should match the probabilities you found in <strong>Part 12</strong> and <strong>Part 16</strong>!</p>
+<p>Here, we are performing two different kinds of t tests that make different assumptions.  That they produce two different results is a explained by the fact that these tests have different levels of statistical power.  We’ll explore this concept more in <em>Homework 1.3</em>!</p>
+</section>
+</section>
+<section id="homework-1-3-28-points">
+<h2>Homework 1.3 (28 points)<a class="headerlink" href="#homework-1-3-28-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will refine our python skills and delve into hypothesis testing.  We will explore:</p>
+<ul class="simple">
+<li><p>p-values</p></li>
+<li><p>t-test variants</p></li>
+<li><p>Statistical power</p></li>
+</ul>
+<hr class="docutils" />
+<section id="id12">
+<h3>Part 1 (2 points)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>Load the same libraries that we used in <em>Homeworks 1.1 and 1.2</em>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> (as <code class="docutils literal notranslate"><span class="pre">stats</span></code>)</p></li>
+</ul>
+<p>Now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h3>Part 2 (2 points)<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>Lets further examine key features of statistical tests, using the t-test from <em>Homework 1.2</em> as an example.  We’ll start by examining the p-value.</p>
+<ul class="simple">
+<li><p>Create a standard normal distribution and draw 20 samples</p></li>
+<li><p>Use a t-test to determine the probability of drawing a sample from a standard normal distribution with a mean at least as far from zero as the measured mean (the p-value) using <code class="docutils literal notranslate"><span class="pre">stats.ttest_1samp</span></code>.  Make sure you set <code class="docutils literal notranslate"><span class="pre">alternative='two-sided</span></code> so that we can test whether our test statistic (the sample mean) is either larger <strong>or</strong> smaller than the hypothesized mean (zero).</p></li>
+<li><p>Repeat this procedure 5000 times and create numpy arrays that contain all of the t statistics (in a variable called <code class="docutils literal notranslate"><span class="pre">tstats</span></code>) and p-values (<code class="docutils literal notranslate"><span class="pre">pvals</span></code>)</p></li>
+<li><p>Plot a histogram of <code class="docutils literal notranslate"><span class="pre">pvals</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/12e923a88f39f553e631c603614e752ad37407eb94867654dd59cc3425e2bb07.png" src="../_images/12e923a88f39f553e631c603614e752ad37407eb94867654dd59cc3425e2bb07.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h3>Part 3 (2 points)<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>Lets take a closer look at those p-values.</p>
+<ul class="simple">
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">pvals</span></code> versus <code class="docutils literal notranslate"><span class="pre">tstats</span></code>.  Make a scatter plot where every data point is indicated by a black dot.</p></li>
+<li><p>Repeat this plot on a second axis, but use <code class="docutils literal notranslate"><span class="pre">semilogy</span></code> instead of <code class="docutils literal notranslate"><span class="pre">plot</span></code> to produce a plot with a logarithmic y-axis.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8f8dbb855ee6259de052049c224ed459b6652489de4979606256a9cbf051ae08.png" src="../_images/8f8dbb855ee6259de052049c224ed459b6652489de4979606256a9cbf051ae08.png" />
+</div>
+</div>
+<p>Here, you should see that samples with means more different than 0 are associated with smaller p-values.</p>
+<p>The p-value represents the probability of your data having been observed under the null hypothesis of the test.  In this case, the null hypothesis is that the data were drawn from a distribution with mean 0.</p>
+<p>Samples with means near zero are likely to have been drawn from a zero-mean distribution.  Samples with means more different than zero are less likely to be observed under the null hypothesis and have smaller p-values.</p>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h3>Part 4 (2 points)<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>How often are particular p-values obtained by chance?</p>
+<ul class="simple">
+<li><p>Calculate the proportion of entries in <code class="docutils literal notranslate"><span class="pre">pvals</span></code> less than 0.05.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The proportion of pvals less than 0.05 is x.xx
+</pre></div>
+</div>
+</div>
+</div>
+<p>You should fine that p-values less than 0.05 are obtained about 5% of the time.</p>
+<p>Here, we know the null hypothesis - that our data were randomly selected from a zero-mean distribution - is true.  We expect small (less than 0.05)  p-values relatively rarely (5% of the time).</p>
+<p><strong>The p-value is the probability of observing a result as extreme or more extreme under the assumption that the null hypothesis is true.</strong></p>
+<p>For example, a p-value of 0.05 indicates that 5% of the time we expect to observe a sample mean at least that different from the hypothesized mean of zero.  A p-value of 0.001 would indicate a very rare event - one that happens with 1/1000 odds - under the assumptions of the null hypothesis.</p>
+<p>Low p-values indicate that the null hypothesis may not be correct.</p>
+</section>
+<section id="id16">
+<h3>Part 5 (2 points)<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>Let’s examine other variations of the t-test.</p>
+<ul class="simple">
+<li><p>Repeat <strong>Part 2</strong>, but instead use <code class="docutils literal notranslate"><span class="pre">stats.ttest_1samp</span></code> to test whether each random sample has a mean less than zero by setting <code class="docutils literal notranslate"><span class="pre">alternative='less'</span></code>. This is called a <em>left-tailed test</em> because we are testing whether our test statistic lies in the left tail of the null distribution.</p></li>
+<li><p>Repeat <strong>Part 2</strong> and test whether the mean of each random sample is greater than zero (right-tailed test). This is called a <em>right-tailed test</em>.</p></li>
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">pvals</span></code> versus <code class="docutils literal notranslate"><span class="pre">tstats</span></code> as in <strong>Part 3</strong> in each case using <code class="docutils literal notranslate"><span class="pre">semilogy</span></code>.  Plot them on the same axes in different colors with an appropriate legend.</p></li>
+</ul>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.5.html#one-vs-two-tailed-tests">One- vs. Two-tailed tests</a> for choosing the tail of a test.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/aa58761a06c5658b949b88662687a0fcba9fa27e993f9262309f06e5704cd647.png" src="../_images/aa58761a06c5658b949b88662687a0fcba9fa27e993f9262309f06e5704cd647.png" />
+</div>
+</div>
+<p>In all cases, the p-value tells you the probability of observing an outcome under the assumption that the null hypothesis is true.</p>
+<p>1-p is the probability of the opposite outcome.  Here,the <strong>null hypotheses</strong> are:</p>
+<ul class="simple">
+<li><p>Two-sided test:  The sample was drawn from a distribution with <strong>mean 0</strong>.</p></li>
+<li><p>Left-tailed test: The sample was drawn from a distribution with <strong>mean 0 or greater</strong></p></li>
+<li><p>Right-tailed test: The sample was drawn from a distribtuion with <strong>mean 0 or less</strong>.</p></li>
+</ul>
+</section>
+<section id="id17">
+<h3>Part 6 (2 points)<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>Repeat <strong>Parts 2-4</strong>, but compare your data to a distribution with mean 0.5 (instead of zero) using the same procedure</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The proportion of pvals less than 0.05 is x.xx
+The proportion of pvals greater than 0.95 is x.xx
+</pre></div>
+</div>
+<img alt="../_images/363e237204ea18def816622156f34c5400a101ef5e4fd828689a707438179121.png" src="../_images/363e237204ea18def816622156f34c5400a101ef5e4fd828689a707438179121.png" />
+</div>
+</div>
+<p>In many instances, we calculate a p-value &lt; 0.05, which indicates that the random sample was likely drawn from a distribution with a <strong>mean different than 0</strong>, as expected.</p>
+<p><strong>But not always!</strong> Sometimes we still select samples with associated p-values that are large, indicating that the null hypothesis cannot be rejected.  This indicates a <strong>Type II error</strong>  - failing to reject a false null hypothesis.  This is also called a <strong>false negative</strong>.</p>
+<p>The type II erorr rate is closely related to the <strong>statistical power</strong> of a test - its ability (or inability) to correctly reject a null hypothesis when an alternative hypothesis is actually true.</p>
+<p>We will examine statistical power a little more below.</p>
+</section>
+<section id="id18">
+<h3>Part 7 (2 points)<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Repeat <strong>Part 6</strong> but run a left-tailed t-test for each sample instead of a two sided test.</p></li>
+<li><p>Calculate the proportion of samples with associated p-values less than 0.05.</p></li>
+<li><p>Compare this proportion to the proportion of p-values less than 0.05 when you used the two-sided test</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Left-tailed test: The proportion of pvals less than 0.05 is x.xx
+Two-sided test: The proportion of pvals less than 0.05 is x.xx
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, you should find a larger proportion of p-values less than  0.05 using the left-tailed test.</p>
+<p><font color='red'><strong>SHORT ANSWER (2 points):</strong> Explain why the left-tailed test yields a p-value less than 0.05 (correctly rejects the null hypothesis) more frequently than the two-sided test in terms of the area under the probability density function of the t-statistic.</font></p>
+</section>
+<section id="id19">
+<h3>Part 8 (2 points)<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>Next, let’s examine how stastical power changes as a function of sample size.</p>
+<ul class="simple">
+<li><p>Run the same experiment as above with several variations.  Create a standard normal distribution and draw samples of size 4, 8, 16, 32, 64, 128, and 256.</p></li>
+<li><p>Use a t-test  (<code class="docutils literal notranslate"><span class="pre">stats.ttest_1samp</span></code>) to test two null hypotheses: (1) that the data were drawn from a distribution with mean 0.5 and (2) that the data were drawn from a distribution with mean 0.25.</p></li>
+<li><p>Repeat the steps above 500 times (you will need to use two nested <code class="docutils literal notranslate"><span class="pre">for</span></code> loops).</p></li>
+<li><p>For each case, calculate the proportion of p-values less than 0.05.</p></li>
+<li><p>Plot the proportion of p-values less than 0.05 vs. the sample size (true positive rate) with a logarithmic x-axis.</p></li>
+<li><p>On the same axes, plot the false negative rate.</p></li>
+<li><p>Choose iine styles that ensure the lines are easily distinguishable</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/55cee7da3b4a2f44a99715075b54372b84dc60c26ce9d8ca9249defc0baddc3c.png" src="../_images/55cee7da3b4a2f44a99715075b54372b84dc60c26ce9d8ca9249defc0baddc3c.png" />
+</div>
+</div>
+<p>Here, you should see that the true positive rate increases and the false negative rate decrease as the sample size increases.</p>
+<p>In this example, we are drawing samples from a mean-zero distribution and testing the hypothesis that the were drawn from distributions with mean 0.25 and mean 0.5.  In all cases, the null hypothesis is false.  We are more likely to reject the null hypothesis as the sample size increases (and our sample mean converges to the population mean) and as the effect size (difference between the actual population mean and the hypothesized population mean) increases.</p>
+<p>Increasing sample size and/or effect size increases <strong>statistical power</strong>, the probability of correctly rejecting an incorrect null hypothesis (black lines above).</p>
+<hr class="docutils" />
+<p>Thus far, we have examined one-sample t-tests, where we attempt to determine whether one sample of data was drawn from a distribution with a hypothesized mean.</p>
+<p>Next, we will examine a <strong>two-sample test</strong>, where we will compare two samples of data and determine whether they were likely drawn from the same distribution.  There are several flavors of the two-sample t-test.</p>
+<p>We’ll start with the simplest version, when the size of each sample is the same, and when we draw the two samples from populations that we assume to have the same (or similar) standard deviations.  In this case the test statistic (still called t) is:</p>
+<p><span class="math notranslate nohighlight">\({\displaystyle t={\frac {{\bar {X}}_{1}-{\bar {X}}_{2}}{s_{p}{\sqrt {\frac {2}{n}}}}}}\)</span></p>
+<p>Where</p>
+<p><span class="math notranslate nohighlight">\({\displaystyle s_{p}={\sqrt {\frac {s_{X_{1}}^{2}+s_{X_{2}}^{2}}{2}}}}\)</span></p>
+<p>and <span class="math notranslate nohighlight">\(s_{X_{1}}^{2}\)</span>, <span class="math notranslate nohighlight">\(s_{X_{2}}^{2}\)</span> are the unbiased (divide by <span class="math notranslate nohighlight">\(n-1\)</span> rather than <span class="math notranslate nohighlight">\(n\)</span>) estimates of the sample variances.</p>
+<p>Our test statistic, <em>t</em>, still follows the same t distribution we examined in <em>Homework 1.2</em>.</p>
+<p>When the two samples have different sizes, or different variances, the analytical expression for t becomes a bit more complex.</p>
+</section>
+<section id="id20">
+<h3>Part 9 (2 points)<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p>Here, we will only calculate a two-sample t-test using <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code>, although we could use the analytical expressions above (along with the expression for the PDF of the t distribution) to determine p-values directly if we so chose.</p>
+<ul class="simple">
+<li><p>Draw 20 samples from a normal distribution with mean 0 and standard deviation 1 (Sample 1) and an additional 20 samples from a distribution with mean 0.5 and standard deviation 1 (Sample 2).</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">scipy.stats.ttest_ind</span></code> to determine the probability that these samples were drawn from distributions with the same mean (the p-value for a two-sided test).</p></li>
+<li><p>In addition, use <code class="docutils literal notranslate"><span class="pre">scipy.stats.ttest_1samp</span></code> to test whether Sample 1 was drawn from a distribution with mean 0.5 using a two-sided test.  Record the p-value for this test as well.</p></li>
+<li><p>Repeat these steps 5000 times.</p></li>
+<li><p>For each case, calculate the proportion of p-values less than 0.05.</p></li>
+</ul>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.4.html#variation-two-sample-t-test-equal-variances">Variation: two-sample t-test (equal variances)</a> for the two-sample test.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='red'><strong>SHORT ANSWER (2 points):</strong> Which test has greater statistical power?  Explain why. When would you use one test versus the other?</font></p>
+</section>
+<section id="id21">
+<h3>Part 10 (2 points)<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p>In <strong>Part 9</strong> we examined a two-sample t-test using <code class="docutils literal notranslate"><span class="pre">scipy.stats.ttest_ind</span></code>.  There, ‘ind’ refers to a test of independent measurements.  That is, selecting a particular value in Sample 1 does not affect the values expected in Sample 2.</p>
+<p>Next, we will examine paired samples and the associated paired t-test.</p>
+<p>For example, suppose we measure how long it takes 20 subjects to run a 5K race, subject them to a training regimine, and then measure how long it takes them to run a second 5K to determine if the training regimine reduces their 5K time.</p>
+<p>In this case, the samples are paired.  Exactly one measurement in Sample 1 and one measurement in Sample 2 correspond to each subject. Each person’s first 5K time might tell us something about what to expect from their second 5K time.  We do not have two independent samples from the population of 5K times in this case.</p>
+<p>Let’s simulate this scenario and visualize the experiment using some new kinds of plots.</p>
+<ul class="simple">
+<li><p>Load the datafile located at the following URL using <code class="docutils literal notranslate"><span class="pre">np.genfromtxt</span></code> into a variable called <code class="docutils literal notranslate"><span class="pre">raceData</span></code>:</p></li>
+</ul>
+<p><a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework1/RaceData.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework1/RaceData.csv</a></p>
+<ul class="simple">
+<li><p>Create variables called <code class="docutils literal notranslate"><span class="pre">race1</span></code> and <code class="docutils literal notranslate"><span class="pre">race2</span></code> from the first and second columns of <code class="docutils literal notranslate"><span class="pre">raceData</span></code>.</p></li>
+<li><p>Compare these two datasets with a boxplot.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">scipy.stats.ttest_ind</span></code> to calculate the probability that these two datasets were drawn from populations with the same mean.</p></li>
+<li><p>Plot a scatterplot of <code class="docutils literal notranslate"><span class="pre">race2</span></code> vs. <code class="docutils literal notranslate"><span class="pre">race1</span></code>.  You should see that these two samples are  clearly correlated and, thus, not independent.  Include a dotted line indicating where y=x.</p></li>
+<li><p>Display the paired data with lines connecting paired data points (as shown below).</p></li>
+</ul>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture1.4.html#paired-t-test-repeated-measures">Paired t-test (repeated measures)</a> for when and why to pair measurements.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ded85fb8f7a3b438d5b6bc5299c8508b9e3b0c96a1665775674716fc442494d4.png" src="../_images/ded85fb8f7a3b438d5b6bc5299c8508b9e3b0c96a1665775674716fc442494d4.png" />
+</div>
+</div>
+<p>Here, from the boxplots, you should see that the distributions of the data are quite similar.  In the second and third plots, however, you should see a systematic change in the paired measurements in the first and second samples.</p>
+<p>How do we test whether the training regimine had the desired effect on 5K times?  We’ll compare two kinds of tests below</p>
+</section>
+<section id="id22">
+<h3>Part 11 (2 points)<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Apply the upaired two-sample t-test as in <strong>Part 8</strong>.  Report the p-value.</p></li>
+<li><p>Apply a <strong>paired t-test</strong> (<code class="docutils literal notranslate"><span class="pre">stats.ttest_rel</span></code>) to these two samples as well.  Report this p-value as well.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> A paired test assumes entry <em>i</em> of Sample 1 and entry <em>i</em> of Sample 2 belong to the same subject. If you sort or shuffle one array independently, <code class="docutils literal notranslate"><span class="pre">stats.ttest_rel</span></code> still returns a p-value but it is meaningless.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Unpaired t-test p-value = x.xx
+Unpaired t-test p-value = x.xx
+</pre></div>
+</div>
+</div>
+</div>
+<p>These two tests should yield very different results.  Why is this?</p>
+<p>While ostensibly a two-sample test, the paired t-test is really a test of the differences between the paired samples (i.e. the values of <code class="docutils literal notranslate"><span class="pre">race2-race1</span></code>).</p>
+<p>While <code class="docutils literal notranslate"><span class="pre">race1</span></code> and <code class="docutils literal notranslate"><span class="pre">race2</span></code> have similar means and variances, the differences have a mean that can be confidently differentiated from zero.</p>
+<p>We can see this clearly by plotting a histogram of the differences, the values of <code class="docutils literal notranslate"><span class="pre">race2-race1</span></code>.</p>
+</section>
+<section id="id23">
+<h3>Part 12 (2 points)<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Plot a histogram of the values of <code class="docutils literal notranslate"><span class="pre">race2-race1</span></code>, the changes in each individuals 5K time.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1226eedf38eef4e7d37f73e68bf828034616aec4ec818f6b303d7c2be6fd302b.png" src="../_images/1226eedf38eef4e7d37f73e68bf828034616aec4ec818f6b303d7c2be6fd302b.png" />
+</div>
+</div>
+<p>The values of <code class="docutils literal notranslate"><span class="pre">race2-race1</span></code> appear unlikely to have been drawn from a distribution with a mean different than zero, indicating a change in race times, even though the values in <code class="docutils literal notranslate"><span class="pre">race1</span></code> and <code class="docutils literal notranslate"><span class="pre">race2</span></code> follow similar distributions.</p>
+<p>Here, the paired t-test is really a one-sample t-test where we are comparing the difference in values between <code class="docutils literal notranslate"><span class="pre">race1</span></code> and <code class="docutils literal notranslate"><span class="pre">race2</span></code> with a hypothesized mean of zero.  That is, the null hypothsis is that the values in <code class="docutils literal notranslate"><span class="pre">race2-race</span></code> are drawn from a distribution that is zero mean.</p>
+</section>
+</section>
+<section id="homework-1-4-18-points">
+<h2>Homework 1.4 (18 points)<a class="headerlink" href="#homework-1-4-18-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will continue our exploration  of statistics and hypothesis testing.  We will explore:</p>
+<ul class="simple">
+<li><p>Non-parametric statistics</p></li>
+<li><p>The bootstrap</p></li>
+</ul>
+<hr class="docutils" />
+<section id="part-1">
+<h3>Part 1<a class="headerlink" href="#part-1" title="Link to this heading">#</a></h3>
+<p>Load the same libraries that we used in <em>Homeworks 1.1 and 1.2</em>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> (as <code class="docutils literal notranslate"><span class="pre">stats</span></code>)</p></li>
+</ul>
+<p>Now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<p>Let’s examine the statistical power of parametric and non-parametric statistical tests.</p>
+<p>First, we will compare the 1-sample t-test (parametric) and the sign test (nonparametric).</p>
+</section>
+<hr class="docutils" />
+<section id="id24">
+<h3>Part 2 (2 points)<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Draw a random sample from a standard normal distribution of size <code class="docutils literal notranslate"><span class="pre">Nsamp</span> <span class="pre">=</span> <span class="pre">16</span></code>.</p></li>
+<li><p>Use a t-test to determine the p-value for a two-sided test of the null hypothesis that the data were drawn from a population with a hypothesized mean <code class="docutils literal notranslate"><span class="pre">HypMean</span> <span class="pre">=</span> <span class="pre">0.5</span></code>.</p></li>
+<li><p>Repeat this procedure 500 times.</p></li>
+<li><p>Find the true positive rate - the proportion of the 500 repetitions in which the null hypothesis (which we know to be <strong>false</strong>) was correctly rejected at an <span class="math notranslate nohighlight">\(\alpha\)</span> level of 0.05.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True positive rate: x.xxx (effect size 0.5)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id25">
+<h3>Part 3 (2 points)<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p>Repeat <strong>Part 2</strong>, but set <code class="docutils literal notranslate"><span class="pre">HypMean</span></code> = 0</p>
+<ul class="simple">
+<li><p>Find the false positive rate - the proportion of the 500 repetitions in which the null hypothesis (which we know to be <strong>correct</strong>) was incorrectly rejected at an <span class="math notranslate nohighlight">\(\alpha\)</span> level of 0.05.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False positive rate: x.xxx (effect size 0.0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id26">
+<h3>Part 4 (2 points)<a class="headerlink" href="#id26" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use similar procedures to find the power (true positive rate) for effect sizes of 0.5 and 1.0 (<code class="docutils literal notranslate"><span class="pre">HypMean=0.5,</span> <span class="pre">1.0</span></code>) as well as the false positive rate (<code class="docutils literal notranslate"><span class="pre">HypMean=0</span></code>) of the 1-sample t-test when <code class="docutils literal notranslate"><span class="pre">Nsamp</span></code> is equal to 4, 8, 16, 32, and 64 at an <span class="math notranslate nohighlight">\(\alpha\)</span> level of 0.05.</p></li>
+<li><p>This can be accomplished, for example with three nested <code class="docutils literal notranslate"><span class="pre">for</span></code> loops.</p></li>
+<li><p>Plot the results as shown below using <code class="docutils literal notranslate"><span class="pre">semilogx</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e35ec55a75994f005a419ac02a724bb27dc89a1dc9ddca2427473f021f08a6db.png" src="../_images/e35ec55a75994f005a419ac02a724bb27dc89a1dc9ddca2427473f021f08a6db.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id27">
+<h3>Part 5 (2 points)<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<p>Repeat <strong>Part 4</strong>, but use a sign test instead of a t-test.</p>
+<p>To perform a sign test:</p>
+<ul class="simple">
+<li><p>Determine the number of values in the random sample greater than <code class="docutils literal notranslate"><span class="pre">HypMean</span></code>.  Call this number <code class="docutils literal notranslate"><span class="pre">numPositives</span></code>.</p></li>
+<li><p>Use a binomial test (<code class="docutils literal notranslate"><span class="pre">stats.binomtest</span></code>) to determine the probability of observing a value of numPositives at least as extreme as the observed number (a two-tailed test) under the assumption that the probability that each sample is greater than <code class="docutils literal notranslate"><span class="pre">HypMean</span></code> is 0.5.</p></li>
+<li><p>Find the p-value for this test.</p></li>
+</ul>
+<p>NOTE:  the output of <code class="docutils literal notranslate"><span class="pre">stats.binomtest</span></code> is a structured a little differently than other statistical tests we have used so far.  You may have to look up the documation for <code class="docutils literal notranslate"><span class="pre">stats.binomtest</span></code> to figure out how to access the p-value for the test.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/37bfac081f739a6abd9a59d9a0abe0a0542a690ed7665582dede16076ec0a749.png" src="../_images/37bfac081f739a6abd9a59d9a0abe0a0542a690ed7665582dede16076ec0a749.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id28">
+<h3>Part 6 (2 points)<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Plot the results of <strong>Parts 4 and 5</strong> on a common axis</p></li>
+<li><p>Make the plot size large using a command like `fig.set_size_inches(10, 10)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b1323084f9605a9d0a9ddb92528e55a6b7e9178be1d47e38000ef7026d18de45.png" src="../_images/b1323084f9605a9d0a9ddb92528e55a6b7e9178be1d47e38000ef7026d18de45.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id29">
+<h3>Part 7 (2 points)<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p>Finally, we’ll explore the bootstrap.</p>
+<ul class="simple">
+<li><p>First, create a population with an unusual distribution.  Use the following code to create the variable <code class="docutils literal notranslate"><span class="pre">population</span></code>:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">Nvals1</span> <span class="o">=</span> <span class="mi">8000</span>
+<span class="n">Nvals2</span> <span class="o">=</span> <span class="mi">2000</span>
+
+<span class="n">vals1</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">loc</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">Nvals1</span><span class="p">)</span>
+<span class="n">vals2</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">Nvals2</span><span class="p">)</span>
+<span class="n">population</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">vals1</span><span class="p">,</span> <span class="n">vals2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first command (<code class="docutils literal notranslate"><span class="pre">np.random.seed(seed=3)</span></code>) ensures that the same random numbers are generated each time the code runs.  The number <code class="docutils literal notranslate"><span class="pre">3</span></code> is a bit arbitrary.  We just want to set the seed to the same number each time the code is run.</p>
+<ul class="simple">
+<li><p>Plot a histogram of values in the population.  Use 50 bins and set <code class="docutils literal notranslate"><span class="pre">density=True</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c4a5ac3f12ebba32f176793f8478a405d905a8d23069f757db38245595c5bc8a.png" src="../_images/c4a5ac3f12ebba32f176793f8478a405d905a8d23069f757db38245595c5bc8a.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id30">
+<h3>Part 8 (2 points)<a class="headerlink" href="#id30" title="Link to this heading">#</a></h3>
+<p>Consider a statistic:  the standard deviation of samples of size <code class="docutils literal notranslate"><span class="pre">Nsamp=16</span></code> drawn from <code class="docutils literal notranslate"><span class="pre">population</span></code>.  What is the sampling distribution of this statistic?</p>
+<p>Estimate the sampling distribution using a Monte Carlo Simulation.</p>
+<ul class="simple">
+<li><p>Set the random seed to 3 (<code class="docutils literal notranslate"><span class="pre">np.random.seed(seed=3)</span></code>)</p></li>
+<li><p>Draw 16 samples randomly from the population (with replacement) using <code class="docutils literal notranslate"><span class="pre">np.random.choice</span></code>.</p></li>
+<li><p>Find the standard deviation of the sample.</p></li>
+<li><p>Repeat this procedure 10,000 times and store the sample standard deviations in a variable called <code class="docutils literal notranslate"><span class="pre">sdDistribution</span></code>.</p></li>
+<li><p>Plot a histogram of <code class="docutils literal notranslate"><span class="pre">sdDistribution</span></code> as above.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3ee6f23056a2be7b7e2f14e9822425ebdc4718aa0bc33dbf1849b65ef272d060.png" src="../_images/3ee6f23056a2be7b7e2f14e9822425ebdc4718aa0bc33dbf1849b65ef272d060.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id31">
+<h3>Part 9 (2 points)<a class="headerlink" href="#id31" title="Link to this heading">#</a></h3>
+<p>Now, let’s try to bootstrap the same distribution.</p>
+<ul class="simple">
+<li><p>Set the random seed to 3 (<code class="docutils literal notranslate"><span class="pre">np.random.seed(seed=3)</span></code>).</p></li>
+<li><p>Draw only a <strong>single</strong> sample of size <code class="docutils literal notranslate"><span class="pre">Nsamp=16</span></code> from <code class="docutils literal notranslate"><span class="pre">population</span></code>.  Call it <code class="docutils literal notranslate"><span class="pre">observedData</span></code>.</p></li>
+</ul>
+<p>Suppose we don’t have access to <code class="docutils literal notranslate"><span class="pre">population</span></code> and, instead, all we have is <code class="docutils literal notranslate"><span class="pre">observedData</span></code>. We can use the bootstrap method with <code class="docutils literal notranslate"><span class="pre">observedData</span></code> to estimate the distribution of the test statistic.  To do this, do the following:</p>
+<ul class="simple">
+<li><p>Draw a random sample of size <code class="docutils literal notranslate"><span class="pre">Nsamp=16</span></code> from <code class="docutils literal notranslate"><span class="pre">observedData</span></code>.  Ensure that you sample <strong>with replacement</strong> or else the sample will be the same as <code class="docutils literal notranslate"><span class="pre">observedData</span></code>.  Calculate the standard deviation of this random sample.</p></li>
+<li><p>Resample <code class="docutils literal notranslate"><span class="pre">observedData</span></code> (by repeating the previous step) 10,000 times and calculate the standard deviation each time.  Store the standard deviation values in a variable called <code class="docutils literal notranslate"><span class="pre">bootDistribution</span></code>.</p></li>
+<li><p>Plot a histogram of both <code class="docutils literal notranslate"><span class="pre">sdDistribution</span></code> and <code class="docutils literal notranslate"><span class="pre">bootDistribution</span></code> in the same way as above.  Set <code class="docutils literal notranslate"><span class="pre">alpha=0.3</span></code> so that the histograms are partially transparent.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/edece3ed4ba60ad92d847f9b1773d07408a8c7fd1d3bda0c5bee08cd2d45ee59.png" src="../_images/edece3ed4ba60ad92d847f9b1773d07408a8c7fd1d3bda0c5bee08cd2d45ee59.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id32">
+<h3>Part 10 (2 points)<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<p>Find the 5-95% confidence interval on the test statistic (the sample standard deviation) using the Monte Carlo simulution and the bootstrapped distribution.</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.percentile</span></code> to find the 5th and 95th percentile of <code class="docutils literal notranslate"><span class="pre">sdDistribution</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.percentile</span></code> to find the 5th and 95th percentile of <code class="docutils literal notranslate"><span class="pre">bootDistribution</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5 - 95% confidence interval:  x.xxx - x.xxx (Monte Carlo)
+5 - 95% confidence interval:  x.xxx - x.xxx (bootstrap)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./homework"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../lectures/Lecture1.6.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 1.6: Sampling-based Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../modules/module2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Module 2: Regression and model fitting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-1-1-24-points">Homework 1.1 (24 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-2-points">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-2-points">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-2-points">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-2-points">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-2-points">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-2-points">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-2-points">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-2-points">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-2-points">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-2-points">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-2-points">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-2-points">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-1-2-34-points">Homework 1.2 (34 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Part 12 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-13-2-points">Part 13 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-14-2-points">Part 14 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-15-2-points">Part 15 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-16-2-points">Part 16 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-17-2-points">Part 17 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-1-3-28-points">Homework 1.3 (28 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-1-4-18-points">Homework 1.4 (18 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1">Part 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">Part 10 (2 points)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,2201 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Homework 4: Dimensionality reduction &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'homework/HW4';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module 5: Neural networks" href="../modules/module5.html" />
+    <link rel="prev" title="Module 4: Dimensionality reduction" href="../modules/module4.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.1-slides.html">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.3.html">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.4.html">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="HW1.html">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW2.html">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.1.html">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.2.html">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="HW3.html">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/depasquale-lab/BE559/blob/main/homework/HW4.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/homework/HW4.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Homework 4: Dimensionality reduction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-4-1-32-points">Homework 4.1 (32 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-2-points">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-2-points">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-2-points">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-2-points">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-2-points">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-2-points">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-2-points">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-2-points">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-2-points">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-2-points">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-2-points">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-2-points">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-4-2-32-points">Homework 4.2 (32 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Part 12 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-13-2-points">Part 13 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-14-2-points">Part 14 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-15-2-points">Part 15 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-16-2-points">Part 16 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-4-3-46-points">Homework 4.3 (46 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-4-points">Part 1 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-4-points">Part 2 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-4-points">Part 3 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-4-points">Part 5 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-6-points">Part 5 (6 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-4-points">Part 9 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-4-points">Part 10 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-4-points">Part 11 (4 points)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="homework-4-dimensionality-reduction">
+<h1>Homework 4: Dimensionality reduction<a class="headerlink" href="#homework-4-dimensionality-reduction" title="Link to this heading">#</a></h1>
+<p>This assignment has 3 parts. Each part is graded as listed in its heading.</p>
+<section id="homework-4-1-32-points">
+<h2>Homework 4.1 (32 points)<a class="headerlink" href="#homework-4-1-32-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will delve into linear dimensionality reduction. We will explore:</p>
+<ul class="simple">
+<li><p>Principal components analysis</p></li>
+<li><p>Related linear algebra</p></li>
+</ul>
+<hr class="docutils" />
+<p>Load the same libraries that we used in previous modules:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> as (<code class="docutils literal notranslate"><span class="pre">pd</span></code>)</p></li>
+</ul>
+<p>Now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="part-1-2-points">
+<h3>Part 1 (2 points)<a class="headerlink" href="#part-1-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Load the Olympic Decathalon dataset. This dataset includes the performance of 41 olympic athletes for the 10 events of the decathlon. There are 14 columns in total: the first is the athlete’s name, the next ten columns correspond to the performance of each athlete for the 10 events of the decathlon (e.g. 100 meter dash, long jump, etc.). Columns 11 and 12 correspond to the athlete’s rank and the points obtained. The last column corresponds to the sporting event (2004 Olympic Game or 2004 Decastar). These data are stored in a .csv (comma separated values) file at the following URL:</p></li>
+</ul>
+<p><a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework4/decathalon.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework4/decathalon.csv</a></p>
+<ul class="simple">
+<li><p>To do this, use the pandas function <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> to create a a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> DataFrame, which we will call <code class="docutils literal notranslate"><span class="pre">df</span></code>:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s explore this object using some common <code class="docutils literal notranslate"><span class="pre">pandas</span></code> methods.</p>
+<ul class="simple">
+<li><p>Use the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.head.html"><code class="docutils literal notranslate"><span class="pre">dataframe.head()</span></code></a> method to show the first <code class="docutils literal notranslate"><span class="pre">n=10</span></code> rows of your dataframe <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-2-2-points">
+<h3>Part 2 (2 points)<a class="headerlink" href="#part-2-2-points" title="Link to this heading">#</a></h3>
+<p>You might immediately notice that the data can naturally be represented on wildly different scales. For example data for <code class="docutils literal notranslate"><span class="pre">1500m</span></code> is in the hundreds while <code class="docutils literal notranslate"><span class="pre">high</span> <span class="pre">jump</span></code> is in the single digits. This is generally bad for data analysis purposes, and we aren’t generally intersted in the overall scale of things when we do dimensionality reduction, but the covariation of variables.</p>
+<p>For that reason, we want to scale the data to be on the roughly on the same scale. A standard way to do this is to <code class="docutils literal notranslate"><span class="pre">z-score</span></code> the data for each feature (e.g. each event). Recall z-scoring from Module 1:</p>
+<p><span class="math notranslate nohighlight">\(z_{ij} = \frac{(x_{ij} - \mu_j)}{\sigma_j}\)</span></p>
+<p>where each <span class="math notranslate nohighlight">\(x_{ij}\)</span> is a datapoint and <span class="math notranslate nohighlight">\(\mu_j\)</span> and <span class="math notranslate nohighlight">\(\sigma_j\)</span> are the mean and standard deviation, respectively, of the <span class="math notranslate nohighlight">\(j^{th}\)</span> feature, i.e. <span class="math notranslate nohighlight">\(j=1\)</span> corresponds to <code class="docutils literal notranslate"><span class="pre">100m</span></code>, etc.</p>
+<ul class="simple">
+<li><p>First, let’s create a reduced dataframe, called <code class="docutils literal notranslate"><span class="pre">X</span></code> that removes some of the information from our dataset that we don’t need, such as the athletes name, their rank, points, and which sporting event the data corresponds to. These correspond to the first, and last three columns of out dataframe. A dataframe has some handy functionality that we will exploit. Each dataframe has an attribute <code class="docutils literal notranslate"><span class="pre">.columns</span></code> which lists the column names of the dataframe. This can be indexed into (i.e., [1:2], etc.) to pull out only the column names we are intersted in. THEN, this list of column names can be used to index into our dataframe itself, to only take the columns we are interested in. Use <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">df[df.columns[1:-3]]</span></code> to generate a reduced dataframe <code class="docutils literal notranslate"><span class="pre">X</span></code> of the data we want.</p></li>
+<li><p>Use the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html"><code class="docutils literal notranslate"><span class="pre">mean</span></code></a> and <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.std.html"><code class="docutils literal notranslate"><span class="pre">std</span></code></a> method for a dataframe (I.E. NOT np.mean and np.std that we have been using in <code class="docutils literal notranslate"><span class="pre">numpy</span></code>!) to z-score our data. Create a new scaled dataframe, <code class="docutils literal notranslate"><span class="pre">X_scaled</span></code>. Set the <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code> option for <code class="docutils literal notranslate"><span class="pre">std</span></code>. The reason for doing this will become clear soon.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> pandas <code class="docutils literal notranslate"><span class="pre">.std()</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> while <code class="docutils literal notranslate"><span class="pre">np.std</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code>, so forgetting <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code> gives z-scores that run without error but are slightly off and will not match <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> later.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-3-2-points">
+<h3>Part 3 (2 points)<a class="headerlink" href="#part-3-2-points" title="Link to this heading">#</a></h3>
+<p>Z-scoring data is such a common preprocessing step, that Scikit-learn has built in functionality for doing it.</p>
+<ul class="simple">
+<li><p>import <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html"><code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code></a> from <code class="docutils literal notranslate"><span class="pre">sklearn.preprocessing</span></code></p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> instance using <code class="docutils literal notranslate"><span class="pre">StandardScaler()</span></code>.</p></li>
+<li><p>Apply the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler.fit_transform"><code class="docutils literal notranslate"><span class="pre">fit_transform</span></code></a> method to our unscaled data <code class="docutils literal notranslate"><span class="pre">X</span></code> and create a new variable <code class="docutils literal notranslate"><span class="pre">X_scaled_2</span></code>. <code class="docutils literal notranslate"><span class="pre">X_scaled_2</span></code> is returned as a numpy array; use the pandas method <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_numpy.html"><code class="docutils literal notranslate"><span class="pre">to_numpy</span></code></a> to convert <code class="docutils literal notranslate"><span class="pre">X_scaled</span></code> to a numpy array and use the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.all.html"><code class="docutils literal notranslate"><span class="pre">.all()</span></code></a> method to compare <code class="docutils literal notranslate"><span class="pre">X_scaled</span></code> and <code class="docutils literal notranslate"><span class="pre">X_scaled_2</span></code>. They should match.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-4-2-points">
+<h3>Part 4 (2 points)<a class="headerlink" href="#part-4-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.corr.html"><code class="docutils literal notranslate"><span class="pre">dataframe.corr()</span></code></a> method to compute the correlation matrix of <code class="docutils literal notranslate"><span class="pre">X_scaled</span></code>.</p></li>
+<li><p>Plot it using <code class="docutils literal notranslate"><span class="pre">plt.imshow()</span></code>. Label each row and column with the appropriate name of each variable. The <code class="docutils literal notranslate"><span class="pre">.columns</span></code> attribute of our dataframe <code class="docutils literal notranslate"><span class="pre">X_scaled</span></code> will be helpful here.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-5-2-points">
+<h3>Part 5 (2 points)<a class="headerlink" href="#part-5-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>From our correlation matrix, it looks like <code class="docutils literal notranslate"><span class="pre">Discus</span></code> and <code class="docutils literal notranslate"><span class="pre">Shot</span> <span class="pre">put</span></code> are positively correlated. Plot a scatter plot of the scaled values of these two features for all the datapoints to see this visually.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-6-2-points">
+<h3>Part 6 (2 points)<a class="headerlink" href="#part-6-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The first step in performing PCA is to compute the covariance matrix of our data. If our data matrix is the scaled matrix <code class="docutils literal notranslate"><span class="pre">X_scale</span></code> which is dimensions of <span class="math notranslate nohighlight">\(N\)</span> datapoints by <span class="math notranslate nohighlight">\(P\)</span> features, our covariance matrix is <span class="math notranslate nohighlight">\(S = X^TX\)</span>.</p></li>
+<li><p>To make things easier, create a numpy array called <code class="docutils literal notranslate"><span class="pre">X_scaled_np</span></code> using <code class="docutils literal notranslate"><span class="pre">.to_numpy</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-7-2-points">
+<h3>Part 7 (2 points)<a class="headerlink" href="#part-7-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Next, we want to compute the eigenvectors and eigenvalues of our covariance matrix. Use the numpy method <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html"><code class="docutils literal notranslate"><span class="pre">np.linalg.eig</span></code></a> to do this.</p></li>
+<li><p>Once we have our eigenvectors, we can compute our principal components by multiplying our data matrix with the eigenvectors. Do this, and then plot a scatter plot of the first two principal components. Additionally, use the <code class="docutils literal notranslate"><span class="pre">Points</span></code> column from our original dataframe to color the points. With two components we can see separation between higher and lower performance. This is <strong>NOT</strong> necessarily the case, PCA is unsupervised so it is not finding axes that relate to any outcome measure by design, just ones that explain the most variance across the features. This case happens to work really nicely!</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> <code class="docutils literal notranslate"><span class="pre">np.linalg.eig</span></code> returns eigenvectors as the <em>columns</em> of the output matrix (not rows), and the eigenvalues are not guaranteed to be sorted. Taking <code class="docutils literal notranslate"><span class="pre">vecs[0]</span></code> or assuming the first column is the largest-variance direction runs fine but gives the wrong components.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-8-2-points">
+<h3>Part 8 (2 points)<a class="headerlink" href="#part-8-2-points" title="Link to this heading">#</a></h3>
+<p>For a given eigenvector, each element tells us how much each feature contributes to the associated principal component. We can examine these values to understand how PC1, etc. are being constructed.</p>
+<ul class="simple">
+<li><p>Plot the elements of the first eigenvector as points, setting the x axis to the feature names. (For getting the names of the features on the x-axis, <code class="docutils literal notranslate"><span class="pre">plt.xticks</span></code> and <code class="docutils literal notranslate"><span class="pre">.columns</span></code> will be helpful).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='red'><strong>SHORT ANSWER (4 points):</strong> In words, describe which features have large values and which features have small values. How are the features with small and large values respectively similar and different? If the combination of features produces the first principal component, how might we describe the ‘nature’ of the first component? (Think – if these features combine to produce it, what ‘name’ could we give this ‘new’ feature’?)</font></p>
+</section>
+<hr class="docutils" />
+<section id="part-9-2-points">
+<h3>Part 9 (2 points)<a class="headerlink" href="#part-9-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Now that we implemented PCA ourselves, its time to take advantage of sklearn.</p></li>
+<li><p>Import <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA.transform"><code class="docutils literal notranslate"><span class="pre">PCA</span></code></a> from <code class="docutils literal notranslate"><span class="pre">sklearn.decomposition</span></code>.</p></li>
+<li><p>Create an instance of <code class="docutils literal notranslate"><span class="pre">PCA()</span></code> called <code class="docutils literal notranslate"><span class="pre">pca</span></code>.</p></li>
+<li><p>Use <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA.fit_transform"><code class="docutils literal notranslate"><span class="pre">fit_transform</span></code></a> on the X_scaled data to perform PCA and project the data into the principal components. Woah!</p></li>
+<li><p>As above, plot a scatter plot of the first two principal components. It should look like our plot from above.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-10-2-points">
+<h3>Part 10 (2 points)<a class="headerlink" href="#part-10-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Our fit <code class="docutils literal notranslate"><span class="pre">pca</span></code> instance contains an attribute called <code class="docutils literal notranslate"><span class="pre">components_</span></code> which contains the ‘loadings’ of the data onto the principal components (i.e. the eigenvectors of the covariane matrix.) Plot a scatter plot of the entries of the first loading against the name of the feature, as we did above. It should look the same.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-11-2-points">
+<h3>Part 11 (2 points)<a class="headerlink" href="#part-11-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The eigenvalues tell us how variance from our original data is distributed across each principal component direction. Compute the sqrt of the eigenvalues from the eigenvalue decomposition we did by hand against the attribute of our <code class="docutils literal notranslate"><span class="pre">pca</span></code> instance called <code class="docutils literal notranslate"><span class="pre">singular_values_</span></code>, which is the singular values of our data matrix. Although we are not going to cover signular value decomposition, as a reminder from linear algebra, the eigenvalues are the singular values squared.</p></li>
+</ul>
+<p>Notice that the order is not quite the same. This isn’t important – the two methods simply order things differently.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-12-2-points">
+<h3>Part 12 (2 points)<a class="headerlink" href="#part-12-2-points" title="Link to this heading">#</a></h3>
+<p>The ratio of the cumulative sum of our eigenvalues to its total sum will tell us how much variance in our dataset our successive principal components represent. Plot this as a scatter plot two ways:</p>
+<ul class="simple">
+<li><p>Using our computed eigenvalues</p></li>
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">explained_variance_ratio_</span></code> attribute of our <code class="docutils literal notranslate"><span class="pre">pca</span></code> instance.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='red'><strong>SHORT ANSWER (4 points):</strong> Given the distribution of variance we are seeing here, what does that tell you about how one should train for a decathalon? Should I train for each event seperately? What if instead I trained in such a way to build up a specific set of skills? Does there seem to be much benefit, according to the picture from PCA, of building up the skill along the last PC?</font></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="homework-4-2-32-points">
+<h2>Homework 4.2 (32 points)<a class="headerlink" href="#homework-4-2-32-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will delve deeper into linear dimensionality reduction, exploring connections between dimensionality reduction and classification. We will explore:</p>
+<ul class="simple">
+<li><p>Dimensionality reduction using LDA, and its relationship to PCA</p></li>
+</ul>
+<hr class="docutils" />
+<p>Load our standard libraries:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> as (<code class="docutils literal notranslate"><span class="pre">pd</span></code>)</p></li>
+</ul>
+<p>Now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="id1">
+<h3>Part 1 (2 points)<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>For this assignment, we are going to analyze the somewhat famous <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html">‘wine analysis’ dataset</a>. These data are the result of a chemical analysis of wines grown in the same region in Italy but derived from three different cultivars. The analysis determined the quantities of 13 constituents (e.g. alcohol, malic acid, etc.) found in each of the three types of wines.</p>
+<p>Load the dataset: these data are stored in a .csv (comma separated values) file at the following URL:</p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework4/wine.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework4/wine.csv</a>’</p>
+<ul class="simple">
+<li><p>Use the pandas function <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> to create a a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> DataFrame, called <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">.head()</span></code> to take a look at the different features of the dataset.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id2">
+<h3>Part 2 (2 points)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Let’s get organized a bit. We are going to use LDA to do dimensionality reduction on our wine data. This dataset has 13 attributes, 178 samples, and 3 classes, so things can get confusing fast. Let’s create seperate arrays for each class to make our life easier.</p>
+<ul class="simple">
+<li><p>Create 3 numpy arrays, <code class="docutils literal notranslate"><span class="pre">X1</span></code>, <code class="docutils literal notranslate"><span class="pre">X2</span></code> and <code class="docutils literal notranslate"><span class="pre">X3</span></code>, one for each data of class.</p></li>
+<li><p>Create a numpy vector <code class="docutils literal notranslate"><span class="pre">y</span></code> with the class labels.</p></li>
+<li><p>Create a numpy matrix <code class="docutils literal notranslate"><span class="pre">X</span></code> of the data for ALL classes.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3>Part 3 (2 points)<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>With 13 dimensions in our dataset, we can’t even visualize how the different classes cluster! Are they super tangled up? All spread out?</p>
+<p>Let’s say we didn’t know anything about LDA yet, but we were super experts on PCA. Data got too many dimensions – do PCA! That will solve the problem! Let’s see…</p>
+<ul class="simple">
+<li><p>Compute the mean of the whole dataset (for all classes, i.e. <code class="docutils literal notranslate"><span class="pre">X</span></code>) and called it <code class="docutils literal notranslate"><span class="pre">m</span></code>.</p></li>
+<li><p>Compute the covariance matrix of <code class="docutils literal notranslate"><span class="pre">X</span></code> - <code class="docutils literal notranslate"><span class="pre">m</span></code> and call it <code class="docutils literal notranslate"><span class="pre">ST</span></code>.</p></li>
+</ul>
+<p><font color='red'><strong>NOTE: throughout this assignment, we will compute the covariance matrix of a data matrix <code class="docutils literal notranslate"><span class="pre">X</span></code> as C = <span class="math notranslate nohighlight">\(X^TX\)</span> (or <span class="math notranslate nohighlight">\(XX^T\)</span> when appropriate) without a normalization factor. This means that you need to compute it yourself using <code class="docutils literal notranslate"><span class="pre">np.dot</span></code> or <code class="docutils literal notranslate"><span class="pre">np.matmul</span></code>, without using <code class="docutils literal notranslate"><span class="pre">numpy.cov</span></code>. This isn’t to punish you, but just because if your normalize these covariance matrices, you need to do so consistently across ALL of the analyses we do, and its just a pain if they are normalized - it’s easier if they are not.</strong> </font></p>
+<ul class="simple">
+<li><p>Compute the eigenvectors of <code class="docutils literal notranslate"><span class="pre">ST</span></code>.</p></li>
+<li><p>Project <code class="docutils literal notranslate"><span class="pre">X</span></code> - <code class="docutils literal notranslate"><span class="pre">m</span></code> down onto the first 2 PCs.</p></li>
+<li><p>Plot the data (with the mean removed) colored by class (class_0: <code class="docutils literal notranslate"><span class="pre">blue</span></code>, class_1: <code class="docutils literal notranslate"><span class="pre">red</span></code>, class_2: <code class="docutils literal notranslate"><span class="pre">green</span></code>) projected down onto the first 2 PCs. Add a legend so its clear which class is which.</p></li>
+</ul>
+<p>Your plot should look like this. What a mess!</p>
+<p>🚩 <strong>Common mistake:</strong> calling <code class="docutils literal notranslate"><span class="pre">np.mean(X)</span></code> without <code class="docutils literal notranslate"><span class="pre">axis=0</span></code> returns a single number for the whole matrix instead of one mean per feature, so <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">-</span> <span class="pre">m</span></code> runs without error but does not actually center each feature.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/deffbaa4ed28690ba6abbcdc7a4bf1785cfce2547c37d69dcc719f9ada5efad9.png" src="../_images/deffbaa4ed28690ba6abbcdc7a4bf1785cfce2547c37d69dcc719f9ada5efad9.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>Part 4 (2 points)<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Maybe using some information about which class each datapoint is in will help us? Let’s try doing PCA on the <em>mean</em> value of each class. Maybe, if the mean values are super spread out, and each data point is not too far from its classes’ mean, maybe the eigenvalues of the class means will be a good set of axes to project the data on?</p>
+<ul class="simple">
+<li><p>Compute the mean of the data within each class.</p></li>
+<li><p>Compute the covariance matrix of the class means. In class, this was defined as $<span class="math notranslate nohighlight">\(S_B = \sum_k N_k (m_k - m)(m_k - m)^T\)</span>$</p></li>
+</ul>
+<p>where <span class="math notranslate nohighlight">\(N_k\)</span> is the number of data points in the <span class="math notranslate nohighlight">\(k^{th}\)</span> class and <span class="math notranslate nohighlight">\(m\)</span> is the mean over all datapoints.</p>
+<ul class="simple">
+<li><p>In class, I noted that because <span class="math notranslate nohighlight">\(S_B\)</span> is comprised of a sum of <span class="math notranslate nohighlight">\(K\)</span> matrices that are constructed as vector <a class="reference external" href="https://en.wikipedia.org/wiki/Outer_product">outer products</a> and because <span class="math notranslate nohighlight">\(\frac{1}{N}\sum_k N_k m_k = m\)</span>, the <a class="reference external" href="https://en.wikipedia.org/wiki/Rank_(linear_algebra)">rank</a> of <span class="math notranslate nohighlight">\(S_B\)</span> should be <span class="math notranslate nohighlight">\(K-1\)</span>, i.e. 2 in our case. Verify this.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3>Part 5 (2 points)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>Do PCA on the class mean covariance matrix.</p>
+<ul class="simple">
+<li><p>Compute the eigenvectors of <code class="docutils literal notranslate"><span class="pre">SB</span></code>.</p></li>
+<li><p>Project <code class="docutils literal notranslate"><span class="pre">X</span></code> - <code class="docutils literal notranslate"><span class="pre">m</span></code> down onto the first 2 PCs.</p></li>
+<li><p>Plot the data (with the mean removed) colored by class (class_0: <code class="docutils literal notranslate"><span class="pre">blue</span></code>, class_1: <code class="docutils literal notranslate"><span class="pre">red</span></code>, class_2: <code class="docutils literal notranslate"><span class="pre">green</span></code>) projected down onto the first 2 PCs. Add a legend so its clear which class is which.</p></li>
+</ul>
+<p>Your plot should look like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e41c5ee2d94c70e1019eed357e8f0fb0e6b86ebcd6e7c84f0428e33bd9fe3fb2.png" src="../_images/e41c5ee2d94c70e1019eed357e8f0fb0e6b86ebcd6e7c84f0428e33bd9fe3fb2.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h3>Part 6 (2 points)<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>OK, clearly using the covariance of all the data (without any class information) OR only using the mean information for each class isn’t going to cut it. In class, we learned how LDA projects the data down to a lower dimension such that 1. the distance between class means is large and 2. the within classes covariance is small.</p>
+<p>Recall from class that the projection <span class="math notranslate nohighlight">\(W\)</span> that does this can be computed by solving $<span class="math notranslate nohighlight">\(J(W) = Tr(\frac{W^TS_BW}{W^TS_WW}).\)</span>$</p>
+<p>The solution yeilds that <span class="math notranslate nohighlight">\(W\)</span> will be the eigenvectors of <span class="math notranslate nohighlight">\(S_W^{-1}S_B\)</span>.</p>
+<p>We already computed <code class="docutils literal notranslate"><span class="pre">SB</span></code>. Let’s compute <code class="docutils literal notranslate"><span class="pre">SW</span></code>, the within class covariance.</p>
+<ul class="simple">
+<li><p>Compute the within class covariance matrix by computing the covariance of the data in each class and summing each covariance matrix. Recall that the data for each class should have its class mean removed. I.e., compute $<span class="math notranslate nohighlight">\(\sum_k (X_k - m_k)(X_k - m_k)^T\)</span>$</p></li>
+<li><p>In class, we derived the expression for <span class="math notranslate nohighlight">\(S_B\)</span> by noting that it should be the remaining variance when the within class variance is subtracted from the total data variance. Validate this is true for the <code class="docutils literal notranslate"><span class="pre">SB</span></code> you calculated above.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> the formula <span class="math notranslate nohighlight">\((X_k - m_k)(X_k - m_k)^T\)</span> assumes each column is a sample. If your <code class="docutils literal notranslate"><span class="pre">X_k</span></code> has samples as rows, as it does here, that product is <span class="math notranslate nohighlight">\(N_k \times N_k\)</span> rather than <span class="math notranslate nohighlight">\(13 \times 13\)</span>, so check the shape of <code class="docutils literal notranslate"><span class="pre">SW</span></code> and transpose accordingly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3>Part 7 (2 points)<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>Let’s finally do LDA.</p>
+<ul class="simple">
+<li><p>Compute the eigenvectors of <span class="math notranslate nohighlight">\(S_W^{-1}S_B\)</span>.</p></li>
+<li><p>Project <code class="docutils literal notranslate"><span class="pre">X</span></code> - <code class="docutils literal notranslate"><span class="pre">m</span></code> down onto the first 2 PCs.</p></li>
+<li><p>Plot the data (with the mean removed) colored by class (class_0: <code class="docutils literal notranslate"><span class="pre">blue</span></code>, class_1: <code class="docutils literal notranslate"><span class="pre">red</span></code>, class_2: <code class="docutils literal notranslate"><span class="pre">green</span></code>) projected down onto the first 2 PCs. Add a legend so its clear which class is which.</p></li>
+</ul>
+<p>Your plot should look like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6bb27d8f14a244a7c2f065ec8b0b07a3a3a21aa73eeed4ab5d3b9e95b693fe78.png" src="../_images/6bb27d8f14a244a7c2f065ec8b0b07a3a3a21aa73eeed4ab5d3b9e95b693fe78.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3>Part 8 (2 points)<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>In class, I noted how the <span class="math notranslate nohighlight">\(S_W^{-1}\)</span> term in the expression <span class="math notranslate nohighlight">\(S_W^{-1}S_B\)</span> acts something like a ‘filter’: it ‘corrects’ the covariance of the data based on the class means alone by the covariance within classes. In HW 4.1 we z-scored our data, which can also be thought of as a filter on the data: each feature is demeaned and normalized (but no feature-feature covariance is considered). So perhaps we need a better straw man to compare LDA against, rather than simple PCA.</p>
+<ul class="simple">
+<li><p>Scale the data <code class="docutils literal notranslate"><span class="pre">X</span></code> using <code class="docutils literal notranslate"><span class="pre">sklearn.preprocessing</span></code> <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> then do PCA, as above. Plot your results.</p></li>
+</ul>
+<p>Your plot should look like this. Looks better than regular PCA, but LDA is still looking better!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b2fdb96f76273f9585bc9bcb2c3ecd13b36ebc57753aba06346c06ec309fd19f.png" src="../_images/b2fdb96f76273f9585bc9bcb2c3ecd13b36ebc57753aba06346c06ec309fd19f.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3>Part 9 (2 points)<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>In HW 4.1, we plotted the entries of the first few eigenvectors from PCA. The values of these entries told us which combinations of features gave rise to PC1, PC2, etc. We can do this again here!</p>
+<ul class="simple">
+<li><p>Plot the loadings of PC2 from PCA and for the class mean covariance matrix and for the covariance matrix of all the data. Use the feature labels for the x-axis labels so we can see the weigtht of each feature. What do you notice about these loadings?</p></li>
+<li><p>Do the same for the PC2 loadings for PCA on the scaled data and for the first eigenvector of LDA. What do you notice about these loadings that’s different?</p></li>
+</ul>
+<p>Your plots should look like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>Part 10 (2 points)<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>Now that we’ve used LDA and projected our data down to a 2D space where we can see what the class clusters look like, let’s do classification on our dataset and see how much better we are doing when compared to the best we could have done with PCA (scaled PCA).</p>
+<p>Although discriminant vectors for each class can be derived directly from <span class="math notranslate nohighlight">\(W\)</span> after LDA is performed to do dimensionality reduction (see <a class="reference external" href="https://scikit-learn.org/stable/modules/lda_qda.html#lda">here</a>) the linear algebra gets a bit hairy. Instead, we will perform ‘one against the others’ classification, where we compute three discriminant vectors: one for each class against all the data of any other class.</p>
+<p>In this way, ‘one against the others’ is much like a two-class classifcation problem, and because we’ve projected our data down to 2D, this is exactly the same situation we dealt with in HW3.1!</p>
+<p>However, in HW3.1, we derived the slope and midpoint of the discriminant line by hand, and this was somewhat tedious. <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>’s function <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> provides these values for free, so let’s use them.</p>
+<p><font color='red'><strong>NOTE: In order to get the values of the slope and midpoint, we will have to fit an LDA model again to our reduced dimensional data, but because the data has already been reduced to K-1 (i.e. 2) dimensions, no further reduction will be possible. This is just a bit of hack to exploit the functionality of <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.</strong> </font></p>
+<ul class="simple">
+<li><p>Project all the data <code class="docutils literal notranslate"><span class="pre">X</span></code> down using the first to eigenvectors from LDA. Call this new data matrix <code class="docutils literal notranslate"><span class="pre">LDs</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">LDs</span></code> as the data in <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>’s <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> which we used in HW3.1.</p></li>
+<li><p>For the class argument <code class="docutils literal notranslate"><span class="pre">y</span></code>, provide a boolean vector such that entries for <code class="docutils literal notranslate"><span class="pre">class_0</span></code> are <code class="docutils literal notranslate"><span class="pre">True</span></code> and all other entries are <code class="docutils literal notranslate"><span class="pre">False</span></code>. This is ‘class_0 vs all other classes’.</p></li>
+<li><p>Fit the LDA using the method <code class="docutils literal notranslate"><span class="pre">.fit()</span></code>. See note above about this fitting (no further dimensional reduction is done!)</p></li>
+<li><p>The attribute <code class="docutils literal notranslate"><span class="pre">.intercept_</span></code> and <code class="docutils literal notranslate"><span class="pre">coef_</span></code> provide the slope and offset of the discriminant line. Recall that the equation for a hyperplane is many dimensions is <span class="math notranslate nohighlight">\(\sum_k a_k x_k + a_0\)</span>. For example, the equation of a line in 3D space would be <span class="math notranslate nohighlight">\(z = a_1x + a_2y + a_0\)</span> much like the equation for a line in 2D is <span class="math notranslate nohighlight">\(y = a_1x + a_0%\)</span>. Our discrimnant in 2D occurs when <span class="math notranslate nohighlight">\(a_1x + a_2y + a_0 = 0\)</span>, which means that the equation of our line in 2D would be <span class="math notranslate nohighlight">\(y = -(a_0 + a_1x)/a_2\)</span>, where <span class="math notranslate nohighlight">\(a_1\)</span> and <span class="math notranslate nohighlight">\(a_2\)</span> are from <code class="docutils literal notranslate"><span class="pre">coef_</span></code> and <span class="math notranslate nohighlight">\(a_0\)</span> is from <code class="docutils literal notranslate"><span class="pre">intercept_</span></code>. To plot this line, select a set of <span class="math notranslate nohighlight">\(x\)</span>’s that span the range of the first dimension of <code class="docutils literal notranslate"><span class="pre">LDs</span></code> and compute the value of <span class="math notranslate nohighlight">\(y\)</span>.</p></li>
+<li><p>Do the above procedure for ‘one against the others’ classification for each class.</p></li>
+<li><p>Plot our data colored by class (as above) and each discriminant line provided by <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.</p></li>
+</ul>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1541d345dd4dc0d03d9b7357a8797413adf5b252c1e11cfb623675fec7b8e3b3.png" src="../_images/1541d345dd4dc0d03d9b7357a8797413adf5b252c1e11cfb623675fec7b8e3b3.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3>Part 11 (2 points)<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>As noted above, <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> provides discriminant vectors for ALL classes directly from <code class="docutils literal notranslate"><span class="pre">W</span></code> (i.e. the ‘one above each class’ procedure we just did is not actually necessary, but it is more intuitive). To illustrate this potential, we will fit our LDA model again, but doing a 3 class classification. As above <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> here will NOT do dimensionality reduction again (becuase we are already in the reduced space) but instead we will hack it to get the discriminant coefficients.</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">LDs</span></code> as the data in <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>’s <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> which we used in HW3.1.</p></li>
+<li><p>For the class argument <code class="docutils literal notranslate"><span class="pre">y</span></code>, use the class vector <code class="docutils literal notranslate"><span class="pre">y</span></code>. <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> can handle vectors of strings.</p></li>
+<li><p>Fit the LDA using the method <code class="docutils literal notranslate"><span class="pre">.fit()</span></code>. See note above about this fitting (no further dimensional reduction is done!)</p></li>
+<li><p>The attribute <code class="docutils literal notranslate"><span class="pre">.intercept_</span></code> and <code class="docutils literal notranslate"><span class="pre">coef_</span></code> provide the slope and offset of the discriminant lines. This time, they will contain THREE sets of slopes and offsets, one for each discriminant line. Follow the procedure above to plot each line.</p></li>
+<li><p>Plot our data colored by class (as above) and each discriminant line provided by <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.</p></li>
+</ul>
+<p>Your plot should look like this. NOTE that each line is doesn’t look quite the same as when we did ‘one vs. all other’ class classification, becuase these lines are dervied by a different procedure (see <a class="reference external" href="https://scikit-learn.org/stable/modules/lda_qda.html#lda">here</a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/88f2ef271c0606a36e1eec0bdef73482732911f949a2926b000ec91b4ae0bc83.png" src="../_images/88f2ef271c0606a36e1eec0bdef73482732911f949a2926b000ec91b4ae0bc83.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h3>Part 12 (2 points)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>As in HW3.1, we can project the data from each class along the discrinant vector using the method <code class="docutils literal notranslate"><span class="pre">decision_function</span></code>.</p>
+<ul class="simple">
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">decision_function</span></code> project the data using our fit LDA from our 3-way classification (the one we just did above). Project the data along each discriminant and plot a histogram for each class, colored appropriately.</p></li>
+</ul>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5104ef9b762d32126e57e1544201a20157c8f6d5a9f99df84019143bd9559237.png" src="../_images/5104ef9b762d32126e57e1544201a20157c8f6d5a9f99df84019143bd9559237.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-13-2-points">
+<h3>Part 13 (2 points)<a class="headerlink" href="#part-13-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis.predict"><code class="docutils literal notranslate"><span class="pre">predict()</span></code></a> method to compute the prediction accuracy of our 3-way classification.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-14-2-points">
+<h3>Part 14 (2 points)<a class="headerlink" href="#part-14-2-points" title="Link to this heading">#</a></h3>
+<p>Do a 3 class classification, as above, using <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> on the data projected down onto the first two <strong>scaled PCs!</strong></p>
+<p>** Define <code class="docutils literal notranslate"><span class="pre">PCs_scaled</span></code> as your scaled data projected onto the first two eigenvectors from PCA on the scaled data.</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">PCs_scaled</span></code> as the data in <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>’s <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> which we used in HW3.1.</p></li>
+<li><p>For the class argument <code class="docutils literal notranslate"><span class="pre">y</span></code>, use the class vector <code class="docutils literal notranslate"><span class="pre">y</span></code>. <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> can handle vectors of strings.</p></li>
+<li><p>Fit the LDA using the method <code class="docutils literal notranslate"><span class="pre">.fit()</span></code>. See note above about this fitting (no further dimensional reduction is done!)</p></li>
+<li><p>The attribute <code class="docutils literal notranslate"><span class="pre">.intercept_</span></code> and <code class="docutils literal notranslate"><span class="pre">coef_</span></code> provide the slope and offset of the discriminant lines. This time, they will contain THREE sets of slopes and offsets, one for each discriminant line. Follow the procedure above to plot each line.</p></li>
+<li><p>Plot our data colored by class (as above) and each discriminant line provided by <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.</p></li>
+</ul>
+<p>Your plot should look like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/9b72baf2024dfdb3dd447198c352d12fec3f7af7b404157111424fcb999ab0df.png" src="../_images/9b72baf2024dfdb3dd447198c352d12fec3f7af7b404157111424fcb999ab0df.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-15-2-points">
+<h3>Part 15 (2 points)<a class="headerlink" href="#part-15-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">decision_function</span></code> project the data using our fit LDA from our 3-way classification (the one we just did above). Project the data along each discriminant and plot a histogram for each class, colored appropriately.</p></li>
+</ul>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e007d49f7ac4bb83ae18f0587887485543bc5363ab503576aacdc3f5f053e77e.png" src="../_images/e007d49f7ac4bb83ae18f0587887485543bc5363ab503576aacdc3f5f053e77e.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-16-2-points">
+<h3>Part 16 (2 points)<a class="headerlink" href="#part-16-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis.predict"><code class="docutils literal notranslate"><span class="pre">predict()</span></code></a> method to compute the prediction accuracy of our 3-way classification.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="homework-4-3-46-points">
+<h2>Homework 4.3 (46 points)<a class="headerlink" href="#homework-4-3-46-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will continue to explore dimensionality reduction. We will:</p>
+<ul class="simple">
+<li><p>make connections between dimensionality reduction via principal components regression and other regression methods such as partial least squares and ridge regression.</p></li>
+<li><p>See how probabilistic approaches such as PPCA and factor analysis can be used for model selection.</p></li>
+</ul>
+<hr class="docutils" />
+<p>Load our standard libraries, and set our standard font size:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> as (<code class="docutils literal notranslate"><span class="pre">pd</span></code>)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="part-1-4-points">
+<h3>Part 1 (4 points)<a class="headerlink" href="#part-1-4-points" title="Link to this heading">#</a></h3>
+<p>We are going to work through a toy dataset to see how partial least squares can improve regression results when compared to principal components regression. This toy dataset was originally considered <a class="reference external" href="https://scikit-learn.org/stable/auto_examples/cross_decomposition/plot_pcr_vs_pls.html#sphx-glr-auto-examples-cross-decomposition-plot-pcr-vs-pls-py">here</a>. All code cells will be shown here, but pay attention to what’s going on, so you can perform a similar analysis below!</p>
+<p>First, let’s generate a synthetic 2 dimensional dataset. This will help us understand what principal components regression and partial least squares are doing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#set the random seed</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">500</span> <span class="c1">#how many samples of data to use</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span> <span class="c1">#construct the covariance matrix, which will determine how feature 1 and 2 covary</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="n">cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span> <span class="c1">#create the 2 dimensional data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Do PCA on this fake data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And then plot it. It should be clear that PC1 is larger then PC2.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">,</span> <span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">)):</span>
+    <span class="n">comp</span> <span class="o">=</span> <span class="n">comp</span> <span class="o">*</span> <span class="n">var</span>  <span class="c1"># scale component by its variance explanation power</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">comp</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">comp</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Component </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sa">f</span><span class="s2">"C</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">aspect</span><span class="o">=</span><span class="s2">"equal"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"2-dimensional dataset with principal components"</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">"first feature"</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">"second feature"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, let’s create a variable that we might want to predict, <code class="docutils literal notranslate"><span class="pre">y</span></code> as a function of <strong>PC2</strong>. This means that the smaller PC2 is the most predictive dimension of <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plotting a scatter plot of this should make it the most clear: PC1 is not very correlated with <code class="docutils literal notranslate"><span class="pre">y</span></code> and PC2 is very correlated with it!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"Projected data onto first PCA component"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"y"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"Projected data onto second PCA component"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"y"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s use <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> to fit a <a class="reference external" href="https://en.wikipedia.org/wiki/Principal_component_regression">principal components regression</a> (PCR) model and a <a class="reference external" href="https://en.wikipedia.org/wiki/Partial_least_squares_regression">partial least squares</a> (PLS) model to these data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.make_pipeline.html"><code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code></a> is a handy method for ‘stacking’ together multiple processing steps into a single function, as we will need to do for PCR. Recall that PCR is two steps:</p>
+<ul class="simple">
+<li><p>Do PCA</p></li>
+<li><p>Do regression using the PCs.</p></li>
+</ul>
+<p>First divide the data into a training and testing set using skelearn’s method <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html"><code class="docutils literal notranslate"><span class="pre">train_test_split</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s use <code class="docutils literal notranslate"><span class="pre">make_pipline</span></code> to construct our PCR model, and then fit it. Recall from lecture that PCA simply seeks to find directions within the covariance of our <code class="docutils literal notranslate"><span class="pre">X</span></code> data that lead to the maximum amount of variance. In other words it seeks to maximize an objection function of the form: $<span class="math notranslate nohighlight">\( J(w) = \textrm{Var}(Xw).\)</span>$ So it will find PC1!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pcr</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">LinearRegression</span><span class="p">())</span>
+<span class="n">pcr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because we used <code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code> to fit our PCR model, the PCA ‘part’ of it is ‘tucked within’ our <code class="docutils literal notranslate"><span class="pre">pcr</span></code> object. To ‘pull out’ the PCA only part, we can use the attribute <code class="docutils literal notranslate"><span class="pre">named_steps</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pca</span> <span class="o">=</span> <span class="n">pcr</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">"pca"</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, let’s fit the PLS model with 1 component. Recall from lecture that PLS is doing something different than PCA! It seeks to find large variance directions in <code class="docutils literal notranslate"><span class="pre">X</span></code> that ALSO correlate with <code class="docutils literal notranslate"><span class="pre">y</span></code>. In other words it seeks to maximize an objection function of the form: $<span class="math notranslate nohighlight">\( J(w) = \textrm{Corr}^2(y, Xw) \textrm{Var}(Xw).\)</span><span class="math notranslate nohighlight">\( It will balance the \)</span>w<span class="math notranslate nohighlight">\( that it finds to be sure that \)</span>Xw<span class="math notranslate nohighlight">\( is correlated with \)</span>y<span class="math notranslate nohighlight">\( (i.e. so it is predictive of \)</span>y<span class="math notranslate nohighlight">\(), but also that the variance of \)</span>Xw$ is large (much like a PC)!</p>
+<p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cross_decomposition.PLSRegression.html"><code class="docutils literal notranslate"><span class="pre">PLSRegression</span></code></a> is an easy to use sklearn method for fitting PLS models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cross_decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PLSRegression</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pls</span> <span class="o">=</span> <span class="n">PLSRegression</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pls</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Both <code class="docutils literal notranslate"><span class="pre">pca</span></code> (the part we pulled out of <code class="docutils literal notranslate"><span class="pre">pcr</span></code>) and <code class="docutils literal notranslate"><span class="pre">pls</span></code> have <code class="docutils literal notranslate"><span class="pre">transform()</span></code> methods associated with them, for projecting the original data into the lower-dimensional space. <code class="docutils literal notranslate"><span class="pre">pcr</span></code> (the object we created that does both PCA and linear regression) has a <code class="docutils literal notranslate"><span class="pre">predict</span></code> method associated with it (its just the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method from the <code class="docutils literal notranslate"><span class="pre">linearregression</span></code> part of our pipeline). <code class="docutils literal notranslate"><span class="pre">pls</span></code> also has a <code class="docutils literal notranslate"><span class="pre">predict</span></code> method associated with it. Both methods compute the approximation to <code class="docutils literal notranslate"><span class="pre">y</span></code> based on their respective projection of the data.</p>
+<ul class="simple">
+<li><p>Let’s plot a scatterplot for each method. First we will scatter the data projected down to the lower dimensional space against <code class="docutils literal notranslate"><span class="pre">y</span></code>. Second we will scatter the data projected down to the lower dimensional space against each model’s prediction of <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+</ul>
+<p>From the PCR/PCA plot, we can see that PCR finds PC1, which isn’t very correlated with <code class="docutils literal notranslate"><span class="pre">y</span></code>, which we already knew. And as a result, the <code class="docutils literal notranslate"><span class="pre">pcr</span></code> prediction of <code class="docutils literal notranslate"><span class="pre">y</span></code> is pretty much zero everywhere.</p>
+<p>From the PLS plot, we can see that PLS finds an axis that is correleated with <code class="docutils literal notranslate"><span class="pre">y</span></code>, and as a result, the <code class="docutils literal notranslate"><span class="pre">pls</span></code> prediction of <code class="docutils literal notranslate"><span class="pre">y</span></code> is pretty good!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">pcr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"predictions"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"Projected data onto first PCA component"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"PCR / PCA"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pls</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pls</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">pls</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"predictions"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"Projected data onto first PLS component"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"PLS"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, let’s use the <code class="docutils literal notranslate"><span class="pre">score</span></code> method (<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cross_decomposition.PLSRegression.html#sklearn.cross_decomposition.PLSRegression.score">PLS</a> and <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">linear regression</a>) to predict the model accuracy. Score is the coefficient of determination <span class="math notranslate nohighlight">\(R^2\)</span> (i.e. 1 - normalized error).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PCR r-squared </span><span class="si">{</span><span class="n">pcr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_test</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PLS r-squared </span><span class="si">{</span><span class="n">pls</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_test</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-2-4-points">
+<h3>Part 2 (4 points)<a class="headerlink" href="#part-2-4-points" title="Link to this heading">#</a></h3>
+<p>Now that we’ve seen PLS in action against PCR, let’s do the same analysis on our decathalon dataset.</p>
+<p>First, let’s more or less redo some steps from HW4.1.</p>
+<ul class="simple">
+<li><p>Load the Olympic Decathalon dataset at the following URL: <a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework4/decathalon.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework4/decathalon.csv</a>. To do this, use the pandas function <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> to create a a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> DataFrame, which we will call <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
+<li><p>Create a reduced dataframe, called <code class="docutils literal notranslate"><span class="pre">X</span></code> that removes some of the information from our dataset that we don’t need, such as the athletes name, their rank, points, and which sporting event the data corresponds to. These correspond to the first, and last three columns of out dataframe. A dataframe has some handy functionality that we will exploit. Each dataframe has an attribute <code class="docutils literal notranslate"><span class="pre">.columns</span></code> which lists the column names of the dataframe. This can be indexed into (i.e., [1:2], etc.) to pull out only the column names we are intersted in. THEN, this list of column names can be used to index into our dataframe itself, to only take the columns we are interested in. Use <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">df[df.columns[1:-3]]</span></code> to generate a reduced dataframe <code class="docutils literal notranslate"><span class="pre">X</span></code> of the data we want.</p></li>
+</ul>
+<p><strong>STEPS WITH CODE INCLUDED</strong></p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">df[df.columns[-2:-1]]</span></code> to create a reduced dataframe of the points each athlete was awarded. We want to see if we can make a good prediction of this based on a projection of the data in <code class="docutils literal notranslate"><span class="pre">X</span></code> onto a reduced space of features.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">features</span> <span class="pre">=</span> <span class="pre">X.columns</span></code> to make a list of the names of the features, for easy plotting.</p></li>
+<li><p>Scale the data in <code class="docutils literal notranslate"><span class="pre">X</span></code> using <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>’s <code class="docutils literal notranslate"><span class="pre">StandardScaler()</span></code>.</p></li>
+<li><p>Divide the data into train and test sets using <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code>. Set the optional arguments to <code class="docutils literal notranslate"><span class="pre">random_state=np.random.RandomState(2)</span></code> and <code class="docutils literal notranslate"><span class="pre">test_size=0.5</span></code>)</p></li>
+</ul>
+<p><strong>STEPS WITH NO CODE INCLUDED</strong></p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code> to create a pca analysis that includes a <code class="docutils literal notranslate"><span class="pre">standard_scaler()</span></code> step and a <code class="docutils literal notranslate"><span class="pre">pca</span></code> step.</p></li>
+<li><p>Fit your <code class="docutils literal notranslate"><span class="pre">pca</span></code> pipeline to your training data.</p></li>
+<li><p>Plot a scatter plot of the PC1 projection of your testing data against your <code class="docutils literal notranslate"><span class="pre">y</span></code> testing data. As we saw in HW4.1, PC1 is pretty correlated with <code class="docutils literal notranslate"><span class="pre">y</span></code>! But is it the <em>most</em> correlated linear projection of <code class="docutils literal notranslate"><span class="pre">X</span></code>?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-3-4-points">
+<h3>Part 3 (4 points)<a class="headerlink" href="#part-3-4-points" title="Link to this heading">#</a></h3>
+<p>Perform principal components regression and partial least squares on the decathalon dataset, much like we did above for the toy dataset.</p>
+<ul class="simple">
+<li><p>Perform both analysis to find a 1-dimensional projection of the data that best predicts <span class="math notranslate nohighlight">\(y\)</span>.</p></li>
+<li><p>To perform PCR, create a <code class="docutils literal notranslate"><span class="pre">pipeline</span></code> with the following components: a starndard scaler, PCA and linear regression. Fit the PCR model to the training data. Used <code class="docutils literal notranslate"><span class="pre">named_steps</span></code>, as we did above to pull out the components of the pipeline that we need to do plotting, etc.</p></li>
+<li><p>Plot a scatterplot for each method, as we did above. First we will scatter the data projected down to the lower dimensional space against <code class="docutils literal notranslate"><span class="pre">y</span></code>. Second we will scatter the data projected down to the lower dimensional space against each model’s prediction of <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p>Compute the <span class="math notranslate nohighlight">\(R^2\)</span> value for both models on test data, using the <code class="docutils literal notranslate"><span class="pre">score()</span></code> method, as we did above.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> fitting the scaler or PCA on all the data before splitting leaks information from the test set into training. Put the scaler inside the pipeline and fit the pipeline only on the training set, so the test set is only ever transformed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id13">
+<h3>Part 4 (2 points)<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>Both PCR and PLS have found a 1-dimensional projection of the features in our data. In HW 4.1 we examined the loadings of this projection to understand what ‘new feature’ PC1 was representing. Let’s do the same here for both methods.</p>
+<ul class="simple">
+<li><p>Plot the entries of PCR and PLS for the first dimension, setting the x axis to the feature names. (For getting the names of the features on the x-axis, <code class="docutils literal notranslate"><span class="pre">plt.xticks</span></code> and <code class="docutils literal notranslate"><span class="pre">.columns</span></code> will be helpful).</p></li>
+<li><p>For PLS, the attribute <code class="docutils literal notranslate"><span class="pre">.coef_</span></code> provides the projection vector.</p></li>
+<li><p>For PCR, our pipeline contains <strong>TWO</strong> components that collectively determine the projection vector: the <code class="docutils literal notranslate"><span class="pre">components_</span></code> attributue of the <code class="docutils literal notranslate"><span class="pre">pca</span></code> part determines the projection down to the lower dimension space and the <code class="docutils literal notranslate"><span class="pre">.coef_</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">linearregression</span></code> part determines how the data projected onto PC1 are scaled to predict <code class="docutils literal notranslate"><span class="pre">y</span></code>. In other words, the total projection vector of PCR is <code class="docutils literal notranslate"><span class="pre">linearregression.coef_</span></code> times <code class="docutils literal notranslate"><span class="pre">pca.components_</span></code>. Use <code class="docutils literal notranslate"><span class="pre">named_steps</span></code> to pull these out to plot the projection vector of PCR.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='red'><strong>SHORT ANSWER (4 points):</strong> Name 1 feature that is similar between PCR and PLS and 1 feature that is different. What does this mean about what PLS is doing above and beyond PCA?</font></p>
+</section>
+<section id="part-5-4-points">
+<h3>Part 5 (4 points)<a class="headerlink" href="#part-5-4-points" title="Link to this heading">#</a></h3>
+<p>So far, we have examined the connection between PLS and PCA. Ridge regression (from module 2!) can also be connected to PCA/PCR in a way that is illuminating. We will examine that connection here.</p>
+<p>PCR essentially ‘zeros out’ all discarded PCs and predicts <code class="docutils literal notranslate"><span class="pre">y</span></code> from the kept PCs. Ridge regression can be cast as a weighted sum of all the PCs to predict <code class="docutils literal notranslate"><span class="pre">y</span></code>, with smaller PCs being used less (but not discarded entirely). To see this we need to do some linear algebra, and recall the singular value decomposition of a matrix.</p>
+<p>First, let’s be careful with our dimensions. <span class="math notranslate nohighlight">\(X\)</span>, our data matrix, is a <span class="math notranslate nohighlight">\(N \times D\)</span> matrix, where <span class="math notranslate nohighlight">\(N\)</span> is the number of samples, and <span class="math notranslate nohighlight">\(D\)</span> is the number of features.</p>
+<p>Recall from the definition of the <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value decompostion</a> that any matrix can be written as</p>
+<div class="math notranslate nohighlight">
+\[ X = U S V^T\]</div>
+<p>where <span class="math notranslate nohighlight">\(U\)</span> is a <span class="math notranslate nohighlight">\(N \times N\)</span> <a class="reference external" href="https://en.wikipedia.org/wiki/Orthogonal_matrix">unitary, i.e. orthogonal in the case of a real values matrix</a> matrix, <span class="math notranslate nohighlight">\(S\)</span> is a <span class="math notranslate nohighlight">\(N \times D\)</span> matrix with the singular values along its diagonal, and <span class="math notranslate nohighlight">\(V^T\)</span> is a <span class="math notranslate nohighlight">\(D \times D\)</span> unitary matrix.</p>
+<p>If I compute the <span class="math notranslate nohighlight">\(D \times D\)</span> covariance matrix of our data, <span class="math notranslate nohighlight">\(X^TX\)</span>, and subsititue our defintion of <span class="math notranslate nohighlight">\(X\)</span> above, we can see that the singular value decomposition is related to the eigenvalue decomposition in the following way:</p>
+<div class="math notranslate nohighlight">
+\[ X^T X = V S U^TU S V^T = VS^2V^T.\]</div>
+<p>(Note that <span class="math notranslate nohighlight">\(U^TU = I\)</span>). Here we can see that <span class="math notranslate nohighlight">\(S^2\)</span> are the eigenvalues and <span class="math notranslate nohighlight">\(V\)</span> are the eigenvectors of the covariance matrix.</p>
+<p>To make this more explicit, if I start with the singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\( X = U S V^T\)</span>, and multiply it on the right by <span class="math notranslate nohighlight">\(V\)</span>, I get <span class="math notranslate nohighlight">\(XV = USV^TV = US\)</span>. Recall that <span class="math notranslate nohighlight">\(V\)</span> is <span class="math notranslate nohighlight">\(D \times D\)</span>, <span class="math notranslate nohighlight">\(X\)</span> is <span class="math notranslate nohighlight">\(N \times D\)</span>, <span class="math notranslate nohighlight">\(U\)</span> is <span class="math notranslate nohighlight">\(N \times N\)</span> and <span class="math notranslate nohighlight">\(S\)</span> is <span class="math notranslate nohighlight">\(N \times D\)</span> and diagonal. <span class="math notranslate nohighlight">\(XV = US\)</span> means that if I project my data onto the eigenvectors <span class="math notranslate nohighlight">\(V\)</span> (ie compute the principal components) this should be equal to the rows of <span class="math notranslate nohighlight">\(U\)</span> scaled by the corresponding singular value in <span class="math notranslate nohighlight">\(S\)</span>.</p>
+<p>We are going to confirm this.</p>
+<p><strong>STEPS WITH CODE INCLUDED</strong></p>
+<ul class="simple">
+<li><p>First, we need to remove the mean from our data. (This just makes subsequent analysis easier.)</p></li>
+</ul>
+<p><strong>STEPS WITH NO CODE INCLUDED</strong></p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.linalg.eig</span></code> to compute the eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(X^TX\)</span> (of your demeaned data).</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.linalg.svd</span></code> to compute the singular values and the left singular vectors (<span class="math notranslate nohighlight">\(U\)</span>) of <span class="math notranslate nohighlight">\(X\)</span> (demeaned).</p></li>
+<li><p>Project <span class="math notranslate nohighlight">\(X\)</span> onto the first eigenvector to compute PC1. Multiply the first column of <span class="math notranslate nohighlight">\(U\)</span> by the first singular value of <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
+<li><p>Plot both to show they are the same thing (one may be the negative of the other, but they should be identical otherwise).</p></li>
+</ul>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/237a48ad9cba26cf37dc9062443525816e9e582249d11c80a33fd26eee44ee45.png" src="../_images/237a48ad9cba26cf37dc9062443525816e9e582249d11c80a33fd26eee44ee45.png" />
+</div>
+</div>
+</section>
+<section id="part-5-6-points">
+<h3>Part 5 (6 points)<a class="headerlink" href="#part-5-6-points" title="Link to this heading">#</a></h3>
+<p>In class, I derived an expression for the ridge solution that ‘filters’ <span class="math notranslate nohighlight">\(y\)</span> based on the eigenvalues of the covariance matrix of <span class="math notranslate nohighlight">\(X\)</span>. I will illustrate that more fully here:</p>
+<p>Recall that the ridge regression objective is $<span class="math notranslate nohighlight">\(J(w) = 1/2 ||y - X \beta||^2 + \lambda/2 ||\beta||^2,\)</span>$ where the ridge regression solution is</p>
+<div class="math notranslate nohighlight">
+\[ \beta = (X^TX + \lambda I)^{-1}X^Ty\]</div>
+<p>where <span class="math notranslate nohighlight">\(\beta\)</span> is <span class="math notranslate nohighlight">\(D \times 1\)</span>. Recall that ridge regression is trying to find <span class="math notranslate nohighlight">\(y\)</span> as linear combinations of <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\( y \approx X \beta\)</span>. If we plug <span class="math notranslate nohighlight">\(\beta\)</span> in here, and plug in our singular value decompostion of <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\( X = U S V^T\)</span>, we get</p>
+<div class="math notranslate nohighlight">
+\[ y \approx X \beta = X(X^TX + \lambda I)^{-1}X^Ty\]</div>
+<div class="math notranslate nohighlight">
+\[ y \approx X \beta = U S V^T(VS^TU^TUSV^T + \lambda I)^{-1}V S^T U^Ty\]</div>
+<p>(Note that <span class="math notranslate nohighlight">\(X^T = VSU^T\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[ y \approx X \beta = U S V^T(VS^TSV^T + \lambda I)^{-1}V S^T U^Ty\]</div>
+<p>(Note that <span class="math notranslate nohighlight">\(U^TU = I\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[ y \approx X \beta = U S V^T(VS^TSV^T + \lambda VV^T)^{-1}V S^T U^TY\]</div>
+<p>(Note that <span class="math notranslate nohighlight">\(I = VV^T = I\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[ y \approx X \beta = U S V^T(V(S^TS + \lambda)V^T)^{-1}V S^T U^Ty\]</div>
+<p>(I pulled <span class="math notranslate nohighlight">\(V\)</span> out to the left and <span class="math notranslate nohighlight">\(V^T\)</span> out to the right).</p>
+<p>(Next, note that <span class="math notranslate nohighlight">\((ABC)^{-1} = C^{-1}B^{-1}A^{-1}\)</span></p>
+<div class="math notranslate nohighlight">
+\[ Y \approx X \beta = U S V^T((V^T)^{-1}(S^TS + \lambda)^{-1}V^{-1}V S^T U^Ty\]</div>
+<p>(Note that <span class="math notranslate nohighlight">\(V^T(V^T)^{-1} = I\)</span> and <span class="math notranslate nohighlight">\(V^{-1}V = I\)</span>)</p>
+<div class="math notranslate nohighlight">
+\[ y \approx X \beta = U S (S^TS + \lambda)^{-1} S^T U^Ty\]</div>
+<div class="math notranslate nohighlight">
+\[ y \approx X \beta = U S (S^TS + \lambda I)^{-1}S^T U^Ty\]</div>
+<p>That was a long calculation! There is one more important point to mention: because <span class="math notranslate nohighlight">\(S\)</span> is a <span class="math notranslate nohighlight">\(N \times D\)</span> diagonal matrix, and generally <span class="math notranslate nohighlight">\(N &gt; D\)</span>, all <span class="math notranslate nohighlight">\(D+1\)</span> rows of <span class="math notranslate nohighlight">\(S\)</span> will be all zeros! Which means that <span class="math notranslate nohighlight">\(U S\)</span> will scale the first <span class="math notranslate nohighlight">\(D\)</span> columns of <span class="math notranslate nohighlight">\(U\)</span> by the respective element of <span class="math notranslate nohighlight">\(S\)</span> and the <span class="math notranslate nohighlight">\(D+1\)</span> columns of <span class="math notranslate nohighlight">\(U\)</span> will essentially be zeroed out.</p>
+<p>Because of the special stucture of <span class="math notranslate nohighlight">\(S\)</span>, its actually easier to think of the above expression in two parts:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(U \frac{S^2}{S^2 + \lambda I}\)</span> which will be equal to the first <span class="math notranslate nohighlight">\(D\)</span> columns of <span class="math notranslate nohighlight">\(U\)</span> each scaled by <span class="math notranslate nohighlight">\(\frac{s_d^2}{s_d^2 + \lambda I}\)</span>. Recall that <span class="math notranslate nohighlight">\(S^2\)</span> will be the eigenvalues of <span class="math notranslate nohighlight">\(X^TX\)</span>, and so the scaling factor is the eigenvalues divided by the eigenvalues plus the regularization coefficient <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(U^Ty\)</span> which is the <span class="math notranslate nohighlight">\(N \times N\)</span> matrix <span class="math notranslate nohighlight">\(U^T\)</span> times the <span class="math notranslate nohighlight">\(N \times 1\)</span> vector <span class="math notranslate nohighlight">\(y\)</span>. Recall from above that if each column of <span class="math notranslate nohighlight">\(U\)</span> was proportional to an eigenvector of <span class="math notranslate nohighlight">\(X^TX\)</span>, then <span class="math notranslate nohighlight">\(U^T\)</span> dotted with <span class="math notranslate nohighlight">\(y\)</span> is the covariance of each of those columns with <span class="math notranslate nohighlight">\(y\)</span>, i.e. proportional to how much each eigenvector of the covariance of <span class="math notranslate nohighlight">\(X\)</span> aligns with <span class="math notranslate nohighlight">\(y\)</span>! But again, because of the special structure of <span class="math notranslate nohighlight">\(S\)</span>, only the first <span class="math notranslate nohighlight">\(D\)</span> columns (which correspond to the <span class="math notranslate nohighlight">\(D\)</span> eigenvectors of <span class="math notranslate nohighlight">\(X^TX\)</span> will be kept!)</p></li>
+</ul>
+<p>So, in total this means the ridge solution <span class="math notranslate nohighlight">\(X \beta\)</span> is a sum of <span class="math notranslate nohighlight">\(D\)</span> <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors, where each vector is the product of <span class="math notranslate nohighlight">\(U_d \frac{s_d^2}{s_d^2 + \lambda} * (U_d \cdot y)\)</span>. <span class="math notranslate nohighlight">\(\frac{s_d^2}{s_d^2 + \lambda}\)</span> and <span class="math notranslate nohighlight">\((U_d \cdot y)\)</span> are both scalars, and <span class="math notranslate nohighlight">\(U_d\)</span> is proportional to the d-th principal component of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>What do these two scalars do? Well if <span class="math notranslate nohighlight">\(U_d \cdot y\)</span> is large, i.e. the d-th principal component of <span class="math notranslate nohighlight">\(X\)</span> is correlated with <span class="math notranslate nohighlight">\(y\)</span>, that principal component will contribute strongly to the ridge solution (because this scalar will be big!). If <span class="math notranslate nohighlight">\(\frac{s_d^2}{s_d^2 + \lambda}\)</span> is large, i.e. <span class="math notranslate nohighlight">\(\lambda\)</span> is small (weak regularization) or a specific eigenvalue is very large, then again that principal component will contribute strongly to the ridge solution.</p>
+<p>For example, we can compute <span class="math notranslate nohighlight">\(\frac{s_d^2}{s_d^2 + \lambda}\)</span>, for <span class="math notranslate nohighlight">\(\lambda = 10^{1}\)</span> (i.e. a reasonably strong regularized ridge regression), using our singular values from above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">S</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">S</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">1e1</span><span class="p">),</span> <span class="s2">"x-"</span><span class="p">);</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">'$d_i$'</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This essentially determines how ‘much’ of each PC will be ‘available’ for predicting <span class="math notranslate nohighlight">\(y\)</span>. (In PCR, for this plot all values below our PCA cutoff will be zero, all values above will be 1), such as the plot below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">S</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">S</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">1e1</span><span class="p">),</span> <span class="s2">"x-"</span><span class="p">);</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="o">-</span><span class="mi">1</span><span class="p">)]),</span> <span class="s2">"x-"</span><span class="p">);</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">'$d_i$'</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">]);</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">'Ridge'</span><span class="p">,</span> <span class="s1">'PCR'</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>So, what this is all telling us is that PCR and ridge are actually quite similar, in that they scale different eigenvectors of the covariance of our <span class="math notranslate nohighlight">\(X\)</span> data to predict <span class="math notranslate nohighlight">\(y\)</span>, although they scale them in quite different ways.</p>
+<p>That was alot. Let’s do some analysis to make this more concrete.</p>
+<p><font color='red'><strong>(6 points):</strong> You get all 6 points if you type the following statement here: “I read the above derivation” :) </font></p>
+</section>
+<section id="id14">
+<h3>Part 6 (2 points)<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>The term from above <span class="math notranslate nohighlight">\(\sum_d^D \frac{s_d^2}{s_d^2 + \lambda}\)</span> is referred to as the number of “degrees of freedom” of the ridge solution. It is effectively a measure of how many “dimensions” you are using, in a weighted way. In order to accurately compare our ridge solution to PCR, in which we used 1 principal component to do regression, we need to set our ridge penalty <span class="math notranslate nohighlight">\(\lambda\)</span> appropriately so that our degress of freedom equals 1.</p>
+<ul class="simple">
+<li><p>Scan over values of lambda from <span class="math notranslate nohighlight">\(10^{-3}\)</span> to <span class="math notranslate nohighlight">\(10^{4}\)</span> using <code class="docutils literal notranslate"><span class="pre">10.**np.linspace(-3,4,num=20)</span></code> and compute the degrees of freedom of the ridge regression solution based on the covariance of our training data. (Note that we computed the singular values above!)</p></li>
+<li><p>Plot the degrees of freedom vs. <span class="math notranslate nohighlight">\(log_{10}(\lambda)\)</span>. Your plot should look like this:</p></li>
+<li><p>Not a suprise – the degrees of freedom should range from <span class="math notranslate nohighlight">\(D=10\)</span> to 0.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8aabf8be1de91770af935129b4d03f2aec354dba7ceb8b2d9b0ebd8da3df51fc.png" src="../_images/8aabf8be1de91770af935129b4d03f2aec354dba7ceb8b2d9b0ebd8da3df51fc.png" />
+</div>
+</div>
+</section>
+<section id="id15">
+<h3>Part 7 (2 points)<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>To find the value of <span class="math notranslate nohighlight">\(\lambda\)</span> such that the degrees of freedom is 1, we need to find when <span class="math notranslate nohighlight">\(df = 1\)</span>, or when <span class="math notranslate nohighlight">\(df - 1 = 0\)</span>, i.e the root of that function. We will use the <code class="docutils literal notranslate"><span class="pre">scipy.optimize</span></code> function <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.root.html"><code class="docutils literal notranslate"><span class="pre">root</span></code></a> to do this.</p>
+<ul class="simple">
+<li><p>Do <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">scipy.optimize</span> <span class="pre">import</span> <span class="pre">root</span></code></p></li>
+<li><p>Define a function <code class="docutils literal notranslate"><span class="pre">DF(lam,</span> <span class="pre">S,</span> <span class="pre">df)</span></code> that takes in a value of <span class="math notranslate nohighlight">\(\lambda\)</span> (<code class="docutils literal notranslate"><span class="pre">lam</span></code>), the singular values of <span class="math notranslate nohighlight">\(X\)</span> (<code class="docutils literal notranslate"><span class="pre">S</span></code>) and the target degrees of freeom (<code class="docutils literal notranslate"><span class="pre">df</span></code>) and computes <span class="math notranslate nohighlight">\(\sum_d^D \frac{s_d^2}{s_d^2 + lam} - df\)</span>.</p></li>
+<li><p>Do <code class="docutils literal notranslate"><span class="pre">res</span> <span class="pre">=</span> <span class="pre">root(DF,</span> <span class="pre">1e-1,</span> <span class="pre">args=(S,</span> <span class="pre">1.0))</span></code> to find the root of your function when <code class="docutils literal notranslate"><span class="pre">df=1.0</span></code>. <code class="docutils literal notranslate"><span class="pre">res.l</span></code> will be the value of <span class="math notranslate nohighlight">\(\lambda\)</span> at the root.</p></li>
+<li><p>Print the value of <span class="math notranslate nohighlight">\(\lambda\)</span>. It should match what is below.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id16">
+<h3>Part 8 (2 points)<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>We are ready to fit our ridge regression with one degree of freedom!</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> class <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html"><code class="docutils literal notranslate"><span class="pre">Ridge</span></code></a>. Remeber we used this in module 2! Do <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.linear_model</span> <span class="pre">import</span> <span class="pre">Ridge</span></code>.</p></li>
+<li><p>Demean your <code class="docutils literal notranslate"><span class="pre">y</span></code> training and testing data, like we did above for <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p></li>
+<li><p>Do <code class="docutils literal notranslate"><span class="pre">ridge</span> <span class="pre">=</span> <span class="pre">Ridge(alpha=lam)</span></code> to create a ridge object with a regularization term <code class="docutils literal notranslate"><span class="pre">lam</span></code>.</p></li>
+<li><p>Use the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge.fit"><code class="docutils literal notranslate"><span class="pre">fit</span></code></a> method of ridge to fit the model to your training data.</p></li>
+<li><p>Use the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge.score"><code class="docutils literal notranslate"><span class="pre">score</span></code></a> method to show the <span class="math notranslate nohighlight">\(R^2\)</span> on the testing data.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-9-4-points">
+<h3>Part 9 (4 points)<a class="headerlink" href="#part-9-4-points" title="Link to this heading">#</a></h3>
+<p>Recall from part 5 that we wanted to compare the weighted singular values of our <span class="math notranslate nohighlight">\(X\)</span> matrix to the ridge solution. But, we didn’t know how to weight them, because we didn’t know which <span class="math notranslate nohighlight">\(\lambda\)</span> we were going to use for regularization. Now we do!</p>
+<ul class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(U_d \frac{s_d^2}{s_d^2 + \lambda}\)</span> for the first <span class="math notranslate nohighlight">\(D=10\)</span> singular vectors of <span class="math notranslate nohighlight">\(X\)</span>, i.e. the first <span class="math notranslate nohighlight">\(D\)</span> columsn of <span class="math notranslate nohighlight">\(U\)</span>. Use the <span class="math notranslate nohighlight">\(\lambda\)</span> we computed above to get the degress of freedom of our ridge solution to equal 1. You should have <span class="math notranslate nohighlight">\(D=10\)</span> <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors.</p></li>
+<li><p>Compute the dot product between the demeaned values of your training data <span class="math notranslate nohighlight">\(y\)</span> and the first <span class="math notranslate nohighlight">\(D\)</span> singular vectors of <span class="math notranslate nohighlight">\(X\)</span>, i.e. the first <span class="math notranslate nohighlight">\(D\)</span> columns of <span class="math notranslate nohighlight">\(U\)</span>. You have have <span class="math notranslate nohighlight">\(D\)</span> scalar values.</p></li>
+<li><p>Plot the absolute value of <span class="math notranslate nohighlight">\(U_d \cdot y\)</span> (for demeaned y training data). It should look like the plot below. This tells you how much each PC of <span class="math notranslate nohighlight">\(X\)</span> covaries with <span class="math notranslate nohighlight">\(y\)</span> in the training data. It’s reasonable that there’s a large value of PC1 (we’d hope so!) but the fact that this DOES NOT drop off monotonically suggests that large PCs aren’t always the most predictive of <span class="math notranslate nohighlight">\(y\)</span>!</p></li>
+<li><p>Compute the product of <span class="math notranslate nohighlight">\(U_d \frac{s_d^2}{s_d^2 + \lambda} * U_d \cdot y\)</span> for all <span class="math notranslate nohighlight">\(D\)</span>. This should give you <span class="math notranslate nohighlight">\(D\)</span>, <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors.</p></li>
+<li><p>Sum these vectors across <span class="math notranslate nohighlight">\(D\)</span>. (You should now have one <span class="math notranslate nohighlight">\(N\)</span> dimensional vector.) Show this is equal to the prediction provided from the ridge solution of the training data, i.e. what your ridge solution returns when you use the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge.predict"><code class="docutils literal notranslate"><span class="pre">predict</span></code></a> method of your ridge solution on you demeaned X training data.</p></li>
+<li><p>Plot <span class="math notranslate nohighlight">\(U_d \frac{s_d^2}{s_d^2 + \lambda} * U_d \cdot y\)</span> for the first PC (i.e. the first column of <span class="math notranslate nohighlight">\(U\)</span>) and the last PC. You should plot 2, <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors.</p></li>
+<li><p>Plot the sum of <span class="math notranslate nohighlight">\(U_d \frac{s_d^2}{s_d^2 + \lambda} * U_d \cdot y\)</span> across all <span class="math notranslate nohighlight">\(D=10\)</span> PCs and the ridge solution. They should look the same. You should plot 2, <span class="math notranslate nohighlight">\(N\)</span>-dimensional vectors.</p></li>
+</ul>
+<p>Your plots should look like this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ea3b74493205b171504ae8ddedb9e0c31b62dbe22a1a09b41d105aee1ae9717d.png" src="../_images/ea3b74493205b171504ae8ddedb9e0c31b62dbe22a1a09b41d105aee1ae9717d.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0c8a3aa9d9d4493d572b7b5bb05ca9a5a54a1702d0ea785e00e92c25c299a35d.png" src="../_images/0c8a3aa9d9d4493d572b7b5bb05ca9a5a54a1702d0ea785e00e92c25c299a35d.png" />
+</div>
+</div>
+<p>Whew! That was intense! The punchline of that analysis was that we can think of ridge regression much like we think of PCR: taking a weighted combination of PCs to predict <span class="math notranslate nohighlight">\(y\)</span>, except that here we don’t just pick 1 or 2 PCs, but pick them all, and weight them depending on how we choose <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+</section>
+<section id="part-10-4-points">
+<h3>Part 10 (4 points)<a class="headerlink" href="#part-10-4-points" title="Link to this heading">#</a></h3>
+<p>Let’s bring this all together now. Write a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop, to loop over all dimensions (or degrees of freedom, in the case of ridge regression) from 1 to <span class="math notranslate nohighlight">\(D=10\)</span> and fit all three models (PCR, PLS, ridge) on our training data and then compute <span class="math notranslate nohighlight">\(R^2\)</span> on our testing data. (All of the components to do this you have already coded up, above, so just gather them and put them in a for loop).</p>
+<ul class="simple">
+<li><p>Plot the <span class="math notranslate nohighlight">\(R^2\)</span> as a function of <span class="math notranslate nohighlight">\(d\)</span> or degrees of freedom. Your plot should look like this:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1f5b4d4d1b7e74a78de716c72578da9ba201ceba1d30df53aede155fdef47ab2.png" src="../_images/1f5b4d4d1b7e74a78de716c72578da9ba201ceba1d30df53aede155fdef47ab2.png" />
+</div>
+</div>
+</section>
+<section id="part-11-4-points">
+<h3>Part 11 (4 points)<a class="headerlink" href="#part-11-4-points" title="Link to this heading">#</a></h3>
+<p>Shifting gears, let’s examine a dataset with PCA and factor analysis. Probabilistic PCA and FA are both great models because they are defined with an explicit log likelihood function which allows us to do model selection with cross-validation. (Standard PCA simply seeks projections that maximize variance – it’s not clear (although it is possible) how to formulate standard PCA for cross-validation). For this reason, and many others, moving into a probabilitic language is powerful!</p>
+<p>We will use sklearn’s implementation of <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA"><code class="docutils literal notranslate"><span class="pre">PCA</span></code></a> (which actually is PPCA!) to do model comparision. After showing you an example of how to do it with PCA, you will then use sklearn’s implementation of <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.FactorAnalysis.html"><code class="docutils literal notranslate"><span class="pre">FactorAnalysis</span></code></a> to do it again.</p>
+<ul class="simple">
+<li><p>Load a dataset using <code class="docutils literal notranslate"><span class="pre">np.genfromtxt</span></code>. The dataset is a 200 times 10 matrix, with 200 samples from a dataset with 10 features. We will do dimensionality reduction to determine how many important latent features are in the data.</p></li>
+<li><p>We need to divide the dataset into a train and test set for cross validation. Sklearn has a handy function <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html"><code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code></a> for doing this. You provide it a model (e.g. <code class="docutils literal notranslate"><span class="pre">pca</span></code>) and some data, and it automatically partitions the data, fits the model, and returns the score (i.e., <span class="math notranslate nohighlight">\(R^2\)</span>) on the test data.</p></li>
+<li><p>Do <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.model_selection</span> <span class="pre">import</span> <span class="pre">cross_val_score</span></code> and <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.decomposition</span> <span class="pre">import</span> <span class="pre">PCA</span></code> to import the necessary funtionality from sklearn.</p></li>
+<li><p>Then we will loop over the number of latent dimensions we will use to fit the model and perform cross-validation.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s1">'https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework4/10D.csv'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">pca_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
+  <span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">pca_scores</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">pca</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When we plot the cross-validated log likelihood we see a clear peak at <span class="math notranslate nohighlight">\(P=3\)</span>, meaning that these data are best described as having 3 latent dimensions! (Secret: they were generated that way!)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">pca_scores</span><span class="p">,</span> <span class="s2">"x-"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"PCA"</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'d'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'CV LL'</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Perform the exact same analysis on a different dataset (loaded below) that is also 10 dimensional. Do <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.decomposition</span> <span class="pre">import</span> <span class="pre">FactorAnalysis</span></code> to import the FactorAnalysis functionality from sklearn.</p>
+<p>Plot the cross-validated log likelihood, like we did above, for both models.</p>
+<p><font color='red'> What do you notice about how PCA performs on this dataset compared to factor analysis? </font></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s1">'https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework4/10D-2.csv'</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./homework"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../modules/module4.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Module 4: Dimensionality reduction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../modules/module5.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Module 5: Neural networks</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-4-1-32-points">Homework 4.1 (32 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-2-points">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-2-points">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-2-points">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-2-points">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-2-points">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-2-points">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-2-points">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-2-points">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-2-points">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-2-points">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-2-points">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-2-points">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-4-2-32-points">Homework 4.2 (32 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Part 12 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-13-2-points">Part 13 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-14-2-points">Part 14 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-15-2-points">Part 15 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-16-2-points">Part 16 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-4-3-46-points">Homework 4.3 (46 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-4-points">Part 1 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-4-points">Part 2 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-4-points">Part 3 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-4-points">Part 5 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-6-points">Part 5 (6 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-4-points">Part 9 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-4-points">Part 10 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-4-points">Part 11 (4 points)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

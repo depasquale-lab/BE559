@@ -1,0 +1,701 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures/Lecture1.3';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 1.4: T-tests" href="Lecture1.4.html" />
+    <link rel="prev" title="Lecture 1.2: Statistics" href="Lecture1.2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1-slides.html">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.4.html">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW1.html">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW2.html">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.1.html">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.2.html">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW3.html">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW4.html">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/lectures/Lecture1.3.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-statistics-and-z-scores">Review: statistics and z-scores</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-hypothesis-testing">Today: hypothesis testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p-value">P-value</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-from-last-time">Example from last time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-misconception">Common misconception</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-illustrative-example">An illustrative example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-inference">Bayesian inference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-it-to-the-drug-test">Applying it to the drug test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#terms-in-bayes-theorem">Terms in Bayes’ theorem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#your-bayesian-brain">Your Bayesian brain</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p-value-revisited">P-value revisited</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpha-significance-level"><span class="math notranslate nohighlight">\(\alpha\)</span>: significance level</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-power-1-beta">Statistical power (<span class="math notranslate nohighlight">\(1 - \beta\)</span>)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-1-3-hypothesis-testing-p-values-and-bayesian-inference">
+<h1>Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference<a class="headerlink" href="#lecture-1-3-hypothesis-testing-p-values-and-bayesian-inference" title="Link to this heading">#</a></h1>
+<section id="review-statistics-and-z-scores">
+<h2>Review: statistics and z-scores<a class="headerlink" href="#review-statistics-and-z-scores" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>What is a statistic?</strong></p>
+<ul>
+<li><p>A number computed from a sample that is itself a random variable (R.V.) with its own sampling distribution.</p></li>
+<li><p>Example: the sample mean.</p></li>
+</ul>
+</li>
+<li><p><strong>Z-scoring data</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[z = \frac{x - \mu}{\sigma}\]</div>
+<ul class="simple">
+<li><p>Normalizing data so that it is easily interpretable and comparable.</p></li>
+<li><p>Example: the temperature in Taipei</p>
+<ul>
+<li><p>High of 90°F on May 31st (<span class="math notranslate nohighlight">\(z = 1.2\)</span>)</p></li>
+<li><p>High of 70°F on Nov 31st (<span class="math notranslate nohighlight">\(z = -0.3\)</span>)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="today-hypothesis-testing">
+<h2>Today: hypothesis testing<a class="headerlink" href="#today-hypothesis-testing" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A statistical procedure in which a choice is made between <strong>null</strong> and <strong>alternative</strong> hypotheses based on information in a sample.</p></li>
+<li><p><strong>Null hypothesis (<span class="math notranslate nohighlight">\(H_0\)</span>):</strong> A statement about a population parameter that is assumed to be true unless there is convincing evidence to the contrary.</p></li>
+<li><p><strong>Alternative hypothesis (<span class="math notranslate nohighlight">\(H_1\)</span> or <span class="math notranslate nohighlight">\(H_a\)</span>):</strong> A statement about a population parameter that is contradictory to <span class="math notranslate nohighlight">\(H_0\)</span> and accepted if evidence suggests that <span class="math notranslate nohighlight">\(H_0\)</span> is unlikely.</p></li>
+</ul>
+</section>
+<section id="p-value">
+<h2>P-value<a class="headerlink" href="#p-value" title="Link to this heading">#</a></h2>
+<p><strong>P-value:</strong> the probability value. The probability of observing an outcome at least as different than expected under <span class="math notranslate nohighlight">\(H_0\)</span> as observed.</p>
+<section id="example-from-last-time">
+<h3>Example from last time<a class="headerlink" href="#example-from-last-time" title="Link to this heading">#</a></h3>
+<p>A heart rate of 102 bpm was observed.</p>
+<ul class="simple">
+<li><p>Null hypothesis: the individual is healthy.</p></li>
+<li><p>Alternative: the high heart rate is the result of illness or disease.</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Figure:</strong> A bell curve labeled “Heart rate distribution under <span class="math notranslate nohighlight">\(H_0\)</span>”. The right tail beyond the observed value is shaded red and labeled “Area = 0.0526”, with the label “P-value”.</p>
+</div></blockquote>
+<p>There is a 5.26% chance that a healthy individual has HR <span class="math notranslate nohighlight">\(\geq 102\)</span>.</p>
+</section>
+<section id="common-misconception">
+<h3>Common misconception<a class="headerlink" href="#common-misconception" title="Link to this heading">#</a></h3>
+<p>~~P-value: probability that <span class="math notranslate nohighlight">\(H_0\)</span> is true; <span class="math notranslate nohighlight">\(1 - P\)</span>: probability that <span class="math notranslate nohighlight">\(H_1\)</span> is true.~~ <strong>NO!</strong></p>
+<blockquote>
+<div><p><strong>Figure:</strong> The two misconception lines are crossed out with a large red X and “NO!” written beneath.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="an-illustrative-example">
+<h2>An illustrative example<a class="headerlink" href="#an-illustrative-example" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Suppose a particular test for whether someone has been using an illicit drug is 90% sensitive, meaning the true positive rate (TPR) = 0.90. Therefore, it leads to 90% true positive results (correct identification of drug use) for users.</p></li>
+<li><p>The test is 95% specific, meaning true negative rate (TNR) = 0.95. Therefore, the test correctly identifies 95% of non-use for non-users, but also generates 5% false positives, or false positive rate (FPR) = 0.05, for non-users.</p></li>
+<li><p>Assuming 0.005 prevalence, meaning 0.5% of people use the drug, what is the probability that a random person who tests positive is really a drug user?</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(H_0\)</span>: The person is not a drug user.</p>
+<p>Sample data: The person’s drug test is positive.</p>
+<p><strong>Wrong answer:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{P-value} = P(\text{data} \mid H_0) = P(\text{positive} \mid \text{non-user}) = 0.05\]</div>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> 95% probability the person is a user (this is wrong).</p>
+</section>
+<section id="bayesian-inference">
+<h2>Bayesian inference<a class="headerlink" href="#bayesian-inference" title="Link to this heading">#</a></h2>
+<p>Bayes’ theorem:</p>
+<div class="math notranslate nohighlight">
+\[P(H \mid E) = \frac{P(E \mid H)\, P(H)}{P(E)}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(H\)</span>: Hypothesis</p></li>
+<li><p><span class="math notranslate nohighlight">\(E\)</span>: Event</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(H \mid E)\)</span> = probability of <span class="math notranslate nohighlight">\(H\)</span> being true given an observation of event <span class="math notranslate nohighlight">\(E\)</span>.</p></li>
+</ul>
+<section id="applying-it-to-the-drug-test">
+<h3>Applying it to the drug test<a class="headerlink" href="#applying-it-to-the-drug-test" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(H\)</span>: the person is a user</p></li>
+<li><p><span class="math notranslate nohighlight">\(E\)</span>: the person’s test is positive</p></li>
+</ul>
+<p>From the problem statement:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(E \mid H) = 0.9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(E \mid \sim H) = 0.05\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(H) = 0.005\)</span></p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(P(H \mid E)\)</span> = probability that the person is a user given that their test is positive.</p>
+<div class="math notranslate nohighlight">
+\[P(E) = P(E \mid H)P(H) + P(E \mid \sim H)P(\sim H) = (0.9)(0.005) + (0.05)(0.995) = 0.054\]</div>
+<div class="math notranslate nohighlight">
+\[P(H \mid E) = \frac{P(E \mid H)P(H)}{P(E)} = \frac{(0.9)(0.005)}{0.054} = 0.083\]</div>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> Only an 8.3% chance the person is a user!</p>
+<ul class="simple">
+<li><p>Before test: 0.5% chance (prior probability)</p></li>
+<li><p>After test: 8.3% chance (posterior probability)</p></li>
+<li><p>Dramatically increased!</p></li>
+</ul>
+</section>
+<section id="terms-in-bayes-theorem">
+<h3>Terms in Bayes’ theorem<a class="headerlink" href="#terms-in-bayes-theorem" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[P(H \mid E) = \frac{P(E \mid H)\, P(H)}{P(E)}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(H \mid E)\)</span>: posterior probability</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(E \mid H)\)</span>: likelihood</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(H)\)</span>: prior probability</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(E)\)</span>: evidence</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Figure:</strong> Three bell curves along a common axis. A red curve on the left is labeled “Prior belief”, a blue curve overlapping it and shifted slightly right is labeled “Posterior belief”, and a black curve far to the right is labeled “Evidence”.</p>
+</div></blockquote>
+</section>
+<section id="your-bayesian-brain">
+<h3>Your Bayesian brain<a class="headerlink" href="#your-bayesian-brain" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>You are walking down Beacon Street.</p></li>
+<li><p>You see a shape out of the corner of your eye.</p></li>
+<li><p>It looked like a hippo! But it could also have been a shadow from a tree.</p></li>
+<li><p>What does your brain conclude?</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Figure:</strong> A horizontal axis labeled “P(seeing an exotic animal on Beacon St.)”, with arrows at both ends. A narrow red curve near the left is labeled “Prior belief”. A blue curve far to the right is labeled “Evidence (looked like a hippo)”. A green curve, only slightly shifted from the prior toward the evidence, is labeled “updated belief (posterior)”.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="p-value-revisited">
+<h2>P-value revisited<a class="headerlink" href="#p-value-revisited" title="Link to this heading">#</a></h2>
+<p>Misconception: probability that <span class="math notranslate nohighlight">\(H_0\)</span> is false.</p>
+<p>More accurately: the probability of a result as extreme or more extreme when <span class="math notranslate nohighlight">\(H_0\)</span> is true.</p>
+<div class="math notranslate nohighlight">
+\[P(\text{data} \mid H_0)\]</div>
+<p><strong>Not</strong> the probability that <span class="math notranslate nohighlight">\(H_0\)</span> is true.</p>
+<section id="alpha-significance-level">
+<h3><span class="math notranslate nohighlight">\(\alpha\)</span>: significance level<a class="headerlink" href="#alpha-significance-level" title="Link to this heading">#</a></h3>
+<p>How unlikely observations have to be under <span class="math notranslate nohighlight">\(H_0\)</span> for us to reject <span class="math notranslate nohighlight">\(H_0\)</span>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P &lt; 0.05\)</span> or <span class="math notranslate nohighlight">\(P &lt; 0.01\)</span> are common.</p></li>
+<li><p>For example: if there is a <span class="math notranslate nohighlight">\(\leq 5\%\)</span> chance of observing data (or more extreme data) under <span class="math notranslate nohighlight">\(H_0\)</span>, then we reject <span class="math notranslate nohighlight">\(H_0\)</span>.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> Do <strong>not</strong> confuse statistical significance with <strong>practical</strong> significance.</p>
+<p>A small effect can be highly significant statistically (very small p-value) if the sample size is large enough.</p>
+</section>
+</section>
+<section id="statistical-power-1-beta">
+<h2>Statistical power (<span class="math notranslate nohighlight">\(1 - \beta\)</span>)<a class="headerlink" href="#statistical-power-1-beta" title="Link to this heading">#</a></h2>
+<p><strong>Power:</strong> the probability of correctly rejecting a false null hypothesis.</p>
+<p><strong>Example</strong></p>
+<p><span class="math notranslate nohighlight">\(H_0\)</span>: Global warming is a hoax perpetuated by self-aggrandizing scientists and George Soros.</p>
+<p>Experiment: Measure the temperature outside right now! It’s cold!</p>
+<p>The statistical test results in <span class="math notranslate nohighlight">\(p = 0.95\)</span>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> The data are very likely under <span class="math notranslate nohighlight">\(H_0\)</span>!</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> We have failed to reject our null hypothesis.</p></li>
+</ul>
+<p>Is our null hypothesis correct? Probably not!</p>
+<p>Why? That was a very poorly designed experiment!</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Lecture1.2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 1.2: Statistics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Lecture1.4.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 1.4: T-tests</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-statistics-and-z-scores">Review: statistics and z-scores</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#today-hypothesis-testing">Today: hypothesis testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p-value">P-value</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-from-last-time">Example from last time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-misconception">Common misconception</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-illustrative-example">An illustrative example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-inference">Bayesian inference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-it-to-the-drug-test">Applying it to the drug test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#terms-in-bayes-theorem">Terms in Bayes’ theorem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#your-bayesian-brain">Your Bayesian brain</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p-value-revisited">P-value revisited</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpha-significance-level"><span class="math notranslate nohighlight">\(\alpha\)</span>: significance level</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-power-1-beta">Statistical power (<span class="math notranslate nohighlight">\(1 - \beta\)</span>)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,738 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lecture 3.1: Classification and Discriminant Functions &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures/Lecture3.1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes" href="Lecture3.2.html" />
+    <link rel="prev" title="Module 3: Classification and clustering" href="../modules/module3.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1-slides.html">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.3.html">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.4.html">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW1.html">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW2.html">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.2.html">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW3.html">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW4.html">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/lectures/Lecture3.1.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 3.1: Classification and Discriminant Functions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-3-classification-and-clustering">Module 3: Classification and clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discriminant-functions">Discriminant functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-classification">1-D classification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#threshold-agnostic-measures">Threshold agnostic measures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-curves-receiver-operating-characteristic">ROC curves (receiver operating characteristic)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discriminant-functions-and-higher-d-classification">Discriminant functions and higher-D classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-discriminant">Linear discriminant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-w-0-and-w">Choosing <span class="math notranslate nohighlight">\(w_0\)</span> and <span class="math notranslate nohighlight">\(W\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-if-data-look-like-this">What if data look like this?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fisher-s-linear-discriminant">Fisher’s linear discriminant</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-w">Finding <span class="math notranslate nohighlight">\(W\)</span></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-3-1-classification-and-discriminant-functions">
+<h1>Lecture 3.1: Classification and Discriminant Functions<a class="headerlink" href="#lecture-3-1-classification-and-discriminant-functions" title="Link to this heading">#</a></h1>
+<section id="module-3-classification-and-clustering">
+<h2>Module 3: Classification and clustering<a class="headerlink" href="#module-3-classification-and-clustering" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><strong>Figure:</strong> Two side-by-side scatter plots, both with axes gene 1 (x) and gene 2 (y). Left, “Classification”: a cluster of red points labeled “cancerous” (upper right) and a cluster of blue points labeled “normal” (lower left), separated by a diagonal line. Right, “Clustering”: two groups of unlabeled points (black), one circled in red (lower left) and one circled in blue (upper right).</p>
+</div></blockquote>
+<p><strong>Classification</strong> ⇒ “supervised learning”</p>
+<ul class="simple">
+<li><p>Determine a <em>rule</em> to assign labels to new data based on previous observations.</p></li>
+</ul>
+<p><strong>Clustering</strong> ⇒ “unsupervised learning”</p>
+<ul class="simple">
+<li><p>Groups points based on similarity.</p></li>
+<li><p>Discover structure in data.</p></li>
+</ul>
+<p><strong>First: classification.</strong> Three approaches:</p>
+<ol class="arabic simple">
+<li><p>Discriminant function: <span class="math notranslate nohighlight">\(\text{Class} = G(x)\)</span></p></li>
+<li><p>Conditional probability models: <span class="math notranslate nohighlight">\(P(\text{class} \mid x)\)</span></p></li>
+<li><p>Generative models: <span class="math notranslate nohighlight">\(P(x, \text{class}) \Rightarrow P(\text{class} \mid x)\)</span></p></li>
+</ol>
+</section>
+<section id="discriminant-functions">
+<h2>Discriminant functions<a class="headerlink" href="#discriminant-functions" title="Link to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[\text{Class} = G(x)\]</div>
+<p>How do we choose <span class="math notranslate nohighlight">\(G\)</span>? It depends on your goals.</p>
+<p>Common goals:</p>
+<ol class="arabic simple">
+<li><p>Minimize misclassification</p></li>
+<li><p>Minimize loss</p></li>
+</ol>
+<blockquote>
+<div><p><strong>Figure:</strong> Two overlapping bell curves along one axis, “normal” (red, left) and “cancer” (blue, right). Two candidate thresholds are drawn: a dotted/purple vertical line placed further left (marked with a purple arrow, associated with minimizing loss) and a solid purple/green vertical line at the curves’ crossing point (marked with a green arrow, associated with minimizing misclassification).</p>
+</div></blockquote>
+<section id="d-classification">
+<h3>1-D classification<a class="headerlink" href="#d-classification" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>Figure:</strong> Two overlapping bell curves on a horizontal axis: “Negative” (red, left) and “Positive” (blue, right). A dotted vertical line marks the “threshold”. Regions are shaded: green under the negative curve left of the threshold, blue under the positive curve right of the threshold, a red-shaded sliver of the negative curve’s tail to the right of the threshold, and a purple-shaded sliver of the positive curve’s tail to the left of the threshold.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>True positives (TP) (blue)</p></li>
+<li><p>False positives (FP) (purple)</p></li>
+<li><p>True negatives (TN) (green)</p></li>
+<li><p>False negatives (FN) (red)</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Figure:</strong> The same two curves with the threshold, now with the positive curve labeled “P” and the TP region marked. A purple arrow below the axis points to the left (low sensitivity-end region) and a green arrow points to the right of the positive peak.</p>
+</div></blockquote>
+<p><strong>Sensitivity</strong> (or true positive rate):</p>
+<div class="math notranslate nohighlight">
+\[\text{Sensitivity} = \frac{TP}{P}\]</div>
+<p><strong>Specificity</strong> (or true negative rate):</p>
+<div class="math notranslate nohighlight">
+\[\text{Specificity} = \frac{TN}{N}\]</div>
+<p><strong>Accuracy:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Accuracy} = \frac{TP + TN}{TP + FP + TN + FN}\]</div>
+<p><strong>High sensitivity</strong> ⇒ cancer screening</p>
+<p><strong>High specificity</strong> ⇒ nuclear retaliation</p>
+<p>⇒ All of this describes how two groups are classified based on a 1-D threshold.</p>
+</section>
+</section>
+<section id="threshold-agnostic-measures">
+<h2>Threshold agnostic measures<a class="headerlink" href="#threshold-agnostic-measures" title="Link to this heading">#</a></h2>
+<p><span class="math notranslate nohighlight">\(d'\)</span> = “d prime” = discriminability index (also: detectability, sensitivity)</p>
+<div class="math notranslate nohighlight">
+\[d' = \frac{|\mu_2 - \mu_1|}{\sigma}\]</div>
+<blockquote>
+<div><p><strong>Figure:</strong> Top: two overlapping bell curves, blue with mean <span class="math notranslate nohighlight">\(\mu_1\)</span> (left) and red with mean <span class="math notranslate nohighlight">\(\mu_2\)</span> (right), with a dotted vertical threshold between them; double-headed arrows beneath each curve are labeled <span class="math notranslate nohighlight">\(\sigma\)</span>. Bottom: two narrower, well-separated bell curves (blue left, red right) with a dotted threshold between them and almost no overlap.</p>
+</div></blockquote>
+<p>⇒ “Mahalanobis distance” in higher-D</p>
+</section>
+<section id="roc-curves-receiver-operating-characteristic">
+<h2>ROC curves (receiver operating characteristic)<a class="headerlink" href="#roc-curves-receiver-operating-characteristic" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>⇒ threshold agnostic</p></li>
+<li><p>⇒ 1-D data</p></li>
+<li><p>⇒ AUC: how separable are classes</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Figure:</strong> Left: the 1-D classification plot (negative red curve, positive blue curve, dotted threshold, shaded TP/FP/TN/FN regions) with a purple arrow below it. Right: an ROC plot with <span class="math notranslate nohighlight">\(\text{TPR} = TP/P\)</span> on the y-axis and <span class="math notranslate nohighlight">\(\text{FPR} = FP/N\)</span> on the x-axis, both running from 0 to 1. A diagonal line runs from (0,0) to (1,1); a concave curve bows above it through the upper left, with a few points marked along it. The area under the curve is shaded pink and labeled “AUROC”.</p>
+</div></blockquote>
+<p>AUROC: how separable.</p>
+<ul class="simple">
+<li><p>1: perfectly separable</p></li>
+<li><p>0.5: not distinguishable</p></li>
+</ul>
+</section>
+<section id="discriminant-functions-and-higher-d-classification">
+<h2>Discriminant functions and higher-D classification<a class="headerlink" href="#discriminant-functions-and-higher-d-classification" title="Link to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[\text{Class} = G(x)\]</div>
+<p>Simple case: linear discriminants.</p>
+<p>Let <span class="math notranslate nohighlight">\(x = [x_1, x_2, \ldots, x_D]\)</span> in <span class="math notranslate nohighlight">\(D\)</span>-dimensional space.</p>
+<blockquote>
+<div><p><strong>Figure:</strong> In 2-D (axes <span class="math notranslate nohighlight">\(x_1\)</span> horizontal, <span class="math notranslate nohighlight">\(x_2\)</span> vertical), a red cluster (lower left) and a blue cluster (upper right) separated by a diagonal line labeled “boundary”. An arrow perpendicular to the boundary is labeled “discriminant vector”. Marginal 1-D distributions (red and blue bell curves) are drawn along each axis, and blue/red arrows show points projected onto the discriminant vector.</p>
+</div></blockquote>
+<p><strong>Boundary:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Data</p></th>
+<th class="head"><p>Boundary</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1-D data</p></td>
+<td><p>point (0D)</p></td>
+</tr>
+<tr class="row-odd"><td><p>2-D data</p></td>
+<td><p>line (1D)</p></td>
+</tr>
+<tr class="row-even"><td><p>3-D data</p></td>
+<td><p>plane (2D)</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(n\)</span>-D data</p></td>
+<td><p><span class="math notranslate nohighlight">\(D-1\)</span> dimensional hyperplane</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Discriminant:</strong> vector orthogonal to boundary.</p>
+<section id="linear-discriminant">
+<h3>Linear discriminant<a class="headerlink" href="#linear-discriminant" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[y = G(x) = W x^T, \qquad x = [x_1, x_2], \quad W = [w_1, w_2]\]</div>
+<div class="math notranslate nohighlight">
+\[W x^T = x_1 w_1 + x_2 w_2\]</div>
+<p>= distance from origin to projection of <span class="math notranslate nohighlight">\(x\)</span> onto vector <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<blockquote>
+<div><p><strong>Figure:</strong> The 2-D plot again with classes 1 (red) and 2 (blue), the boundary, and the discriminant vector. Several parallel purple lines are drawn perpendicular to the discriminant vector, showing points projected onto it. A green segment labeled <span class="math notranslate nohighlight">\(w_0\)</span> runs from the origin along the discriminant vector to the boundary. Class 1 and class 2 marginal distributions are drawn along the projection direction.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>⇒ Right back to 1-D data.</p></li>
+<li><p>⇒ Just like before, now we need a threshold.</p></li>
+<li><p>⇒ How to choose <span class="math notranslate nohighlight">\(w_0\)</span>?</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(x) = \begin{cases} 1, &amp; W x^T &lt; w_0 \\ 2, &amp; W x^T \geq w_0 \end{cases}\end{split}\]</div>
+</section>
+<section id="choosing-w-0-and-w">
+<h3>Choosing <span class="math notranslate nohighlight">\(w_0\)</span> and <span class="math notranslate nohighlight">\(W\)</span><a class="headerlink" href="#choosing-w-0-and-w" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>Figure:</strong> A 2-D plot with a red cluster (mean <span class="math notranslate nohighlight">\(\mu_1\)</span>) and a blue cluster (mean <span class="math notranslate nohighlight">\(\mu_2\)</span>). The discriminant vector is parallel to the line joining the two means; the boundary passes through the midpoint between them, perpendicular to that line.</p>
+</div></blockquote>
+<p>Discriminant vector: parallel to <span class="math notranslate nohighlight">\(\mu_2 - \mu_1\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[W = (\mu_2 - \mu_1), \qquad w_0 = \frac{\mu_1 + \mu_2}{2}\ \text{(the threshold point, midway between the means)}\]</div>
+<div class="math notranslate nohighlight">
+\[y(x) = W x^T - w_0\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(x) = \begin{cases} 1, &amp; W x^T - w_0 &lt; 0 \\ 2, &amp; W x^T - w_0 \geq 0 \end{cases}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(y(x) = 0\)</span> when <span class="math notranslate nohighlight">\(W x^T = W\left(\frac{\mu_1 + \mu_2}{2}\right)^T = w_0\)</span></p>
+<div class="math notranslate nohighlight">
+\[w_0 = (\mu_2 - \mu_1)\left(\frac{\mu_1 + \mu_2}{2}\right)^T\]</div>
+</section>
+</section>
+<section id="what-if-data-look-like-this">
+<h2>What if data look like this?<a class="headerlink" href="#what-if-data-look-like-this" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><strong>Figure:</strong> A 2-D scatter of red and blue points forming elongated, tilted, overlapping clouds, with means <span class="math notranslate nohighlight">\(\mu_1\)</span> (red) and <span class="math notranslate nohighlight">\(\mu_2\)</span> (blue) marked. A vertical line through the midpoint, perpendicular to the line joining the means, is drawn as the boundary and clearly cuts through both clouds.</p>
+</div></blockquote>
+<p>Clearly not the best boundary. Why? <span class="math notranslate nohighlight">\(x_1\)</span> and <span class="math notranslate nohighlight">\(x_2\)</span> covary:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{Cov}(x_1, x_2) = \begin{bmatrix} \text{Var}(x_1) &amp; a \\ a &amp; \text{Var}(x_2) \end{bmatrix}, \qquad a \neq 0\end{split}\]</div>
+</section>
+<section id="fisher-s-linear-discriminant">
+<h2>Fisher’s linear discriminant<a class="headerlink" href="#fisher-s-linear-discriminant" title="Link to this heading">#</a></h2>
+<p>Linear discriminant analysis (LDA).</p>
+<p>Fisher’s criterion: maximize</p>
+<div class="math notranslate nohighlight">
+\[J(W) = \frac{(m_1 - m_2)^2}{s_1^2 + s_2^2}, \qquad m_i = W \mu_i^T\]</div>
+<ul class="simple">
+<li><p>Numerator: separation between class means along discriminant vector.</p></li>
+<li><p>Denominator: within-class variances along decision vector.</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Figure:</strong> Two small pairs of bell curves (red and blue): one pair overlapping heavily, one pair more separated, illustrating the criterion.</p>
+</div></blockquote>
+<p>⇒ Essentially the vector along which <span class="math notranslate nohighlight">\(d'\)</span> is maximized.</p>
+<section id="finding-w">
+<h3>Finding <span class="math notranslate nohighlight">\(W\)</span><a class="headerlink" href="#finding-w" title="Link to this heading">#</a></h3>
+<p>How to find <span class="math notranslate nohighlight">\(W\)</span> that maximizes <span class="math notranslate nohighlight">\(J(W)\)</span>?</p>
+<ul class="simple">
+<li><p>Take <span class="math notranslate nohighlight">\(\frac{dJ}{dW}\)</span>, use gradient descent…</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(J(W)\)</span> is maximized when</p>
+<div class="math notranslate nohighlight">
+\[W \propto \Sigma_w^{-1} (\mu_2 - \mu_1)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Sigma = \text{Cov}(x_1, x_2)\)</span> is the within-class covariance.</p>
+<blockquote>
+<div><p><strong>Figure:</strong> The 2-D plot with red and blue clusters, a tilted discriminant vector, and the boundary perpendicular to it. Points from each cluster are projected onto the discriminant vector, with the class means marked by black dots.</p>
+</div></blockquote>
+<p>For now:</p>
+<div class="math notranslate nohighlight">
+\[w_0 = W\left(\frac{\mu_2 + \mu_1}{2}\right)^T\]</div>
+<p>Remember: choice of threshold depends on goals.</p>
+<p>⇒ LDA assumes within-class covariance is the same for both classes.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../modules/module3.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Module 3: Classification and clustering</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Lecture3.2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-3-classification-and-clustering">Module 3: Classification and clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discriminant-functions">Discriminant functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-classification">1-D classification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#threshold-agnostic-measures">Threshold agnostic measures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-curves-receiver-operating-characteristic">ROC curves (receiver operating characteristic)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discriminant-functions-and-higher-d-classification">Discriminant functions and higher-D classification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-discriminant">Linear discriminant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-w-0-and-w">Choosing <span class="math notranslate nohighlight">\(w_0\)</span> and <span class="math notranslate nohighlight">\(W\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-if-data-look-like-this">What if data look like this?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fisher-s-linear-discriminant">Fisher’s linear discriminant</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-w">Finding <span class="math notranslate nohighlight">\(W\)</span></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

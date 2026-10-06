@@ -1,0 +1,692 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures/Lecture3.2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 3.4: Clustering" href="Lecture3.4.html" />
+    <link rel="prev" title="Lecture 3.1: Classification and Discriminant Functions" href="Lecture3.1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1-slides.html">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.3.html">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.4.html">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW1.html">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW2.html">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.1.html">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW3.html">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW4.html">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/lectures/Lecture3.2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-3-approaches">Review: 3 approaches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lda">LDA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probabilistic-discriminative-model">Probabilistic discriminative model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-p-c-1-mid-x-from-a-generative-model">Deriving <span class="math notranslate nohighlight">\(P(C_1\mid x)\)</span> from a generative model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-class-conditional-densities-with-shared-covariance">Gaussian class-conditional densities with shared covariance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-assumptions-have-we-made">What assumptions have we made?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-approach-naive-bayes-classifier">Another approach: Naive Bayes classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-bayes">Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation">Derivation</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-3-2-from-lda-to-probabilistic-classifiers-and-naive-bayes">
+<h1>Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes<a class="headerlink" href="#lecture-3-2-from-lda-to-probabilistic-classifiers-and-naive-bayes" title="Link to this heading">#</a></h1>
+<section id="review-3-approaches">
+<h2>Review: 3 approaches<a class="headerlink" href="#review-3-approaches" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Discriminant functions: <span class="math notranslate nohighlight">\(G(x) = \text{class}\)</span></p></li>
+<li><p>Probabilistic discriminative models: <span class="math notranslate nohighlight">\(P(\text{class}\mid x) \Rightarrow \text{class}\)</span></p></li>
+<li><p>Generative models: <span class="math notranslate nohighlight">\(P(x, \text{classes}) \Rightarrow P(\text{class}\mid x) \Rightarrow \text{class}\)</span></p></li>
+</ol>
+<section id="lda">
+<h3>LDA<a class="headerlink" href="#lda" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(x) = \begin{cases} 1, &amp; y(x) &lt; 0 \\ 2, &amp; y(x) &gt; 0 \end{cases}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[y(x) = W x^T - W_0\]</div>
+<p>Maximize <span class="math notranslate nohighlight">\(J(W) \Rightarrow\)</span> maximize <span class="math notranslate nohighlight">\(d'\)</span> along the discriminant vector <span class="math notranslate nohighlight">\(\Rightarrow\)</span> find the vector such that the projections of <span class="math notranslate nohighlight">\(x\)</span> onto the vector are most discriminable.</p>
+<div class="math notranslate nohighlight">
+\[W = \Sigma_W^{-1}(\mu_2 - \mu_1)^T \qquad (\Sigma_W:\ \text{within-class covariance})\]</div>
+<div class="math notranslate nohighlight">
+\[W_0 = W\left(\frac{\mu_2 + \mu_1}{2}\right)^T\]</div>
+<blockquote>
+<div><p><strong>Figure:</strong> Scatter plot with axes <span class="math notranslate nohighlight">\(x_1\)</span> (horizontal) and <span class="math notranslate nohighlight">\(x_2\)</span> (vertical). Class 1 (red dots) lies in the lower left and Class 2 (blue dots) in the upper right. A diagonal line labeled “boundary” separates them, and an arrow perpendicular to it is labeled “discrim. vector”. Along the discriminant vector, a red and a blue bell-shaped curve (the projected class distributions) are drawn overlapping.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="probabilistic-discriminative-model">
+<h2>Probabilistic discriminative model<a class="headerlink" href="#probabilistic-discriminative-model" title="Link to this heading">#</a></h2>
+<p><span class="math notranslate nohighlight">\(P(\text{class}\mid x) \Rightarrow\)</span> choose class.</p>
+<blockquote>
+<div><p><strong>Figure:</strong> The same two-class scatter plot as above (axes <span class="math notranslate nohighlight">\(x_1\)</span>, <span class="math notranslate nohighlight">\(x_2\)</span>; Class 1 red, Class 2 blue; boundary line; discrim. vector arrow with red and blue projected curves), with a green outline drawn around the points and curves.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Figure:</strong> Two overlapping bell curves, red (class 1) on the left and blue (class 2) on the right, drawn on an axis labeled “Proj onto discr. vector (<span class="math notranslate nohighlight">\(y(x)\)</span>)”.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Figure:</strong> Plot of class label (vertical axis, values 1 and 2) versus <span class="math notranslate nohighlight">\(y(x)\)</span> (horizontal axis). Red circles (class 1) lie along the bottom line at 1 and blue circles (class 2) along the top line at 2, with a few overlapping near the middle. An S-shaped curve rises from 1 to 2, labeled “looks like <span class="math notranslate nohighlight">\(P(\text{class } 2 \mid y(x))\)</span>”.</p>
+</div></blockquote>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> Reminiscent of logistic regression!</p>
+</section>
+<section id="deriving-p-c-1-mid-x-from-a-generative-model">
+<h2>Deriving <span class="math notranslate nohighlight">\(P(C_1\mid x)\)</span> from a generative model<a class="headerlink" href="#deriving-p-c-1-mid-x-from-a-generative-model" title="Link to this heading">#</a></h2>
+<p>Want</p>
+<div class="math notranslate nohighlight">
+\[P(C_1\mid x) = \frac{P(x\mid C_1)P(C_1)}{P(x)} = \frac{P(x\mid C_1)P(C_1)}{P(x\mid C_1)P(C_1) + P(x\mid C_2)P(C_2)}\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{1}{1 + \dfrac{P(x\mid C_2)P(C_2)}{P(x\mid C_1)P(C_1)}}\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{1}{1 + \exp\left(\ln\left(\dfrac{P(x\mid C_2)P(C_2)}{P(x\mid C_1)P(C_1)}\right)\right)}\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{1}{1 + \exp\left(-\ln\left(\dfrac{P(x\mid C_1)P(C_1)}{P(x\mid C_2)P(C_2)}\right)\right)}\]</div>
+<div class="math notranslate nohighlight">
+\[P(C_1\mid x) = \frac{1}{1 + \exp(-a)} \qquad \text{where } a = \ln\left(\frac{P(x\mid C_1)P(C_1)}{P(x\mid C_2)P(C_2)}\right)\]</div>
+<p>This is the <strong>logistic function</strong>.</p>
+<section id="gaussian-class-conditional-densities-with-shared-covariance">
+<h3>Gaussian class-conditional densities with shared covariance<a class="headerlink" href="#gaussian-class-conditional-densities-with-shared-covariance" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[a = \ln\left(\frac{P(x\mid C_1)P(C_1)}{P(x\mid C_2)P(C_2)}\right)\]</div>
+<div class="math notranslate nohighlight">
+\[P(x\mid C_k) = \frac{1}{(2\pi)^{D/2}|\Sigma|^{1/2}}\exp\left(-\frac{1}{2}(x-\mu_k)^T\Sigma^{-1}(x-\mu_k)\right)\]</div>
+<div class="math notranslate nohighlight">
+\[a = \ln\left(\frac{P(C_1)}{P(C_2)}\right) + \ln\left(\frac{\frac{1}{(2\pi)^{D/2}|\Sigma|^{1/2}}\exp\left(-\frac{1}{2}(x-\mu_1)^T\Sigma^{-1}(x-\mu_1)\right)}{\frac{1}{(2\pi)^{D/2}|\Sigma|^{1/2}}\exp\left(-\frac{1}{2}(x-\mu_2)^T\Sigma^{-1}(x-\mu_2)\right)}\right)\]</div>
+<p>The normalization constants cancel, and the <span class="math notranslate nohighlight">\(\ln\)</span> and <span class="math notranslate nohighlight">\(\exp\)</span> cancel:</p>
+<div class="math notranslate nohighlight">
+\[= \ln\left(\frac{P(C_1)}{P(C_2)}\right) + \left[-\frac{1}{2}(x-\mu_1)^T\Sigma^{-1}(x-\mu_1) + \frac{1}{2}(x-\mu_2)^T\Sigma^{-1}(x-\mu_2)\right]\]</div>
+<div class="math notranslate nohighlight">
+\[= \ln\left(\frac{P(C_1)}{P(C_2)}\right) - \frac{1}{2}\left(x^T\Sigma^{-1}x - \mu_1^T\Sigma^{-1}x - x^T\Sigma^{-1}\mu_1 + \mu_1^T\Sigma^{-1}\mu_1\right) + \frac{1}{2}\left(x^T\Sigma^{-1}x - \mu_2^T\Sigma^{-1}x - x^T\Sigma^{-1}\mu_2 + \mu_2^T\Sigma^{-1}\mu_2\right)\]</div>
+<p>The <span class="math notranslate nohighlight">\(x^T\Sigma^{-1}x\)</span> terms cancel. Collecting the remaining terms:</p>
+<div class="math notranslate nohighlight">
+\[= \underbrace{\ln\left(\frac{P(C_1)}{P(C_2)}\right) - \frac{1}{2}\mu_1^T\Sigma^{-1}\mu_1 + \frac{1}{2}\mu_2^T\Sigma^{-1}\mu_2}_{\text{independent of } x\ (\text{constant})} + \mu_1^T\Sigma^{-1}x - \mu_2^T\Sigma^{-1}x\]</div>
+<div class="math notranslate nohighlight">
+\[\Rightarrow (\mu_1^T - \mu_2^T)\Sigma^{-1}x\]</div>
+<p>The vector <span class="math notranslate nohighlight">\((\mu_1 - \mu_2)^T\Sigma^{-1}\)</span> is <span class="math notranslate nohighlight">\(W\)</span> in LDA.</p>
+<div class="math notranslate nohighlight">
+\[P(C_1\mid x) = \sigma(-a)\]</div>
+<div class="math notranslate nohighlight">
+\[a = \underbrace{\ln\left(\frac{P(C_1)}{P(C_2)}\right) - \frac{1}{2}\mu_1^T\Sigma^{-1}\mu_1 + \frac{1}{2}\mu_2^T\Sigma^{-1}\mu_2}_{W_0} + \underbrace{(\mu_1 - \mu_2)^T\Sigma^{-1}x}_{W^Tx}\]</div>
+<p>So</p>
+<div class="math notranslate nohighlight">
+\[a = y(x) = W^Tx + W_0\]</div>
+<div class="math notranslate nohighlight">
+\[P(C_1\mid x) = \sigma(-y(x))\]</div>
+<p>This is Fisher’s linear discriminant with a particular choice of threshold.</p>
+<ul class="simple">
+<li><p>This insight takes us from a discriminant function to a probabilistic classifier.</p></li>
+<li><p>Prior probabilities (<span class="math notranslate nohighlight">\(P(C_1)\)</span>, <span class="math notranslate nohighlight">\(P(C_2)\)</span>) only affect <span class="math notranslate nohighlight">\(W_0\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="what-assumptions-have-we-made">
+<h2>What assumptions have we made?<a class="headerlink" href="#what-assumptions-have-we-made" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Within-class covariances are identical.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(x\mid C_k)\)</span> are normally distributed.</p></li>
+</ol>
+<p>Also, one limitation:</p>
+<ol class="arabic simple" start="3">
+<li><p>Not clear how to scale this to multi-class problems.</p></li>
+</ol>
+</section>
+<section id="another-approach-naive-bayes-classifier">
+<h2>Another approach: Naive Bayes classifier<a class="headerlink" href="#another-approach-naive-bayes-classifier" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Central assumption: no covariance between features.</p></li>
+</ul>
+<p>In 2-D:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Sigma = \begin{bmatrix} \mathrm{Var}(x_1) &amp; 0 \\ 0 &amp; \mathrm{Var}(x_2)\end{bmatrix}\end{split}\]</div>
+<blockquote>
+<div><p><strong>Figure:</strong> Two-dimensional plot with concentric red circular contours around a cluster of red points near the origin, plus a small cluster of blue points up and to the right, outside the contours. Small tick marks along the horizontal axis mark positions at increasing distance from the red cluster. This illustrates uncorrelated (circular) feature distributions.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Figure:</strong> Labeled “Not This”. A scatter plot of red and blue points where the features are correlated, so each cloud is a diagonal, downward-sloping elongated shape.</p>
+</div></blockquote>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> But it often doesn’t matter too much if they are weakly correlated.</p>
+</section>
+<section id="naive-bayes">
+<h2>Naive Bayes<a class="headerlink" href="#naive-bayes" title="Link to this heading">#</a></h2>
+<p>Still want <span class="math notranslate nohighlight">\(P(C_k\mid x)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(x) = \begin{cases} 1, &amp; P(C_1\mid x) &gt; P(C_2\mid x) \\ 2, &amp; P(C_1\mid x) &lt; P(C_2\mid x)\end{cases}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[P(C_k\mid x) = \frac{P(C_k)P(x\mid C_k)}{P(x)} \qquad \text{(Bayes' rule)}\]</div>
+<p><span class="math notranslate nohighlight">\(P(x)\)</span> is the same for all classes (i.e. a constant), so</p>
+<div class="math notranslate nohighlight">
+\[P(C_k\mid x) \sim P(C_k)P(x\mid C_k)\]</div>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> easily extends to multi-class problems.</p>
+<p><strong>Chain rule / conditional probability</strong></p>
+<div class="math notranslate nohighlight">
+\[P(A,B) = P(A)P(B\mid A)\]</div>
+<div class="math notranslate nohighlight">
+\[P(A,B,C) = P(A)P(B\mid A)P(C\mid B,A)\]</div>
+<p><strong>Independence of random variables</strong></p>
+<div class="math notranslate nohighlight">
+\[P(A,B) = P(A)P(B)\]</div>
+<section id="derivation">
+<h3>Derivation<a class="headerlink" href="#derivation" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[P(C_k\mid x) \sim P(C_k)P(x\mid C_k)\]</div>
+<div class="math notranslate nohighlight">
+\[P(C_k)P(x\mid C_k) = P(x, C_k) = P(x_1, x_2, \ldots, x_n, C_k)\]</div>
+<div class="math notranslate nohighlight">
+\[= P(x_1\mid x_2, x_3, \ldots, x_n, C_k)\,P(x_2, x_3, \ldots, x_n, C_k)\]</div>
+<div class="math notranslate nohighlight">
+\[= P(x_1\mid x_2, x_3, \ldots, x_n, C_k)\,P(x_2\mid x_3, \ldots, x_n, C_k)\,P(x_3, \ldots, x_n, C_k)\]</div>
+<div class="math notranslate nohighlight">
+\[= P(x_1\mid x_2, x_3, \ldots, x_n, C_k)\cdot P(x_2\mid x_3, \ldots, x_n, C_k)\cdots P(x_n\mid C_k)P(C_k)\]</div>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> Now our assumption: <span class="math notranslate nohighlight">\(x_1, x_2, x_3, \ldots, x_n\)</span> are independent (given the class).</p>
+<div class="math notranslate nohighlight">
+\[= P(x_1\mid C_k)P(x_2\mid C_k)\cdots P(x_n\mid C_k)\cdot P(C_k)\]</div>
+<div class="math notranslate nohighlight">
+\[= P(C_k)\prod_{i=1}^{n}P(x_i\mid C_k)\]</div>
+<div class="math notranslate nohighlight">
+\[P(C_k\mid x) \propto P(C_k)\prod_{i=1}^{n}P(x_i\mid C_k)\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(C_k)\)</span>: relative frequency of each class.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(x_i\mid C_k)\)</span>: estimate a parametric model, e.g. <span class="math notranslate nohighlight">\(\mu_k\)</span>, <span class="math notranslate nohighlight">\(\sigma_k\)</span> of a normal distribution, OR estimate the probability density using a nonparametric method, e.g. histogram <span class="math notranslate nohighlight">\(\Rightarrow\)</span> “kernel density estimation”.</p></li>
+</ul>
+<p>For a normal distribution:</p>
+<div class="math notranslate nohighlight">
+\[P(x_i = a\mid C_k) = \frac{1}{\sqrt{2\pi\sigma_k^2}}\exp\left(-\frac{(a-\mu_k)^2}{2\sigma_k^2}\right)\]</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Lecture3.1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 3.1: Classification and Discriminant Functions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Lecture3.4.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 3.4: Clustering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-3-approaches">Review: 3 approaches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lda">LDA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probabilistic-discriminative-model">Probabilistic discriminative model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-p-c-1-mid-x-from-a-generative-model">Deriving <span class="math notranslate nohighlight">\(P(C_1\mid x)\)</span> from a generative model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-class-conditional-densities-with-shared-covariance">Gaussian class-conditional densities with shared covariance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-assumptions-have-we-made">What assumptions have we made?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-approach-naive-bayes-classifier">Another approach: Naive Bayes classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-bayes">Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation">Derivation</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1426 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Homework 3: Classification and clustering &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'homework/HW3';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module 4: Dimensionality reduction" href="../modules/module4.html" />
+    <link rel="prev" title="Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization" href="../lectures/Lecture3.5.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.1-slides.html">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.3.html">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.4.html">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="HW1.html">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW2.html">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.1.html">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.2.html">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW4.html">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/depasquale-lab/BE559/blob/main/homework/HW3.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/homework/HW3.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Homework 3: Classification and clustering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-3-1-32-points">Homework 3.1 (32 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-0">Part 0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-2-points">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-2-points">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-2-points">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-2-points">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-2-points">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-2-points">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-2-points">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-4-points">Part 8 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-4-points">Part 9 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-2-points">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-2-points">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-2-points">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-3-2-36-points">Homework 3.2 (36 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1">Part 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-4-points">Part 3 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-4-points">Part 4 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-4-points">Part 6 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-2-points">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part 9 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-3-3-28-points">Homework 3.3 (28 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Part 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Part 4 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-4-points">Part 5 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-4-points">Part 7 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Part 8 (2 points)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="homework-3-classification-and-clustering">
+<h1>Homework 3: Classification and clustering<a class="headerlink" href="#homework-3-classification-and-clustering" title="Link to this heading">#</a></h1>
+<p>This assignment has 3 parts. Each part is graded as listed in its heading.</p>
+<section id="homework-3-1-32-points">
+<h2>Homework 3.1 (32 points)<a class="headerlink" href="#homework-3-1-32-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will delve into methods for classification.  We will explore:</p>
+<ul class="simple">
+<li><p>ROC curves</p></li>
+<li><p>Linear discriminant analysis</p></li>
+</ul>
+<hr class="docutils" />
+<section id="part-0">
+<h3>Part 0<a class="headerlink" href="#part-0" title="Link to this heading">#</a></h3>
+<p>Load the same libraries that we used in previous homeworks.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+</ul>
+<p>We’ll also briefly introduce the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> package here.  <code class="docutils literal notranslate"><span class="pre">pandas</span></code> includes powerful functionality for more complex data structures that is used widely for data science applications</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">pandas</span> <span class="pre">as</span> <span class="pre">pd</span></code></p></li>
+</ul>
+<p>As always, now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-1-2-points">
+<h3>Part 1 (2 points)<a class="headerlink" href="#part-1-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Load the Fisher’s Iris dataset.  This famous dataset includes measurements from three related species of flowers. These data are stored in a .csv (comma separated values) file at the following URL:</p></li>
+</ul>
+<p><a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework3/FishersIris.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework3/FishersIris.csv</a></p>
+<ul class="simple">
+<li><p>To do this, use the pandas function <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> to create a a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> DataFrame</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s explore this object using some common <code class="docutils literal notranslate"><span class="pre">pandas</span></code> methods.</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">head</span></code> method to display the data in the first 5 entries of <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">describe</span></code> method to display some summary statistics for the DataFrame object you created.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">info</span></code> method to display some additional information about the DataFrame object you created.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-2-2-points">
+<h3>Part 2 (2 points)<a class="headerlink" href="#part-2-2-points" title="Link to this heading">#</a></h3>
+<p>While pandas dataframes can be very handy in many advanced applications, we don’t need their functionality here.  Instead, create some numpy arrays for easy access to the data contained in <code class="docutils literal notranslate"><span class="pre">df</span></code>.  You can access columns of data in a dataframe by their column label.  For example, <code class="docutils literal notranslate"><span class="pre">df['sepallength']</span></code> returns the first column of the dataframe.</p>
+<ul class="simple">
+<li><p>Create a numpy array called <code class="docutils literal notranslate"><span class="pre">sl</span></code> containing sepal length measurements.</p></li>
+<li><p>Create a numpy array called <code class="docutils literal notranslate"><span class="pre">sw</span></code> containing sepal width meaasurements.</p></li>
+<li><p>Create a numpy array called <code class="docutils literal notranslate"><span class="pre">species</span></code> that contains the species from which the above measurements were taken.</p></li>
+<li><p>Create a numpy array called <code class="docutils literal notranslate"><span class="pre">snum</span></code> in which the three species names in <code class="docutils literal notranslate"><span class="pre">species</span></code> are converted into the numbers 0, 1, and 2 (i.e. <code class="docutils literal notranslate"><span class="pre">0</span></code> for <em>Iris setosa</em>, <code class="docutils literal notranslate"><span class="pre">1</span></code> for <em>Iris versicolor</em>, etc.).  <code class="docutils literal notranslate"><span class="pre">np.unique</span></code> is a useful function for this application (examine the optional output arguments).</p></li>
+</ul>
+<p>Familiarize yourself with the organization of these variables.  We’ll use them throughout.</p>
+<ul class="simple">
+<li><p>Finally, plot <code class="docutils literal notranslate"><span class="pre">sl</span></code>, <code class="docutils literal notranslate"><span class="pre">sw</span></code>, and <code class="docutils literal notranslate"><span class="pre">snum</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-3-2-points">
+<h3>Part 3 (2 points)<a class="headerlink" href="#part-3-2-points" title="Link to this heading">#</a></h3>
+<p>Plot histograms of sepal length and sepal width for <em>Iris setosa</em> and <em>Iris versicolor</em> as shown below using the numpy arrays we created.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6a24b8d863792e8c3a8a6e1298661b7a316b82e84fb1263a5221501bfe5d3c31.png" src="../_images/6a24b8d863792e8c3a8a6e1298661b7a316b82e84fb1263a5221501bfe5d3c31.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-4-2-points">
+<h3>Part 4 (2 points)<a class="headerlink" href="#part-4-2-points" title="Link to this heading">#</a></h3>
+<p>Let’s see how discriminable <em>Iris setosa</em> and <em>Iris versicolor</em> are based on sepal length or based on sepal width using ROC curves.</p>
+<ul class="simple">
+<li><p>Write a function called <code class="docutils literal notranslate"><span class="pre">ROC</span></code> for calculating the quantities we need to create an ROC curve.</p></li>
+</ul>
+<p>This function should be structured as follows:</p>
+<p><strong>Inputs</strong><br />
+<code class="docutils literal notranslate"><span class="pre">data</span></code>: a numpy array containing the measurements upon which classification is based.</p>
+<p><code class="docutils literal notranslate"><span class="pre">group</span></code>: a numpy array the same size as <code class="docutils literal notranslate"><span class="pre">data</span></code> containing 0’s for entries in <code class="docutils literal notranslate"><span class="pre">data</span></code> associated with class 0 (i.e. <em>setosa</em>) and 1’s for entries in <code class="docutils literal notranslate"><span class="pre">data</span></code> associated with class 1 (<em>versicolor</em>).</p>
+<p><strong>Outputs</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">tp</span></code>: the true positive rate for each threshold.</p>
+<p><code class="docutils literal notranslate"><span class="pre">fp</span></code>: the false positive rate for each threshold.</p>
+<p><code class="docutils literal notranslate"><span class="pre">AUC</span></code>: The area under the ROC curve.</p>
+<p><strong>NOTES</strong></p>
+<p>(1) To calculate the above, you will first need to create a numpy array of threshold values.  These threshold values should vary between <code class="docutils literal notranslate"><span class="pre">min(data)</span></code> and <code class="docutils literal notranslate"><span class="pre">max(data)</span></code> in 50 steps.</p>
+<p>(2) List comprehensions are an efficient method to calculate <code class="docutils literal notranslate"><span class="pre">tp</span></code> and <code class="docutils literal notranslate"><span class="pre">fp</span></code>.</p>
+<p>(3) The numpy method <code class="docutils literal notranslate"><span class="pre">trapz</span></code> might be helpful for calculating the AUC.</p>
+<p>🚩 <strong>Common mistake:</strong> Thresholds that increase from <code class="docutils literal notranslate"><span class="pre">min(data)</span></code> to <code class="docutils literal notranslate"><span class="pre">max(data)</span></code> make <code class="docutils literal notranslate"><span class="pre">tp</span></code> and <code class="docutils literal notranslate"><span class="pre">fp</span></code> decrease, so passing them to <code class="docutils literal notranslate"><span class="pre">np.trapz</span></code> in that order gives an AUC with the wrong sign. Print your AUC and check that it makes sense (between 0 and 1) before trusting it.</p>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture3.1.html#roc-curves-receiver-operating-characteristic">ROC curves</a> for how the curve is built.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-5-2-points">
+<h3>Part 5 (2 points)<a class="headerlink" href="#part-5-2-points" title="Link to this heading">#</a></h3>
+<p>Now let’s calculate and display our ROC curves.</p>
+<ul class="simple">
+<li><p>Use your <code class="docutils literal notranslate"><span class="pre">ROC</span></code> function to calculate the true positive rate, false positive rate, and AUC when sepal length or sepal width are used for classification.  Store these values.</p></li>
+<li><p>Print the AUC value associated with each feature</p></li>
+<li><p>On one set of axes, plot ROC curves associated with sepal length and sepal width.  Label the curves. Include the diagonal line y=x.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-6-2-points">
+<h3>Part 6 (2 points)<a class="headerlink" href="#part-6-2-points" title="Link to this heading">#</a></h3>
+<p>Let’s take a look at the data in 2D.</p>
+<ul class="simple">
+<li><p>Plot sepal width vs. sepal length of all specimens in the dataset.  Plot blue dots for specimens of <em>Iris setosa</em> and red dots for specimens of <em>Iris versicolor.</em></p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">axis('equal')</span></code> to set the x-axis and y-axis scales to be equal.</p></li>
+</ul>
+<p>Now, calculate the coordinates of the centroids of both groups of data. In addition, calculate the coordinates of the middle of the line connecting the centroids (the mean of the centroids).</p>
+<ul class="simple">
+<li><p>Plot the loction of the centroids as large yellow dots with a line connecting them.  In addition, plot the location of the midpoint between the two centroids as a yellow ‘x’.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-7-2-points">
+<h3>Part 7 (2 points)<a class="headerlink" href="#part-7-2-points" title="Link to this heading">#</a></h3>
+<p>Now, we will use linear discriminant analysis (LDA) to classify specimens as <em>Iris setosa</em> or <em>Iris versicolor</em> in  higher dimensions (i.e. based on both sepal length and width).</p>
+<p>LDA uses a discriminant function of the  form:</p>
+<p><span class="math notranslate nohighlight">\( y(x) = W^Tx + {\omega}_0 \)</span></p>
+<p>where:</p>
+<p><span class="math notranslate nohighlight">\( W = {\Sigma}^{-1} (\mu_2 - \mu_1) \)</span> is the decision vector, the vector orthogonal to the decision boundary.</p>
+<p>Importantly, <span class="math notranslate nohighlight">\({\Sigma}^{-1}\)</span> is the within-class covariance matrix, assumed to be the same for both classes.  To calculate <span class="math notranslate nohighlight">\({\Sigma}^{-1}\)</span>, you must subtract the class mean from each data point before calculating the covariance matrix.</p>
+<ul class="simple">
+<li><p>Plot the data after the within-class means have been subtracted.</p></li>
+<li><p>Calculate <span class="math notranslate nohighlight">\(W\)</span> as described above and print it.</p></li>
+</ul>
+<p>We’ll deal with <span class="math notranslate nohighlight">\({\omega}_0 \)</span> later.</p>
+<p>🚩 <strong>Common mistake:</strong> <code class="docutils literal notranslate"><span class="pre">np.cov</span></code> treats each <em>row</em> as a variable. Passing an N×2 array of samples silently returns an N×N matrix instead of the 2×2 covariance you want, so check the shape of what you get back and transpose if needed.</p>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture3.1.html#fisher-s-linear-discriminant">Fisher’s linear discriminant</a> for the derivation of <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-8-4-points">
+<h3>Part 8 (4 points)<a class="headerlink" href="#part-8-4-points" title="Link to this heading">#</a></h3>
+<p>Let’s assume that <span class="math notranslate nohighlight">\(w_0\)</span> is chosen so that the projection of the midpoint between the two class centroids onto the decision vector is equal to zero.</p>
+<p>Write three functions as follows:</p>
+<ol class="arabic simple">
+<li><p>A function that takes x coordinates (sepal length values; a Nx1 numpy array) as inputs and returns the y-position (sepal width values) of a line parallel to the decision vector passing through the midpoint between the class centroids.  This function will also require as input arguments the decision vector itself (1x2 numpy array) and the location of the midpoint (1x2 numpy array).</p></li>
+<li><p>A function that takes x coordinates (Nx1 numpy array) as input and returns the y-position of the decision boundary under the assumption that it passes through the centroid midpoint.  This function should require the same input arguments as (1).</p></li>
+<li><p>A function that takes as input data points (Nx2 numpy array), the decision vector (1x2 numpy array), and the centroid midpoint (1x2 numpy array) and returns the coordinates of the projection of the data points onto the line parallel to the decision vector passing through the centroid midpoint.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-9-4-points">
+<h3>Part 9 (4 points)<a class="headerlink" href="#part-9-4-points" title="Link to this heading">#</a></h3>
+<p>On a single axes, plot all of the below, as shown in the example figure.</p>
+<ul class="simple">
+<li><p>The data, as in <strong>Part 6</strong>.</p></li>
+<li><p>A line connecting the class centroids.</p></li>
+<li><p>The decision boundary.</p></li>
+<li><p>The line parallel to the decision vector passing through the centroid midpoint.</p></li>
+<li><p>The projection of the data points onto this line as open circles.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7929092937f89248b9962998d409a7d2ebb5d08533c1b144a01b2f974facc95e.png" src="../_images/7929092937f89248b9962998d409a7d2ebb5d08533c1b144a01b2f974facc95e.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-10-2-points">
+<h3>Part 10 (2 points)<a class="headerlink" href="#part-10-2-points" title="Link to this heading">#</a></h3>
+<p>Write a function to calculate</p>
+<p><span class="math notranslate nohighlight">\( y(x) = W^Tx + {\omega}_0 \)</span></p>
+<p><span class="math notranslate nohighlight">\(y(x)\)</span> is the distance between the decision boundary (i.e. the projection of the centroid midpoint onto the decision vector) and the projection of a data point, <span class="math notranslate nohighlight">\(x\)</span>, onto the decision vector.</p>
+<p>This function should take as input arguments: data points (<span class="math notranslate nohighlight">\(x\)</span>; an Nx2 numpy array), the decision vector (<span class="math notranslate nohighlight">\(W\)</span>; a 1x2 numpy array), and the centroid midpoint (1x2 numpy array used to calculate <span class="math notranslate nohighlight">\(w_0\)</span>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-11-2-points">
+<h3>Part 11 (2 points)<a class="headerlink" href="#part-11-2-points" title="Link to this heading">#</a></h3>
+<p>Determine the accuracy of classification of these data with LDA.</p>
+<p>Use the function above to calculate <span class="math notranslate nohighlight">\(y(x)\)</span> for the measurements of <em>Iris setosa</em> and <em>Iris versicolor</em>.</p>
+<ul class="simple">
+<li><p>Plot histograms of <span class="math notranslate nohighlight">\(y(x)\)</span> for <em>Iris setosa</em> and <em>Iris versicolor</em>.</p></li>
+<li><p>Plot ROC curves for classification based on (1) sepal length, (2) sepal width, and (3) <span class="math notranslate nohighlight">\(y(x)\)</span>.</p></li>
+<li><p>Calculate the AUC for classification of these species using <span class="math notranslate nohighlight">\(y(x)\)</span> and display it.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-12-2-points">
+<h3>Part 12 (2 points)<a class="headerlink" href="#part-12-2-points" title="Link to this heading">#</a></h3>
+<p>Now, let’s apply scikit-learn’s version of LDA to our classification problem and see how it compares.</p>
+<p>Use the following code to import the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> package for LDA</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.discriminant_analysis</span> <span class="pre">import</span> <span class="pre">LinearDiscriminantAnalysis</span></code></p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code> object and then use its <code class="docutils literal notranslate"><span class="pre">fit</span></code> method to determine the parameters of the discriminant function.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">decision_function</span></code> method to determine the projection of the data onto the decision vector (<span class="math notranslate nohighlight">\(y(x)\)</span>).</p></li>
+<li><p>As above, plot histograms of <span class="math notranslate nohighlight">\(y(x)\)</span> (this time calclulated with <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>) on one axis and, in a second axis, ROC curves for sepal length, sepal width, <span class="math notranslate nohighlight">\(y(x)\)</span> (your version), and <span class="math notranslate nohighlight">\(y(x)\)</span> (<code class="docutils literal notranslate"><span class="pre">sklearn</span></code> version).</p></li>
+<li><p>Calculate the AUC for classification of these species using <span class="math notranslate nohighlight">\(y(x)\)</span> (<code class="docutils literal notranslate"><span class="pre">sklearn</span> <span class="pre">version</span></code>) and display it.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='red'><strong>SHORT ANSWER (4 points):</strong> Explain why the decision vector is not aligned with the vector connecting class centroids and how this relates to qualitative features of the data.  Under what conditions would they be aligned?</font></p>
+</section>
+</section>
+<section id="homework-3-2-36-points">
+<h2>Homework 3.2 (36 points)<a class="headerlink" href="#homework-3-2-36-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will continue our examination of methods for data classification. We will explore:</p>
+<ul class="simple">
+<li><p>Probabilistic discriminitive models</p></li>
+<li><p>Naive Bayes classification</p></li>
+</ul>
+<hr class="docutils" />
+<section id="part-1">
+<h3>Part 1<a class="headerlink" href="#part-1" title="Link to this heading">#</a></h3>
+<p>Load the same libraries that we used in previous homeworks.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.discriminant_analysis</span> <span class="pre">import</span> <span class="pre">LinearDiscriminantAnalysis</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">pandas</span> <span class="pre">as</span> <span class="pre">pd</span></code></p></li>
+</ul>
+<p>As always, now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id1">
+<h3>Part 2 (2 points)<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>First, we will continue to examine Fisher’s linear discriminant, and see how we can compute the conditional probabilities of data points belonging to different classes, <span class="math notranslate nohighlight">\(P(Class | X)\)</span>.</p>
+<ul class="simple">
+<li><p>Load the Fisher’s Iris dataset.  This famous dataset includes measurements from three related species of flowers. These data are stored in a .csv (comma separated values) file at the following URL:</p></li>
+</ul>
+<p><a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework3/FishersIris.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework3/FishersIris.csv</a></p>
+<ul class="simple">
+<li><p>To do this, use the pandas function <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> to create a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> DataFrame.</p></li>
+<li><p>Construct the variables <strong><code class="docutils literal notranslate"><span class="pre">sl</span></code></strong>, <strong><code class="docutils literal notranslate"><span class="pre">sw</span></code></strong>, and <strong><code class="docutils literal notranslate"><span class="pre">snum</span></code></strong> in the same way as described in <em>Homework 3.1</em>.</p></li>
+<li><p>Filter the entries in the three variables above so as only to include data for <em>Iris setosa</em> and <em>Iris versicolor</em> (i.e. only keep entries where <strong><code class="docutils literal notranslate"><span class="pre">snum</span></code></strong> &lt; 2).</p></li>
+<li><p>It will also be helpful to create an additional variable <strong><code class="docutils literal notranslate"><span class="pre">meas</span></code></strong>, in which <strong><code class="docutils literal notranslate"><span class="pre">sl</span></code></strong> and <strong><code class="docutils literal notranslate"><span class="pre">sw</span></code></strong> are combined into a 2xN matrix, where N is the number of measurements.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-3-4-points">
+<h3>Part 3 (4 points)<a class="headerlink" href="#part-3-4-points" title="Link to this heading">#</a></h3>
+<p>Write a function to perform linear discriminant analysis (LDA) as in <em>Homework 3.1</em>.  This function should accept <strong><code class="docutils literal notranslate"><span class="pre">meas</span></code></strong> and <strong><code class="docutils literal notranslate"><span class="pre">snum</span></code></strong> as input arguments and return:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">mu</span></code></strong>: A 2x2 matrix containing the coordinates of the centroid of class 1 (row 1) and centroid of class 2 (row 2).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">C</span></code></strong>: The within-class covariance matrix of your data.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">vec</span></code></strong>: The (1x2) discriminant vector.</p></li>
+</ul>
+<p>Print the values in vec to ensure you get the same answer as last time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-4-4-points">
+<h3>Part 4 (4 points)<a class="headerlink" href="#part-4-4-points" title="Link to this heading">#</a></h3>
+<p>Remember that</p>
+<p><span class="math notranslate nohighlight">\(P(C_2| x) = \sigma(-a)\)</span></p>
+<p>where</p>
+<p><span class="math notranslate nohighlight">\(a = W^Tx - w_0\)</span></p>
+<p>with</p>
+<p><span class="math notranslate nohighlight">\(W = \Sigma^{-1}(\mu_2-\mu_1)\)</span> (the projection along the LDA vector)</p>
+<p><span class="math notranslate nohighlight">\(w_0 = -{\frac{1}{2}} \mu_1^T\Sigma^{-1}\mu_1 + {\frac{1}{2}} \mu_2^T\Sigma^{-1}\mu_2 + ln{\frac{P(C_1)}{P(C_2)}}\)</span> (the threshold that separates classes along the vector)</p>
+<ul class="simple">
+<li><p>Calculate <span class="math notranslate nohighlight">\(P(Iris-versicolor| x)\)</span>.</p></li>
+<li><p>In the first axes, plot this probability as a function of <span class="math notranslate nohighlight">\(a\)</span> for your data points over the corresponding logistic function.</p></li>
+<li><p>In the second axes, use <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>’s <code class="docutils literal notranslate"><span class="pre">scatter</span></code> method to plot sepal width vs. sepal length and color each point according to <span class="math notranslate nohighlight">\(P(Iris-versicolor| x)\)</span>. Set <code class="docutils literal notranslate"><span class="pre">cmap='coolwarm'</span></code> and use <code class="docutils literal notranslate"><span class="pre">fig.colorbar</span></code> to show the color scale.</p></li>
+</ul>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture3.2.html#deriving-p-c-1-mid-x-from-a-generative-model">deriving the class posterior from a generative model</a> for where the logistic form comes from.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great!  Now we see how we can calculate the probability that each data point belongs to each class.  Here, Our results are not cross-validated.  Our probabilistic classifier is being applied to the same data used to construct the classifier.</p>
+</section>
+<hr class="docutils" />
+<section id="id2">
+<h3>Part 5 (2 points)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Next, we will construct a <strong>naive Bayes classifier</strong> and use it to classify tweets.  We will use two datasets:</p>
+<ol class="arabic simple">
+<li><p>The tweets of Donald Trump</p></li>
+<li><p>Tweets about Covid-19</p></li>
+</ol>
+<p>We will construct a probabilistic discriminant function that gives us the probability of tweets belonging to each set.</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> to load the following datasets into two dataframes</p></li>
+</ul>
+<p><a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework3/Corona_NLP_train.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework3/Corona_NLP_train.csv</a>
+<a class="reference external" href="https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework3/realdonaldtrump.csv">https://raw.githubusercontent.com/BU-BME-DataSci-ML/Spring-2023/main/Homework3/realdonaldtrump.csv</a></p>
+<p><strong>NOTE:</strong>  For the first dataset, you will also have to set <code class="docutils literal notranslate"><span class="pre">encoding='latin-1'</span></code> for the tweets to be read correctly.</p>
+<ul class="simple">
+<li><p>Create numpy arrays called <code class="docutils literal notranslate"><span class="pre">set1tweets</span></code> and <code class="docutils literal notranslate"><span class="pre">set2tweets</span></code> from the appropriate column of each dataframe (i.e. the one containing the tweet text).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below is a function that we’ll use to clean up our tweets.  It makes all of the text lowercase, and removes common words, words that would be unfair to use, special characters, URLs, etc.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="n">stopwords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"that"</span><span class="p">,</span> <span class="s2">"have"</span><span class="p">,</span> <span class="s2">"be"</span><span class="p">,</span> <span class="s2">"i"</span><span class="p">,</span> <span class="s2">"with"</span><span class="p">,</span> <span class="s2">"we"</span><span class="p">,</span> <span class="s2">"you"</span><span class="p">,</span> <span class="s2">"for"</span><span class="p">,</span> <span class="s2">"on"</span><span class="p">,</span> <span class="s2">"an"</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">"of"</span><span class="p">,</span> <span class="s2">"and"</span><span class="p">,</span> <span class="s2">"in"</span><span class="p">,</span> <span class="s2">"the"</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">,</span> <span class="s2">"from"</span><span class="p">,</span> <span class="s2">"at"</span><span class="p">,</span> <span class="s2">"is"</span><span class="p">,</span> <span class="s2">"are"</span><span class="p">,</span> <span class="s2">"it"</span><span class="p">,</span> <span class="s2">"as"</span><span class="p">,</span> <span class="s2">"by"</span><span class="p">,</span> <span class="s2">"com"</span><span class="p">,</span> <span class="s2">"or"</span><span class="p">,</span> <span class="s2">"amp"</span><span class="p">,</span> <span class="s2">"s"</span><span class="p">,</span> \
+             <span class="s2">"not"</span><span class="p">,</span> <span class="s2">"all"</span><span class="p">,</span> <span class="s2">"will"</span><span class="p">,</span> <span class="s2">"my"</span><span class="p">,</span> <span class="s2">"they"</span><span class="p">,</span> <span class="s2">"was"</span><span class="p">,</span> <span class="s2">"this"</span><span class="p">,</span> <span class="s2">"has"</span><span class="p">,</span> <span class="s2">"your"</span><span class="p">,</span> <span class="s2">"our"</span><span class="p">,</span> <span class="s2">"realdonaldtrump"</span><span class="p">,</span> <span class="s2">"donald"</span><span class="p">,</span> <span class="s2">"trump"</span><span class="p">,</span> <span class="s2">"covid"</span><span class="p">,</span> <span class="s2">"19"</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_tweet</span><span class="p">(</span><span class="n">tweet</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">tweet</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">'([A-Za-z]+)[</span><span class="se">\'</span><span class="s1">`]([A-Za-z]+)'</span><span class="p">,</span> <span class="sa">r</span><span class="s1">'\1'</span><span class="sa">r</span><span class="s1">'\2'</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"@[A-Za-z0-9_]+"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"#[A-Za-z0-9_]+"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"\[A-Za-z0-9_.]+"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'http\S+'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">'[()!?&amp;]'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">'\[.*?\]'</span><span class="p">,</span><span class="s1">' '</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"[^a-z0-9]"</span><span class="p">,</span><span class="s2">" "</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">temp</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="p">]</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">temp</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-6-4-points">
+<h3>Part 6 (4 points)<a class="headerlink" href="#part-6-4-points" title="Link to this heading">#</a></h3>
+<p>Set the random seed to 5.</p>
+<p>Create training and testing sets for each class.  From each set of tweets, randomly select 1000 entries (without replacement) as the test set.  As before, you can use <code class="docutils literal notranslate"><span class="pre">np.random.choice</span></code>.  Store them in variables called <code class="docutils literal notranslate"><span class="pre">test1</span></code> and <code class="docutils literal notranslate"><span class="pre">test2</span></code>.  Store the remaining tweets in variables called <code class="docutils literal notranslate"><span class="pre">train1</span></code> and <code class="docutils literal notranslate"><span class="pre">train2</span></code>.</p>
+<p>🚩 <strong>Common mistake:</strong> <code class="docutils literal notranslate"><span class="pre">np.random.choice</span></code> samples <em>with</em> replacement by default, so a test set can contain duplicate tweets. Set <code class="docutils literal notranslate"><span class="pre">replace=False</span></code>, and build the training set from the indices that were not chosen so no test tweet leaks into training.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3>Part 7 (2 points)<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>For each tweet in each training set, use your <code class="docutils literal notranslate"><span class="pre">clean_tweet</span></code> function to clean up the text and the <code class="docutils literal notranslate"><span class="pre">.split('</span> <span class="pre">')</span></code> method to split each tweet at whitespaces into its component words.  For each training set, create a list of lists of the words.  The variable should have the same number of elements as there are tweets in the training set, and each entry in the list should contain all of the words in the tweet in separate elements.</p>
+<p>This can be done efficiently with a list comprehension.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-8-2-points">
+<h3>Part 8 (2 points)<a class="headerlink" href="#part-8-2-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use the function below to create a counter object for each set that contains the number of occurrences of each word in each dataset.  This object is a type of dictionary - a python data type that stores key:value pairs.  In this case, the keys are the words in the dataset and the values are the number of occurrences.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">most_common</span></code> method to display the 20 most common words in each dataset and the number of times they were found.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">count_words</span><span class="p">(</span><span class="n">word_array</span><span class="p">):</span>
+
+    <span class="n">all_words</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">word_array</span><span class="p">:</span>
+        <span class="n">all_words</span> <span class="o">+=</span> <span class="n">tweet</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_words</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>Part 9 (4 points)<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Write a function that computes <span class="math notranslate nohighlight">\(log(\frac{P(Trump| x)}{P(Covid| x)})\)</span> using a naive Bayes classifier.</p>
+<p>The main input to this function should be an array of words in a single tweet. You will also need to input both set counter objects, and anything you might need to calculate <span class="math notranslate nohighlight">\(P(Class)\)</span>.</p>
+<p>Recall that:</p>
+<p><span class="math notranslate nohighlight">\(P(Class| x) \propto P(Class)P(x_1|Class)P(x_2|Class)\cdot\cdot\cdot P(x_n|Class)\)</span></p>
+<p>To calculate each probability, you will need to compute:</p>
+<p><span class="math notranslate nohighlight">\(P(Class)\)</span>: The number of tweets in the class divided by the total number of tweets in both classes (the prior probability).</p>
+<p><span class="math notranslate nohighlight">\(P(X_i|Class)\)</span>: the probability of the <span class="math notranslate nohighlight">\(ith\)</span> word in the tweet being randomly selected from all of the words observed in the Class.</p>
+<p>To calculate the conditional probability, divide the number of occurrences of the word in the class (plus one to avoid multiplying-by-zeros) by the total number of words in the class (i.e. the sum of the counts for all words).  A counter object has a <code class="docutils literal notranslate"><span class="pre">.values</span></code> method that makes this easy to calculate.</p>
+<p>🚩 <strong>Common mistake:</strong> Multiplying many small word probabilities together underflows to exactly 0 for long tweets, which makes the ratio meaningless. Add the logarithms of the probabilities instead of multiplying the probabilities.</p>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture3.2.html#naive-bayes">naive Bayes</a> for the classifier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3>Part 10 (2 points)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>Write a function that iterates over all of the tweets in a list of tweets and for each tweet calculates <span class="math notranslate nohighlight">\(log(\frac{P(Trump| x)}{P(Covid| x)})\)</span> (the “log odds”) for each tweet using the function from <strong>Part 9</strong>.  This function should return an array the length of the list of tweets that contains all of the log odds values.</p>
+<p>Call this function with each test set to determine the log odds of the tweets in each set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h3>Part 10 (2 points)<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>Plot a histogram of the log odds of tweets in the trump test set and the covid test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3>Part 11 (2 points)<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>Calculate the true positive rate, false positive rate, true negative rate, and false negative rate and display the values.  Note that if <span class="math notranslate nohighlight">\(P(A)&lt;P(B)\)</span>, then <span class="math notranslate nohighlight">\(log(\frac{P(B)}{P(A)})\)</span> will be a positive number.</p>
+<p>Calculate the classification accuracy and display it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3>Part 12 (2 points)<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>Display the following tweets from the Covid test set:</p>
+<ul class="simple">
+<li><p>The 2 most likely to be from the Covid set.</p></li>
+<li><p>The 2 least likely to be from the Covid set.</p></li>
+</ul>
+<p>Display the following tweets from the Trump test set:</p>
+<ul class="simple">
+<li><p>The 2 most likely to be from the Trump set.</p></li>
+<li><p>The 2 least likely to be from the Trump set.</p></li>
+</ul>
+<p>The numpy method <code class="docutils literal notranslate"><span class="pre">argsort</span></code> is useful for accomplishing this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='red'><strong>SHORT ANSWER (4 points):</strong> A Naive Bayes classifier assumes no covariance between features.  Would you expect features to covary in this dataset?  Why or why not?</font></p>
+</section>
+</section>
+<section id="homework-3-3-28-points">
+<h2>Homework 3.3 (28 points)<a class="headerlink" href="#homework-3-3-28-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will learn about:</p>
+<ul class="simple">
+<li><p>K-means clustering</p></li>
+<li><p>Expectation maximization</p></li>
+</ul>
+<hr class="docutils" />
+<section id="id9">
+<h3>Part 1<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>Load the same libraries that we used in previous homeworks.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">pandas</span> <span class="pre">as</span> <span class="pre">pd</span></code></p></li>
+</ul>
+<p>Load the following two libraries as well as follows:</p>
+<p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.cluster</span> <span class="pre">import</span> <span class="pre">KMeans</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.datasets</span> <span class="pre">import</span> <span class="pre">make_blobs</span></code></p>
+<p>As always, now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>Part 2 (2 points)<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>First, create some data to cluster.  We’ll use the <code class="docutils literal notranslate"><span class="pre">make_blobs</span></code> function for this purpose.  Create a dataset using the following parameters:</p>
+<p><code class="docutils literal notranslate"><span class="pre">n_samples=300</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">centers=4</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">cluster_std=0.7</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">random_state=0</span></code></p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> method <code class="docutils literal notranslate"><span class="pre">scatter</span></code> to display the datapoints.  Ensure that the x- and y- axes have equal scales as in <em>Homework 3.1</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>OK!  Lets cluster these data using k-means.</p>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3>Part 3 (2 points)<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Since we know that we created a dataset with 4 blobs, we’ll take k=4.</p></li>
+<li><p>Initialize the four cluster centers.  Create a 4x2 array containing the location of the 4 cluster centroids.  In principle, we could initialize the with random numbers, but we’ll use the following points:</p></li>
+</ul>
+<p>(1,  2)
+(1,  1)
+(-1, 2)
+(-1, 1)</p>
+<ul class="simple">
+<li><p>Plot the data in blue and the initial cluster centers in red.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h3>Part 4 (4 points)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>Write a function, called <code class="docutils literal notranslate"><span class="pre">clusterAssignment</span></code>, that finds the closest centroid to a datapoint.  This function should accept a data point and the location of the cluster centroids as inputs and should return the cluster number whose associated centroid is closest to the data point.</p>
+<p>This function will be used to determine the cluster assignments, <span class="math notranslate nohighlight">\(r_{n,k}\)</span>, based on assumptions of the cluster centroids, <span class="math notranslate nohighlight">\(\mu_k\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-5-4-points">
+<h3>Part 5 (4 points)<a class="headerlink" href="#part-5-4-points" title="Link to this heading">#</a></h3>
+<p>Write a function, <code class="docutils literal notranslate"><span class="pre">calculateCentroids</span></code> that updates the cluster centroids, <span class="math notranslate nohighlight">\(\mu_k\)</span>, given cluster assignments, <span class="math notranslate nohighlight">\(r_{n,k}\)</span>.  This function should accept an Nx2 array of points and an Nx1 array of cluster assignments and return a kx2 array containing the cluster centroids.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h3>Part 6 (2 points)<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">clusterAssignment</span></code> to find the cluster associated with every data point, given our initial guesses of cluster centroids.  Use a list comprehension.</p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">scatter</span></code> method to plot the data points and cluster centroids, as shown below.  We use <code class="docutils literal notranslate"><span class="pre">scatter</span></code> here instead of <code class="docutils literal notranslate"><span class="pre">plot</span></code> because it lets us define the color of every point plotted using the argument <code class="docutils literal notranslate"><span class="pre">c</span></code>.  For example, you could set <code class="docutils literal notranslate"><span class="pre">c=clusters</span></code>, where <code class="docutils literal notranslate"><span class="pre">clusters</span></code> are your cluster assignments, to set the color of each point to be an integer from 0 to 3.  In this case, integer cluster assignments will be mapped automatically to colors by <code class="docutils literal notranslate"><span class="pre">scatter</span></code> using the default colormap.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/61894bd1d17c791f4fd2d46d951a8e392ad89770e5d5690723bce7f418b37fad.png" src="../_images/61894bd1d17c791f4fd2d46d951a8e392ad89770e5d5690723bce7f418b37fad.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-7-4-points">
+<h3>Part 7 (4 points)<a class="headerlink" href="#part-7-4-points" title="Link to this heading">#</a></h3>
+<p>Now, let’s write the k-means algorithm with the functions we wrote.</p>
+<ul class="simple">
+<li><p>Write a <code class="docutils literal notranslate"><span class="pre">while</span></code> loop to repeat the steps of the k-means algorithm.  This loop should execute until the centroids remain the same on consecutive iterations.</p></li>
+</ul>
+<p>Inside the <code class="docutils literal notranslate"><span class="pre">while</span></code> loop, do the following:</p>
+<ul class="simple">
+<li><p>Using the function <code class="docutils literal notranslate"><span class="pre">clusterAssignment</span></code>, find the cluster whose centroid is closest to each datapoint (E-step).</p></li>
+<li><p>Using the function <code class="docutils literal notranslate"><span class="pre">calculateCentroids</span></code>, update the cluster centroids based on the current cluster assignments (M-step).</p></li>
+<li><p>Check whether the updated centroids are all identical the centroids defined on the previous iteration of the loop (or, on the first iteration, the initial conditions).  If they are identical, do not continue the while loop.</p></li>
+<li><p>As in Part 6, use <code class="docutils literal notranslate"><span class="pre">scatter</span></code> to display the data points and cluster centroids, colored by their cluster assignment.</p></li>
+</ul>
+<p>Within the while loop, also calculate the value of the k-means objective function, J, after each E-step and each M-step and make a plot of J as it converges.</p>
+<p>🚩 <strong>Common mistake:</strong> Writing <code class="docutils literal notranslate"><span class="pre">old</span> <span class="pre">=</span> <span class="pre">centroids</span></code> does not copy the array; both names point to the same data, so a comparison between them is always “identical” and the loop stops after one pass. Use <code class="docutils literal notranslate"><span class="pre">.copy()</span></code> to keep the previous centroids.</p>
+<p>See the lecture notes on <a class="reference external" href="https://depasquale-lab.github.io/BE559/lectures/Lecture3.4.html#the-k-means-algorithm">the K-means algorithm</a> for the E- and M-steps.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h3>Part 8 (2 points)<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>Now, use scikit-learn to perform k-means clustering.</p>
+<ul class="simple">
+<li><p>Import KMeans from sklearn.cluster</p></li>
+<li><p>Create a KMeans object and set <code class="docutils literal notranslate"><span class="pre">n_clusters=4</span></code> and <code class="docutils literal notranslate"><span class="pre">init=c_init</span></code>.  We also only want to run the althorigthm once with a single set of initial conditions, and so set <code class="docutils literal notranslate"><span class="pre">n_init=1</span></code>.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> methods to run k-means on your data.</p></li>
+<li><p>Plot the data and centroids and color them according to cluster membership as in <strong>Part 7</strong>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><font color='red'>**SHORT ANSWER (4 points):**Why do we use an iterative algorithm (similar to Expectation-Maximization) to determine cluster assignments in k-Means?</font></p>
+<p><font color='red'><strong>SHORT ANSWER (4 points):</strong> Describe what you would need to modify in the code you’ve written (not the sklearn version) to cluster these data using a Gaussian Mixture Model instead of k-Means.</font></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./homework"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../lectures/Lecture3.5.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../modules/module4.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Module 4: Dimensionality reduction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-3-1-32-points">Homework 3.1 (32 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-0">Part 0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-2-points">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-2-points">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-2-points">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-2-points">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-2-points">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-2-points">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-2-points">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-4-points">Part 8 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-4-points">Part 9 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-2-points">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-2-points">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-2-points">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-3-2-36-points">Homework 3.2 (36 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1">Part 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-4-points">Part 3 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-4-points">Part 4 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-4-points">Part 6 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-2-points">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part 9 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-3-3-28-points">Homework 3.3 (28 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Part 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Part 4 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-4-points">Part 5 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-4-points">Part 7 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Part 8 (2 points)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,689 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lecture 1.4: T-tests &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures/Lecture1.4';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 1.5: More Statistics" href="Lecture1.5.html" />
+    <link rel="prev" title="Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference" href="Lecture1.3.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1-slides.html">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.3.html">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW1.html">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW2.html">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.1.html">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.2.html">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW3.html">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW4.html">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/lectures/Lecture1.4.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 1.4: T-tests</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-central-limit-theorem">Review: Central limit theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-the-sample-mean">Distribution of the sample mean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-if-we-don-t-know-the-population-parameters">What if we don’t know the population parameters?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#t-distribution">t-distribution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-degrees-of-freedom">Example: degrees of freedom</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-statistic">t statistic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-t-distribution">The t distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-one-sample-t-test">The one-sample t-test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variation-two-sample-t-test-equal-variances">Variation: two-sample t-test (equal variances)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unequal-variances">Unequal variances</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paired-t-test-repeated-measures">Paired t-test (repeated measures)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-common-misconception">A common misconception</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-1-4-t-tests">
+<h1>Lecture 1.4: T-tests<a class="headerlink" href="#lecture-1-4-t-tests" title="Link to this heading">#</a></h1>
+<section id="review-central-limit-theorem">
+<h2>Review: Central limit theorem<a class="headerlink" href="#review-central-limit-theorem" title="Link to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[\bar{X} \sim N\left(\mu_X, \frac{\sigma_X^2}{N}\right) \quad \text{when } N \text{ is large}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\bar{X}\)</span> is the sample mean.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu_X\)</span> is the mean of <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_X^2\)</span> is the variance of <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu_X\)</span> and <span class="math notranslate nohighlight">\(\sigma_X^2\)</span> are population parameters, not sample statistics.</p></li>
+</ul>
+<p>The sample mean is a statistic with its own sampling distribution. When <span class="math notranslate nohighlight">\(N\)</span> is large, that distribution is a Normal distribution with the same mean as the distribution of <span class="math notranslate nohighlight">\(X\)</span> and variance equal to the original variance divided by <span class="math notranslate nohighlight">\(N\)</span>.</p>
+</section>
+<section id="distribution-of-the-sample-mean">
+<h2>Distribution of the sample mean<a class="headerlink" href="#distribution-of-the-sample-mean" title="Link to this heading">#</a></h2>
+<p>The distribution of the sample mean “tends” to Normality as <span class="math notranslate nohighlight">\(N\)</span> increases.</p>
+<blockquote>
+<div><p><strong>Figure:</strong> Textbook Figure 2.6, three histograms of the mean of <span class="math notranslate nohighlight">\(N\)</span> uniformly distributed numbers (x-axis from 0 to 1, with 0.5 marked). For <span class="math notranslate nohighlight">\(N=1\)</span> the histogram is flat (annotated “Uniform distribution”). For <span class="math notranslate nohighlight">\(N=2\)</span> it is triangular/bell-shaped. For <span class="math notranslate nohighlight">\(N=10\)</span> it is a narrow bell curve centered at 0.5. Annotation: “mean gets closer to Normal dist.” Caption: “Histogram plots of the mean of <span class="math notranslate nohighlight">\(N\)</span> uniformly distributed numbers for various values of <span class="math notranslate nohighlight">\(N\)</span>. We observe that as <span class="math notranslate nohighlight">\(N\)</span> increases, the distribution tends towards a Gaussian.”</p>
+</div></blockquote>
+<p>For the uniform example:</p>
+<div class="math notranslate nohighlight">
+\[\mu_X = \tfrac{1}{2}(\max + \min) = 0.5\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma_X^2 = \tfrac{1}{12}(\max - \min)^2 = \tfrac{1}{12}\]</div>
+<p>If <span class="math notranslate nohighlight">\(N = 10\)</span>, <span class="math notranslate nohighlight">\(\bar{X} \sim N\left(0.5, \frac{1/12}{10}\right)\)</span> (annotated <span class="math notranslate nohighlight">\(\frac{1}{120}\)</span>).</p>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> We can easily predict the distribution of <span class="math notranslate nohighlight">\(\bar{X}\)</span>.</p>
+</section>
+<section id="what-if-we-don-t-know-the-population-parameters">
+<h2>What if we don’t know the population parameters?<a class="headerlink" href="#what-if-we-don-t-know-the-population-parameters" title="Link to this heading">#</a></h2>
+<p><strong>Q:</strong> What happens if we don’t know the population parameters?</p>
+<p><strong>A:</strong> Calculate the statistic, <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[t = \frac{\bar{x} - \mu}{s/\sqrt{N}}, \qquad s = \sqrt{\frac{1}{N-1}\sum_{i=1}^{N}(x_i - \bar{x})^2}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mu\)</span> is the hypothesized mean under <span class="math notranslate nohighlight">\(H_0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(s\)</span> is the sample standard deviation.</p></li>
+</ul>
+<section id="t-distribution">
+<h3>t-distribution<a class="headerlink" href="#t-distribution" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[f(t) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma(\nu/2)}\left(1 + \frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}}\]</div>
+<ul class="simple">
+<li><p>The <span class="math notranslate nohighlight">\(t\)</span> distribution has only a single parameter, <span class="math notranslate nohighlight">\(\nu\)</span>, the degrees of freedom.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[t = \frac{\sqrt{N}\,(\bar{x} - \mu)}{\sqrt{\sum (x_i - \bar{x})^2 / (N-1)}}\]</div>
+<p>Because we estimated <span class="math notranslate nohighlight">\(\bar{x}\)</span>, the <span class="math notranslate nohighlight">\(x_i\)</span> have <span class="math notranslate nohighlight">\(N-1\)</span> degrees of freedom.</p>
+</section>
+</section>
+<section id="example-degrees-of-freedom">
+<h2>Example: degrees of freedom<a class="headerlink" href="#example-degrees-of-freedom" title="Link to this heading">#</a></h2>
+<p>A class has three students. Their test scores are:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_1 = 86\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(x_2 = 74\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(x_3 = 92\)</span></p></li>
+</ul>
+<p>This is a unique point in 3D space.</p>
+<blockquote>
+<div><p><strong>Figure:</strong> 3D plot with axes Student 1, Student 2, Student 3 (each roughly 60 to 100). A single red point marks the data point (86, 74, 92), with lines dropping to the axes.</p>
+</div></blockquote>
+<p>Suppose the instructor tells you <span class="math notranslate nohighlight">\(\bar{x} = 84\)</span>. Now the data has <span class="math notranslate nohighlight">\(N - 1 = 3 - 1 = 2\)</span> degrees of freedom.</p>
+<blockquote>
+<div><p><strong>Figure:</strong> Same 3D axes, now with a colored (blue-green) tilted plane outlined in red, containing the red data point. The plane represents all score triples consistent with the mean of 84.</p>
+</div></blockquote>
+<p>If <span class="math notranslate nohighlight">\(x_1 = 86\)</span>, <span class="math notranslate nohighlight">\(x_2 = 74\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\bar{x} = (86 + 74 + x_3)\tfrac{1}{3} = 84\]</div>
+<p>then <span class="math notranslate nohighlight">\(x_3 = 92\)</span>. This is now constrained.</p>
+</section>
+<section id="t-statistic">
+<h2>t statistic<a class="headerlink" href="#t-statistic" title="Link to this heading">#</a></h2>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{1}{N}\sum (x_i - \mu)^2\]</div>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{1}{N-1}\sum (x_i - \bar{x})^2\]</div>
+<ul class="simple">
+<li><p>The squared deviation of the data from the sample mean will always be less than (or equal to) the squared deviation from the population mean.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{1}{N}\sum (x_i - \bar{x})^2\)</span> is then less than <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{1}{N-1}\sum (x_i - \bar{x})^2\)</span> is an unbiased estimate of <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p></li>
+</ul>
+</section>
+<section id="the-t-distribution">
+<h2>The t distribution<a class="headerlink" href="#the-t-distribution" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(t\)</span> follows a <span class="math notranslate nohighlight">\(t\)</span> distribution.</p></li>
+<li><p>The <span class="math notranslate nohighlight">\(t\)</span> distribution converges to the standard normal distribution as dof (number of data points) increases.</p></li>
+</ul>
+<p><strong>Rule of thumb:</strong> <span class="math notranslate nohighlight">\(\bar{X}\)</span> follows a normal distribution when <span class="math notranslate nohighlight">\(N \ge 30\)</span>.</p>
+<blockquote>
+<div><p><strong>Figure:</strong> Images of William Sealy Gosset: the first page of “The Probable Error of a Mean” by “Student” (Biometrika, Vol. VI, March 1908, No. 1; “By Student” underlined in red), a plaque reading “William Sealy Gosset 1876-1937 Chief Brewer” (“Student’s t-test”), and a black-and-white portrait photograph of Gosset.</p>
+</div></blockquote>
+</section>
+<section id="the-one-sample-t-test">
+<h2>The one-sample t-test<a class="headerlink" href="#the-one-sample-t-test" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Collect data.</p></li>
+<li><p>Formulate a null hypothesis (<span class="math notranslate nohighlight">\(H_0\)</span>): <span class="math notranslate nohighlight">\(\mu = \mu_0\)</span>.</p></li>
+<li><p>Estimate parameters.</p></li>
+<li><p>Compute test statistic.</p></li>
+<li><p>Determine distribution of test statistic under <span class="math notranslate nohighlight">\(H_0\)</span>.</p></li>
+<li><p>Compute probability of observing outcome under <span class="math notranslate nohighlight">\(H_0\)</span>.</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[t = \frac{\bar{x} - \mu_0}{s/\sqrt{N}}, \qquad s = \sqrt{\frac{1}{N-1}\sum (x_i - \bar{x})^2}\]</div>
+<blockquote>
+<div><p><strong>Figure:</strong> Left: green dots scattered along a horizontal “Value” axis, with <span class="math notranslate nohighlight">\(\bar{x}\)</span> marked by an arrow at the center of the cloud, a double arrow labeled <span class="math notranslate nohighlight">\(s\)</span> showing the spread, and a dotted red vertical line at <span class="math notranslate nohighlight">\(\mu_0\)</span> to the right. Right: a green bell-shaped <span class="math notranslate nohighlight">\(t\)</span> distribution, labeled “<span class="math notranslate nohighlight">\(t\)</span> distribution, <span class="math notranslate nohighlight">\(\nu = N-1\)</span>”, with the observed <span class="math notranslate nohighlight">\(t\)</span> marked as a blue dot in the left tail and the tail area shaded red, labeled “Area = p-value”.</p>
+</div></blockquote>
+</section>
+<section id="variation-two-sample-t-test-equal-variances">
+<h2>Variation: two-sample t-test (equal variances)<a class="headerlink" href="#variation-two-sample-t-test-equal-variances" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Collect data.</p></li>
+<li><p>Formulate <span class="math notranslate nohighlight">\(H_0\)</span> (<span class="math notranslate nohighlight">\(\mu_1 = \mu_2\)</span>).</p></li>
+<li><p>Estimate population parameters.</p></li>
+<li><p>Calculate test statistic.</p></li>
+<li><p>Determine distribution of test statistic under <span class="math notranslate nohighlight">\(H_0\)</span>.</p></li>
+<li><p>Compute probability of observing outcome under <span class="math notranslate nohighlight">\(H_0\)</span>.</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[t = \frac{\bar{x}_1 - \bar{x}_2}{s_p\sqrt{\frac{1}{N_1} + \frac{1}{N_2}}}\]</div>
+<div class="math notranslate nohighlight">
+\[s_p = \sqrt{\frac{(N_1 - 1)s_{x_1}^2 + (N_2 - 1)s_{x_2}^2}{N_1 + N_2 - 2}}\]</div>
+<blockquote>
+<div><p><strong>Figure:</strong> Left: two clouds of dots along a “Value” axis, green (group 1) lower with mean <span class="math notranslate nohighlight">\(\bar{x}_1\)</span> and spread <span class="math notranslate nohighlight">\(s_{x_1}\)</span> marked, and blue (group 2) higher with mean <span class="math notranslate nohighlight">\(\bar{x}_2\)</span> and spread <span class="math notranslate nohighlight">\(s_{x_2}\)</span> marked. Right: a red <span class="math notranslate nohighlight">\(t\)</span>-distribution curve labeled “<span class="math notranslate nohighlight">\(t\)</span>-distribution with <span class="math notranslate nohighlight">\(N_1 + N_2 - 2\)</span> d.o.f.”, with a blue dot in the left tail and the tail shaded, labeled “Area = p-value”.</p>
+</div></blockquote>
+<section id="unequal-variances">
+<h3>Unequal variances<a class="headerlink" href="#unequal-variances" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[t = \frac{\bar{x}_1 - \bar{x}_2}{s}, \qquad s = \sqrt{\frac{s_1^2}{N_1} + \frac{s_2^2}{N_2}}\]</div>
+</section>
+</section>
+<section id="paired-t-test-repeated-measures">
+<h2>Paired t-test (repeated measures)<a class="headerlink" href="#paired-t-test-repeated-measures" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Collect paired data.</p></li>
+<li><p>Formulate <span class="math notranslate nohighlight">\(H_0\)</span>: <span class="math notranslate nohighlight">\(\mu_{i,1} = \mu_{i,2}\)</span>.</p></li>
+<li><p>Calculate difference in paired values: <span class="math notranslate nohighlight">\(x_{i,D} = x_{i,1} - x_{i,2}\)</span>.</p></li>
+<li><p>Perform 1-sample t-test on difference values (<span class="math notranslate nohighlight">\(x_D\)</span>).</p></li>
+</ol>
+<blockquote>
+<div><p><strong>Figure:</strong> Left: two rows of dots along a “Values” axis, <span class="math notranslate nohighlight">\(X_2\)</span> (blue, upper) and <span class="math notranslate nohighlight">\(X_1\)</span> (green, lower), with gray lines connecting each pair; one pair’s horizontal separation is marked <span class="math notranslate nohighlight">\(x_{i,D}\)</span>. Right: gray dots along a “Difference in paired values” axis showing <span class="math notranslate nohighlight">\(X_D\)</span>, with a dashed vertical line at 0 and a blue brace under the dots.</p>
+</div></blockquote>
+</section>
+<section id="a-common-misconception">
+<h2>A common misconception<a class="headerlink" href="#a-common-misconception" title="Link to this heading">#</a></h2>
+<p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> It is incorrect to use a t-test when data are not normally distributed.</p>
+<p>What assumptions do t-tests make?</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\frac{s^2(N-1)}{\sigma^2}\)</span> follows a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution with <span class="math notranslate nohighlight">\(N-1\)</span> d.o.f.</p></li>
+<li><p>Sample mean and variance are independent.</p></li>
+</ol>
+<blockquote>
+<div><p><strong>Figure:</strong> Three panels of person icons. “One sample t-test”: a globe linked to a group of people, “Is there a difference between a group and the population”. “Independent samples t-test”: two groups of people linked, “Is there a difference between two groups”. “Paired samples t-test”: a clock above two columns of people with each person linked to their counterpart, “Is there a difference in a group between two points in time”.</p>
+</div></blockquote>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Lecture1.3.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Lecture1.5.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 1.5: More Statistics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-central-limit-theorem">Review: Central limit theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-the-sample-mean">Distribution of the sample mean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-if-we-don-t-know-the-population-parameters">What if we don’t know the population parameters?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#t-distribution">t-distribution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-degrees-of-freedom">Example: degrees of freedom</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-statistic">t statistic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-t-distribution">The t distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-one-sample-t-test">The one-sample t-test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variation-two-sample-t-test-equal-variances">Variation: two-sample t-test (equal variances)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unequal-variances">Unequal variances</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paired-t-test-repeated-measures">Paired t-test (repeated measures)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-common-misconception">A common misconception</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

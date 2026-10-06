@@ -1,0 +1,795 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lecture 1.1a: Course Introduction &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lectures/Lecture1.1-slides';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 1.2: Statistics" href="Lecture1.2.html" />
+    <link rel="prev" title="Lecture 1.1: Intro to Probability and Statistics" href="Lecture1.1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.3.html">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.4.html">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW1.html">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW2.html">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.1.html">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.2.html">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW3.html">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW4.html">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../homework/HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/lectures/Lecture1.1-slides.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Lecture 1.1a: Course Introduction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-on-tap">What’s on tap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-be-559">What is BE 559?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modules-and-topics">Modules and topics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tentative-course-schedule-spring-2026">Tentative course schedule (Spring 2026)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-the-course-going-to-work">How is the course going to work?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-material">Source material</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#course-logistics-on-blackboard">Course logistics on Blackboard</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intro-to-python">Intro to Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-resources">Coding resources</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-probability-and-statistics">Review of probability and statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-1-statistics">Module 1: Statistics!</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="lecture-1-1a-course-introduction">
+<h1>Lecture 1.1a: Course Introduction<a class="headerlink" href="#lecture-1-1a-course-introduction" title="Link to this heading">#</a></h1>
+<p><strong>Foundations of Biomedical Data Science and Machine Learning</strong>
+Lecture 1.1: Course introduction, probability, and statistics</p>
+<section id="what-s-on-tap">
+<h2>What’s on tap<a class="headerlink" href="#what-s-on-tap" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>What is BE559?</p></li>
+<li><p>How is the course going to work?</p></li>
+<li><p>Intro to Python</p></li>
+<li><p>Review of probability and statistics</p></li>
+</ol>
+</section>
+<section id="what-is-be-559">
+<h2>What is BE 559?<a class="headerlink" href="#what-is-be-559" title="Link to this heading">#</a></h2>
+<p><strong>Course description:</strong> This course will cover conceptual and practical aspects of data science and introductory machine learning for biomedical engineers. This course serves as a foundational course in data analytics for BME Ph.D. students. It is designed to follow a graduate-level introductory programming course and will prepare students for graduate-level courses and research focused on more advanced applications of machine learning and data science. This course will cover the theory and practical applications of hypothesis testing, model fitting and parameter estimation, classification, clustering, dimensionality reduction, and machine learning.</p>
+<p>Phrases emphasized (highlighted) on the slides:</p>
+<ul class="simple">
+<li><p>“follow a graduate-level introductory programming course”</p></li>
+<li><p>“theory and practical applications”</p></li>
+<li><p>“hypothesis testing, model fitting and parameter estimation, classification, clustering, dimensionality reduction, and machine learning”</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Figure:</strong> A flow diagram of three rounded boxes joined by right-pointing blue arrows. Box 1: “Python / Lin. Alg. / Prob+Stat”. Box 2: “This class”. Box 3: “Advanced ML courses”.</p>
+</div></blockquote>
+<section id="modules-and-topics">
+<h3>Modules and topics<a class="headerlink" href="#modules-and-topics" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>Figure:</strong> The flow diagram is shown beside a two-column table, “Module &amp; Lectures” and “Topics”. In a later slide a blue arrow labeled “First 6 Lectures” points to the Module 1 row.</p>
+</div></blockquote>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Module</p></th>
+<th class="head"><p>Topics</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Module 1 - Hypothesis testing (first 6 lectures)</p></td>
+<td><p>Intro to Python; Review of probability; Review of statistics; Introduction to Hypothesis testing; Parametric vs. non-parametric statistics; Multiple comparisons; Resampling-based statistical methods; Advanced methods</p></td>
+</tr>
+<tr class="row-odd"><td><p>Module 2 - Regression and model fitting</p></td>
+<td><p>Fitting models to data; Likelihood functions/Maximum likelihood solutions; Basics of optimization; Linear regression; Python functions; Logistic regression; Regularization; Bayes’ Rule; Bayesian perspective link to regularization; Model validation, AIC, generalizability, cross-validation</p></td>
+</tr>
+<tr class="row-even"><td><p>Module 3 - Classification and clustering</p></td>
+<td><p>Types of errors; Receiver-operating characteristic (ROC) curves; Linear discriminant analysis (LDA); Bayesian classifiers; Expectation maximization (EM); K-means; K-nearest neighbors (K-NN); Hierarchical clustering; Distance measures; Advanced methods</p></td>
+</tr>
+<tr class="row-odd"><td><p>Module 4 - Dimensionality reduction</p></td>
+<td><p>Linear algebra review (bases, eigendecomposition, etc.); Principal components analysis; LDA (higher dimensional); Revisiting expectation maximization; Factor analysis; Advanced methods</p></td>
+</tr>
+<tr class="row-even"><td><p>Module 5 - Neural networks</p></td>
+<td><p>Gradient descent/re-introduce optimization; Automatic differentiation; Backpropagation algorithm; Programming neural networks; Neural network loss functions and information theory</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="tentative-course-schedule-spring-2026">
+<h3>Tentative course schedule (Spring 2026)<a class="headerlink" href="#tentative-course-schedule-spring-2026" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Week</p></th>
+<th class="head"><p>Date</p></th>
+<th class="head"><p>Tues lecture</p></th>
+<th class="head"><p>Thurs lecture</p></th>
+<th class="head"><p>Notes</p></th>
+<th class="head"><p>Lecturer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Week 1</p></td>
+<td><p>1/20, 1/22</p></td>
+<td><p>1.1</p></td>
+<td><p>1.2</p></td>
+<td><p></p></td>
+<td><p>Mike</p></td>
+</tr>
+<tr class="row-odd"><td><p>Week 2</p></td>
+<td><p>1/27, 1/29</p></td>
+<td><p>1.3</p></td>
+<td><p>1.4</p></td>
+<td><p></p></td>
+<td><p>Mike</p></td>
+</tr>
+<tr class="row-even"><td><p>Week 3</p></td>
+<td><p>2/3, 2/5</p></td>
+<td><p>1.5</p></td>
+<td><p>1.6</p></td>
+<td><p></p></td>
+<td><p>Mike</p></td>
+</tr>
+<tr class="row-odd"><td><p>Week 4</p></td>
+<td><p>2/10, 2/13</p></td>
+<td><p>2.1</p></td>
+<td><p>2.2</p></td>
+<td><p>2/10: HW1 due &#64; noon</p></td>
+<td><p>Brian</p></td>
+</tr>
+<tr class="row-even"><td><p>Week 5</p></td>
+<td><p>2/19</p></td>
+<td><p>—</p></td>
+<td><p>2.3</p></td>
+<td><p></p></td>
+<td><p>Brian</p></td>
+</tr>
+<tr class="row-odd"><td><p>Week 6</p></td>
+<td><p>2/24, 2/26</p></td>
+<td><p>2.4</p></td>
+<td><p>2.5</p></td>
+<td><p></p></td>
+<td><p>Brian</p></td>
+</tr>
+<tr class="row-even"><td><p>Week 7</p></td>
+<td><p>3/3, 3/5</p></td>
+<td><p>3.1</p></td>
+<td><p>3.2</p></td>
+<td><p>3/3: HW2 due &#64; noon</p></td>
+<td><p>Mike</p></td>
+</tr>
+<tr class="row-odd"><td><p>Week 8</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>Spring Break</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Week 9</p></td>
+<td><p>3/17, 3/19</p></td>
+<td><p>3.3</p></td>
+<td><p>3.4</p></td>
+<td><p></p></td>
+<td><p>Mike</p></td>
+</tr>
+<tr class="row-odd"><td><p>Week 10</p></td>
+<td><p>3/24, 3/26</p></td>
+<td><p>3.5</p></td>
+<td><p>4.1</p></td>
+<td><p></p></td>
+<td><p>Mike/Brian</p></td>
+</tr>
+<tr class="row-even"><td><p>Week 11</p></td>
+<td><p>3/31, 4/2</p></td>
+<td><p>4.2</p></td>
+<td><p>4.3</p></td>
+<td><p>3/31: HW3 due &#64; noon</p></td>
+<td><p>Brian</p></td>
+</tr>
+<tr class="row-odd"><td><p>Week 12</p></td>
+<td><p>4/7, 4/9</p></td>
+<td><p>4.4</p></td>
+<td><p>4.5</p></td>
+<td><p></p></td>
+<td><p>Brian</p></td>
+</tr>
+<tr class="row-even"><td><p>Week 13</p></td>
+<td><p>4/14, 4/16</p></td>
+<td><p>4.6</p></td>
+<td><p>4.7</p></td>
+<td><p></p></td>
+<td><p>Brian</p></td>
+</tr>
+<tr class="row-odd"><td><p>Week 14</p></td>
+<td><p>4/21, 4/23</p></td>
+<td><p>5.1</p></td>
+<td><p>5.2</p></td>
+<td><p>4/21: HW4 due &#64; noon</p></td>
+<td><p>Brian</p></td>
+</tr>
+<tr class="row-even"><td><p>Week 15</p></td>
+<td><p>4/28, 4/30</p></td>
+<td><p>5.3</p></td>
+<td><p>review</p></td>
+<td><p></p></td>
+<td><p>Brian</p></td>
+</tr>
+<tr class="row-odd"><td><p>Week 16</p></td>
+<td><p>5/5</p></td>
+<td><p>Final Exam (3-5pm)</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="how-is-the-course-going-to-work">
+<h2>How is the course going to work?<a class="headerlink" href="#how-is-the-course-going-to-work" title="Link to this heading">#</a></h2>
+<p><strong>Prerequisites:</strong> BE 601 (Linear Algebra), or equivalent familiarity with linear algebra (e.g., linear systems of equations, eigendecomposition, bases, orthogonality, matrix decomposition, etc.), and BE 604 (Statistics &amp; Numerical Methods) or equivalent familiarity with probability and statistics (e.g., random variables, conditional and marginal probability, Bayes’ rule, etc.). ENG BE 500 (Programming Fundamentals for Biomedical Engineering Data Analysis with Python) or equivalent programming experience.</p>
+<p><strong>Grading &amp; exercises:</strong> Student grades will largely be determined by weekly coding/analysis assignments that will together comprise 50% of the course grade. The remaining 50% will be based on a final exam.</p>
+<p>Programming exercises are to be completed in Python using Google Colab notebooks. Course assignments will be distributed by Blackboard and solutions are to be submitted (in .ipynb format) electronically via GradeScope on or before the assigned due date. Collaboration on the homework is allowed (and encouraged!) but your submitted work must be your own (see below). The best way to fill out answers in google colab is to create a copy of the provided homework template (File &gt; Save Copy in Drive), and then use this copy to populate your answers to the questions.</p>
+<p><strong>Collaboration/plagiarism:</strong> Plagiarized assignments will be assigned a zero grade. Students found to have plagiarized assignments or provided their assignments to others may receive a failing grade in the course and/or a referral to the College of Engineering Academic Conduct Committee. Below is clarification about what IS and what IS NOT acceptable. If you are uncertain if actions are acceptable or unacceptable, please ask us!</p>
+<ul class="simple">
+<li><p><strong>DO:</strong> Verbally exchange tips and insights about coding, concepts from class, or anything else that is unclear. This could include looking at short segments of code together, discussing why certain solutions work, and debugging.</p></li>
+<li><p><strong>DON’T:</strong> <em>Electronically share code and other work with other students.</em> Copy and paste work of another student (even with variable names, etc. altered!). Copy and paste code from other sources (e.g StackOverflow) that you do not fully understand.</p></li>
+</ul>
+<p><strong>Policy for late work:</strong> For all homework assignments, scores will be reduced by 25% if turned in within one week of the scheduled due date. Scores will be reduced by 50% if turned in more than one week late.</p>
+<p><strong>Recitation and programming help:</strong> Recitations will cover questions from lecture, example problems from the week’s material, and introduce homework material. Then, there will be an optional programming help session where we will review basic programming concepts and provide support for those learning advanced programming packages (e.g., Tensorflow, PyTorch, SciPy, etc.).</p>
+<p><strong>Textbook:</strong> Pattern Recognition and Machine Learning (Bishop; PDF) and various other texts (all freely available in PDF form).</p>
+</section>
+<section id="source-material">
+<h2>Source material<a class="headerlink" href="#source-material" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><strong>Figure:</strong> Book covers and title pages: <em>Pattern Recognition and Machine Learning</em> (Christopher M. Bishop); <em>Beginning Statistics</em> (Schafer and Zhang, v. 1.0); <em>Introduction to Statistics</em>, Online Edition (primary author and editor David M. Lane); <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (Trevor Hastie, Robert Tibshirani, Jerome Friedman). A following slide overlays red text in a box: “These are all free as PDFs!”</p>
+</div></blockquote>
+</section>
+<section id="course-logistics-on-blackboard">
+<h2>Course logistics on Blackboard<a class="headerlink" href="#course-logistics-on-blackboard" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><strong>Figure:</strong> Screenshot of a Blackboard course home page (a course shown as “BE700 A2 Advanced Topics in Biomedical Engineering (Spring 2024)”, used as an example). Left menu: Home Page, Information, Textbooks, Lectures, Recitations, Homeworks, Tools. The main pane shows “My Announcements” (none in the last 7 days) and “My Tasks” (no tasks due).</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Figure:</strong> Same screenshot with a red arrow pointing at “Information”. The Information page lists “Course syllabus” with the note “Everything you need!”</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Figure:</strong> Same screenshot with a red arrow pointing at “Tools”. The Tools page shows the Gradescope logo with the text “This is where to turn your homework in!”</p>
+</div></blockquote>
+</section>
+<section id="intro-to-python">
+<h2>Intro to Python<a class="headerlink" href="#intro-to-python" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><strong>Figure:</strong> The Python logo above a terminal window. The command <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">pretty_print.py</span></code> prints a dictionary <code class="docutils literal notranslate"><span class="pre">{'num_list1':</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3],</span> <span class="pre">'num_list2':</span> <span class="pre">[3,</span> <span class="pre">4,</span> <span class="pre">5]}</span></code>, the tuple <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4)</span></code>, and <code class="docutils literal notranslate"><span class="pre">False</span> <span class="pre">True</span></code> (colored red and green).</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Figure:</strong> Screenshot of the Spyder IDE: file/outline tree on the left, a code editor (<a class="reference external" href="http://plugin.py">plugin.py</a>) in the center, a Variable Explorer on the upper right listing variables by name, type, size, and value, and a plots pane on the lower right showing a 3D surface plot and a polar bar chart.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Figure:</strong> Screenshot of a Jupyter notebook titled “Running Code”. Text explains that the notebook is an interactive environment for writing and running code, with sections “Code cells allow you to enter and run code” (run with Shift-Enter or the play button; example cells <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">10</span></code> and <code class="docutils literal notranslate"><span class="pre">print(a)</span></code> giving <code class="docutils literal notranslate"><span class="pre">10</span></code>; Alt-Enter runs the cell and inserts a new one below, Ctrl-Enter runs the cell and enters command mode) and “Managing the Kernel” (code runs in a separate process called the Kernel, which can be interrupted or restarted; example cell <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">time;</span> <span class="pre">time.sleep(10)</span></code>).</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Figure:</strong> Screenshot of a Google Colab “Welcome To Colaboratory” notebook, “Getting started” section. It explains that a Colab notebook is an interactive environment that lets you write and execute code. Example code cells: <code class="docutils literal notranslate"><span class="pre">seconds_in_a_day</span> <span class="pre">=</span> <span class="pre">24</span> <span class="pre">*</span> <span class="pre">60</span> <span class="pre">*</span> <span class="pre">60</span></code> giving <code class="docutils literal notranslate"><span class="pre">86400</span></code>, and <code class="docutils literal notranslate"><span class="pre">seconds_in_a_week</span> <span class="pre">=</span> <span class="pre">7</span> <span class="pre">*</span> <span class="pre">seconds_in_a_day</span></code> giving <code class="docutils literal notranslate"><span class="pre">604800</span></code>. The text notes that Colab notebooks combine executable code and rich text (images, HTML, LaTeX), are stored in Google Drive, and can be shared; Colab notebooks are Jupyter notebooks hosted by Colab.</p>
+</div></blockquote>
+<section id="coding-resources">
+<h3>Coding resources<a class="headerlink" href="#coding-resources" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Intro to colab notebooks</p>
+<ul>
+<li><p><a class="reference external" href="https://colab.research.google.com/">https://colab.research.google.com/</a></p></li>
+</ul>
+</li>
+<li><p>Intro to Python</p>
+<ul>
+<li><p><a class="reference external" href="https://colab.research.google.com/github/jckantor/CBE30338/blob/master/docs/01.02-Python-Basics.ipynb">https://colab.research.google.com/github/jckantor/CBE30338/blob/master/docs/01.02-Python-Basics.ipynb</a></p></li>
+</ul>
+</li>
+<li><p>Numpy for Matlab users</p>
+<ul>
+<li><p><a class="reference external" href="https://numpy.org/doc/stable/user/numpy-for-matlab-users.html">https://numpy.org/doc/stable/user/numpy-for-matlab-users.html</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="review-of-probability-and-statistics">
+<h2>Review of probability and statistics<a class="headerlink" href="#review-of-probability-and-statistics" title="Link to this heading">#</a></h2>
+<section id="module-1-statistics">
+<h3>Module 1: Statistics!<a class="headerlink" href="#module-1-statistics" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>Figure:</strong> Three memes comparing statistics and machine learning. (1) Scooby-Doo unmasking: a figure labeled “MACHINE LEARNING” is unmasked (“Let’s see who you really are!”) to reveal “STATISTICS”. (2) Two-panel “Drake” format: the top panel (rejecting) is labeled “Statistics”, the bottom (approving) is labeled “Machine learning”. (3) Four-panel comic: a person looks at a cracked “statistics” label, then puts it in a frame, then it is labeled “Machine Learning”, and finally the framed crack is labeled “Artificial intelligence” while the person presents it to a crowd.</p>
+</div></blockquote>
+<p>(The slides then repeat the module table, with the “First 6 Lectures” arrow pointing at Module 1.)</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Lecture1.1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lecture 1.1: Intro to Probability and Statistics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Lecture1.2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lecture 1.2: Statistics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-on-tap">What’s on tap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-be-559">What is BE 559?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modules-and-topics">Modules and topics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tentative-course-schedule-spring-2026">Tentative course schedule (Spring 2026)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-the-course-going-to-work">How is the course going to work?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-material">Source material</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#course-logistics-on-blackboard">Course logistics on Blackboard</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intro-to-python">Intro to Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-resources">Coding resources</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-probability-and-statistics">Review of probability and statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-1-statistics">Module 1: Statistics!</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

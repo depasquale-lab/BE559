@@ -1,0 +1,2171 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Homework 2: Regression and model fitting &#8212; BE 559</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'homework/HW2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module 3: Classification and clustering" href="../modules/module3.html" />
+    <link rel="prev" title="Module 2: Regression and model fitting" href="../modules/module2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">BE 559</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to BE 559
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/syllabus.html">Syllabus</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 1: Hypothesis testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module1.html">Module 1: Hypothesis testing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.1.html">Lecture 1.1: Intro to Probability and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.1-slides.html">Lecture 1.1a: Course Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.2.html">Lecture 1.2: Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.3.html">Lecture 1.3: Hypothesis Testing, P-Values, and Bayesian Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.4.html">Lecture 1.4: T-tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.5.html">Lecture 1.5: More Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture1.6.html">Lecture 1.6: Sampling-based Methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="HW1.html">Homework 1: Hypothesis testing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 2: Regression and model fitting</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module2.html">Module 2: Regression and model fitting</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Homework 2: Regression and model fitting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 3: Classification and clustering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/module3.html">Module 3: Classification and clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.1.html">Lecture 3.1: Classification and Discriminant Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.2.html">Lecture 3.2: From LDA to Probabilistic Classifiers and Naive Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.4.html">Lecture 3.4: Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lectures/Lecture3.5.html">Lecture 3.5: Gaussian Mixture Models and Expectation-Maximization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="HW3.html">Homework 3: Classification and clustering</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 4: Dimensionality reduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module4.html">Module 4: Dimensionality reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW4.html">Homework 4: Dimensionality reduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Module 5: Neural networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../modules/module5.html">Module 5: Neural networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HW5.html">Homework 5: Neural networks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/depasquale-lab/BE559/blob/main/homework/HW2.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/homework/HW2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Homework 2: Regression and model fitting</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-2-1-24-points">Homework 2.1 (24 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-2-points">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-2-points">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-2-points">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-2-points">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-2-points">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-2-points">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-2-points">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-2-points">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-2-points">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-2-points">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-2-points">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-2-points">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-2-2-20-points">Homework 2.2 (20 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-1-points">Part 1 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-1-points">Part 3 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-4-points">Part 4 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-4-points">Part 7 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part 9 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-2-3-42-points">Homework 2.3 (42 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Part 1 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-1-point">Part 6 (1 point)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Part 7 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-0-points">Part 8 (0 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-1-points">Part 9 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-1-points">Part 11 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-1-points">Part 12 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-13-1-points">Part 13 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-14-2-points">Part 14 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-15-2-points">Part 15 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-16-2-points">Part 16 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-17-2-points">Part 17 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-18-2-points">Part 18 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-19-2-points">Part 19 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-20-2-points">Part 20 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-21-2-points">Part 21 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-22-2-points">Part 22 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-23-2-points">Part 23 (2 points)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="homework-2-regression-and-model-fitting">
+<h1>Homework 2: Regression and model fitting<a class="headerlink" href="#homework-2-regression-and-model-fitting" title="Link to this heading">#</a></h1>
+<p>This assignment has 3 parts. Each part is graded as listed in its heading.</p>
+<section id="homework-2-1-24-points">
+<h2>Homework 2.1 (24 points)<a class="headerlink" href="#homework-2-1-24-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will lay a foundation for advanced machine learning concepts by exploiting the simplicity of linear regression. We will explore:</p>
+<ul class="simple">
+<li><p>More advanced python features (functions, list comprehensions)</p></li>
+<li><p>Basics of gradient descent optimization</p></li>
+<li><p>Fitting models to data</p></li>
+<li><p>Ordinary least squares (linear) regression</p></li>
+</ul>
+<hr class="docutils" />
+<p>Load the same libraries that we used in <em>Module 1</em>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+</ul>
+<p>Now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">'font.size'</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="part-1-2-points">
+<h3>Part 1 (2 points)<a class="headerlink" href="#part-1-2-points" title="Link to this heading">#</a></h3>
+<p>Data is usually handed to us, rarely with knowledge of the process that generated it. Generating synthetic data is a great way to understand model fitting, and also a great way to confirm that your model <strong>does what you expect it to do</strong>! For this exercise we are going to generate our own data, and then fit a model to it.</p>
+<p>Imagine you take one outdoor temperature reading every month of one year. Intuitively, you probably know that temperatures will rise in the summer, drop in the winter, and then rise again the following summer. A function that goes up and down and up and down is called….</p>
+<p>To generate your own data, follow these steps:</p>
+<ul class="simple">
+<li><p>use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace"><code class="docutils literal notranslate"><span class="pre">np.linspace</span></code></a>, to generate a set of 12 time indices and call it <code class="docutils literal notranslate"><span class="pre">x</span></code>. For simplicity have those indices range from 0 to 1 - <span class="math notranslate nohighlight">\(\frac{1}{12}\)</span> (subtract the <span class="math notranslate nohighlight">\(\frac{1}{12}\)</span> so the indices don’t loop back onto themself.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.sin</span></code> to create a set of 12 temperature measurements called <code class="docutils literal notranslate"><span class="pre">y</span></code>. Be sure to set the frequency to a period of 1 year.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>For plotting purposes, we want to sample time more densely. So create another time index array (call it <code class="docutils literal notranslate"><span class="pre">xplot</span></code>). Use <code class="docutils literal notranslate"><span class="pre">np.arange</span></code> to create a time index vector from 0 to 1 in steps of <code class="docutils literal notranslate"><span class="pre">0.01</span></code>.</p></li>
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">xplot</span></code> vs <code class="docutils literal notranslate"><span class="pre">np.sin(xplot)</span></code> (with appropriate frequency). It should look like you expect :)</p></li>
+<li><p>Label the <code class="docutils literal notranslate"><span class="pre">xlabel</span></code> with <code class="docutils literal notranslate"><span class="pre">month</span></code>, the <code class="docutils literal notranslate"><span class="pre">ylabel</span></code> with <code class="docutils literal notranslate"><span class="pre">Temperature</span></code>. Use <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.xticks.html"><code class="docutils literal notranslate"><span class="pre">plt.xticks</span></code></a> to re-label the xticks with the months starting from <code class="docutils literal notranslate"><span class="pre">April</span></code> and also rotate the labels so you can read them.</p></li>
+</ul>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5d59f3798649f8791dd8b598ef832094bfc437cc88f1e8f6d605a7244bef0bde.png" src="../_images/5d59f3798649f8791dd8b598ef832094bfc437cc88f1e8f6d605a7244bef0bde.png" />
+</div>
+</div>
+<p>To generate our real data, we want to add some noise to our <code class="docutils literal notranslate"><span class="pre">sin</span></code> function.</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.random.seed</span></code> and set the <code class="docutils literal notranslate"><span class="pre">seed=3</span></code>. This is so we all have the same random data.</p></li>
+<li><p>Add independent Gaussian noise with <code class="docutils literal notranslate"><span class="pre">std=0.15</span></code> to <code class="docutils literal notranslate"><span class="pre">y</span></code>. Call this noisy version of the <code class="docutils literal notranslate"><span class="pre">sin</span></code> function <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> <code class="docutils literal notranslate"><span class="pre">np.random.randn</span></code> draws noise with standard deviation 1, so it must be scaled by the desired <code class="docutils literal notranslate"><span class="pre">std</span></code>, and <code class="docutils literal notranslate"><span class="pre">np.random.seed</span></code> only affects draws made after it is called. Code that draws the noise before seeding, or that never scales it, runs without error but gives data that differs from everyone else’s and from the plot shown.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now plot <code class="docutils literal notranslate"><span class="pre">t</span></code> alongside our <code class="docutils literal notranslate"><span class="pre">sin</span></code> function (at the <code class="docutils literal notranslate"><span class="pre">xplot</span></code> spacing)</p>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/88a2c267a7abc887cf4028ff62dc766c37807c396fcbe08dce7d6bf6e1d58cb2.png" src="../_images/88a2c267a7abc887cf4028ff62dc766c37807c396fcbe08dce7d6bf6e1d58cb2.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-2-2-points">
+<h3>Part 2 (2 points)<a class="headerlink" href="#part-2-2-points" title="Link to this heading">#</a></h3>
+<p>We are going to take this opportunity to expand some of our python skills. We are going to work a bit more with <a class="reference external" href="https://wiki.python.org/moin/ForLoop">for loops</a>, <a class="reference external" href="https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions">list comprehensions</a>, and <a class="reference external" href="https://docs.python.org/3/tutorial/controlflow.html#defining-functions">functions</a>.</p>
+<p>We are going to work with this functionality within the context of a walkthrough of linear regression. This assignment will have you approximate the data we just generated above with linear combinations of polynomial functions. This is typically referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/Polynomial_regression">polynomial regression</a>, which might seem like a nonlinear analysis (because we will be using higher-order polynomials) but is in fact linear because we <em>linearly</em> combine these nonlinear functions to predict the dependent variable <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<p>To prepare us to perform this regression, we have to get comfortable computing polynomial powers of <code class="docutils literal notranslate"><span class="pre">x</span></code>, our independent variable.</p>
+<ul class="simple">
+<li><p>Write a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop that creates a list in which each entry is a float equal to the <strong>second order</strong> polynomial (i.e. <span class="math notranslate nohighlight">\((\cdot)^2\)</span>) of <code class="docutils literal notranslate"><span class="pre">x</span></code> (NOTE: <em>NOT</em> <code class="docutils literal notranslate"><span class="pre">xplot</span></code>). Check the documentation for dealing with <a class="reference external" href="https://docs.python.org/3/tutorial/datastructures.html#more-on-lists"><code class="docutils literal notranslate"><span class="pre">lists</span></code></a>.</p></li>
+<li><p>Achieve the same goal by exloiting the vectorized functionality of numpy arrays. In other words, do you actually need to apply the squaring operation element by element, or is there a simplier way?</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">==</span></code> expression to verify you get the same result either way you do it.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now</p>
+<ul class="simple">
+<li><p>Write a <strong>nested</strong> <code class="docutils literal notranslate"><span class="pre">for</span></code> loop that creates a <strong>list of lists</strong> (🤯), in which each entry is a list of up to the n-th polynomial values of <code class="docutils literal notranslate"><span class="pre">x</span></code>, for orders 0 to 9.</p></li>
+<li><p>Achieve the same goal with a <a class="reference external" href="https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions">list comprehension</a>.</p></li>
+<li><p>Confirm that they are equal using <code class="docutils literal notranslate"><span class="pre">np.array_equal</span></code>. (See <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.array_equal.html">man page</a>)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-3-2-points">
+<h3>Part 3 (2 points)<a class="headerlink" href="#part-3-2-points" title="Link to this heading">#</a></h3>
+<p>Functions make our lives much easier. When we write code that we use over and over again (as we are about to do) functions allow us to reuse the functionality we’ve written. We discussed the syntax of functions in lecture; if you need a reminder see: <a class="reference external" href="https://docs.python.org/3/tutorial/controlflow.html#defining-functions"><code class="docutils literal notranslate"><span class="pre">functions</span></code></a>. Keep in mind that scoping is <em>NOT</em> the same in python as it is in matlab: see <a class="reference external" href="https://www.datacamp.com/tutorial/scope-of-variables-python">here</a>.</p>
+<ul class="simple">
+<li><p>Write a function that takes <code class="docutils literal notranslate"><span class="pre">x</span></code> as an input and returns all polynomials up to order 9 of each entry of <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p></li>
+<li><p>Execute the function to illustrate that it works. The output should be shape <span class="math notranslate nohighlight">\(10 \times 12\)</span>, so show that it is. (It is of dimension 10 becuase we are up to the 9-th order polynomial, and we are including the 0-th order.)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-4-2-points">
+<h3>Part 4 (2 points)<a class="headerlink" href="#part-4-2-points" title="Link to this heading">#</a></h3>
+<p>Recall that to model our data <code class="docutils literal notranslate"><span class="pre">t</span></code> with linear regression, we assume that a linear combination of polynomials will approximately equal our data: $<span class="math notranslate nohighlight">\(t_i \approx bX_i,\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(t_i\)</span> is the i-th data point, <span class="math notranslate nohighlight">\(b\)</span> is a <span class="math notranslate nohighlight">\(n\)</span>-dimension array and <span class="math notranslate nohighlight">\(X_i\)</span> is a <span class="math notranslate nohighlight">\(n\)</span>-dimensional array of the i-th datapoint of <code class="docutils literal notranslate"><span class="pre">x</span></code> to polynomials up to power <span class="math notranslate nohighlight">\(n-1\)</span>.</p>
+<p>To fit this model, we will have to use some more advanced linear algebra in python than we have been using. We’ll first start with the dot product between <code class="docutils literal notranslate"><span class="pre">b</span></code> and <code class="docutils literal notranslate"><span class="pre">X_i</span></code>.</p>
+<ul class="simple">
+<li><p>Create an array of <code class="docutils literal notranslate"><span class="pre">n</span></code> coefficients of Gaussian random variables with <code class="docutils literal notranslate"><span class="pre">std=0.01</span></code>. Call this array <code class="docutils literal notranslate"><span class="pre">b0</span></code>. Don’t worry that its random; we are going to optimize our model soon, so it doesn’t matter what the entries are.</p></li>
+<li><p>Write a function that takes <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> as an input and returns the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html">dot product</a> of <code class="docutils literal notranslate"><span class="pre">b</span></code> with a matrix of all <code class="docutils literal notranslate"><span class="pre">x</span></code> values raised to polynomials of order <span class="math notranslate nohighlight">\(n - 1 = 9\)</span>. This function should use the function you defined previously for computing polynomial powers of <code class="docutils literal notranslate"><span class="pre">x</span></code>. The output should be of dimension 12 (for all 12 datapoints), so show that it is.</p></li>
+</ul>
+<p>Recall that with linear regression, we want to find the <span class="math notranslate nohighlight">\(b\)</span> the minimizes the sum of the squares of the difference between <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(bX\)</span>:  $<span class="math notranslate nohighlight">\(J = \frac{1}{2}||t - bX||^2.\)</span><span class="math notranslate nohighlight">\( \)</span>J$ is typically referred to as an ‘objective function’. (We will discuss later in this module why we use this particular critera for the objective function. For now just take it on faith that this is a good idea.)</p>
+<ul class="simple">
+<li><p>Write a function that computes the sum of the squared difference between the <span class="math notranslate nohighlight">\(bX\)</span> and our data <span class="math notranslate nohighlight">\(t\)</span>. This function should call the function you wrote previously for computing the dot product <span class="math notranslate nohighlight">\(bX\)</span>.</p></li>
+<li><p>Confirm that it returns a scalar value</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-5-2-points">
+<h3>Part 5 (2 points)<a class="headerlink" href="#part-5-2-points" title="Link to this heading">#</a></h3>
+<p>To compute the <span class="math notranslate nohighlight">\(b\)</span> that minimizes our objective function we are going to perform <a class="reference external" href="https://en.wikipedia.org/wiki/Gradient_descent">gradient descent</a>. To do this, we need to compute the gradient of our objective function with respect to <span class="math notranslate nohighlight">\(b\)</span>: <span class="math notranslate nohighlight">\(\frac{\partial J}{\partial b}\)</span>.</p>
+<ul class="simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(\frac{\partial J}{\partial b}\)</span> by hand. You don’t need to show your work (unless you want to) because you will need to eventually code this up in python.</p></li>
+<li><p>You may notice that your solution for <span class="math notranslate nohighlight">\(\frac{\partial J}{\partial b}\)</span> has some complicated linear algebra operations. Here’s a little practice for coding it up: compute the matrix product of <code class="docutils literal notranslate"><span class="pre">n-1</span></code> order polymials of <code class="docutils literal notranslate"><span class="pre">x</span></code> with its transpose and confirm it is of dimension <span class="math notranslate nohighlight">\(n \times n\)</span>.</p></li>
+<li><p>Once you have computed <span class="math notranslate nohighlight">\(\frac{\partial J}{\partial b}\)</span> by hand, write a python function that computes the gradient of our objective function given <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(b\)</span>.</p></li>
+<li><p>Confirm that it returns of vector of dimension <code class="docutils literal notranslate"><span class="pre">n</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-6-2-points">
+<h3>Part 6 (2 points)<a class="headerlink" href="#part-6-2-points" title="Link to this heading">#</a></h3>
+<p>Now that we have python functions for our objective function and our gradient, we are ready to optimize <span class="math notranslate nohighlight">\(b\)</span>. Recall that the expression for gradient descent is: $<span class="math notranslate nohighlight">\(b_i = b_{i-1} - \alpha \frac{\partial J(t, x, b_{i-1})}{\partial b_{i-1}}.\)</span>$</p>
+<ul class="simple">
+<li><p>Write a for loop to perform gradient descent. Use a step size of <span class="math notranslate nohighlight">\(\alpha = 0.1\)</span>. Take <code class="docutils literal notranslate"><span class="pre">20_000</span></code> gradient steps. Recall that we set the initial value of <code class="docutils literal notranslate"><span class="pre">b</span></code> above.</p></li>
+<li><p>Compute the value of the objective at each iteration. Once your for loop is complete, plot the values of <span class="math notranslate nohighlight">\(J\)</span> over the descent. As you might expect, it should go down: i.e. the difference between <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(bX\)</span> is getting smaller as we find a better <span class="math notranslate nohighlight">\(b\)</span>. Label your axes with something logical.</p></li>
+</ul>
+<p>🚩 <strong>Common mistake:</strong> if you start with <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">b0</span></code> and then update <code class="docutils literal notranslate"><span class="pre">b</span></code> in place (e.g. <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">-=</span> <span class="pre">alpha</span> <span class="pre">*</span> <span class="pre">grad</span></code>), NumPy modifies <code class="docutils literal notranslate"><span class="pre">b0</span></code> too, because both names refer to the same array. Later parts that reuse <code class="docutils literal notranslate"><span class="pre">b0</span></code> as the starting point then silently begin from the already-optimized values; use <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">b0.copy()</span></code>.</p>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3db8962f139b5e7062493235b8aa2dcac1add1f72b9a8f16d3a5f5809a552f80.png" src="../_images/3db8962f139b5e7062493235b8aa2dcac1add1f72b9a8f16d3a5f5809a552f80.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-7-2-points">
+<h3>Part 7 (2 points)<a class="headerlink" href="#part-7-2-points" title="Link to this heading">#</a></h3>
+<p>Unlike more complicated models that we will get to later, linear regression is one of the most well-studied models, with strong guarantees regarding its optimization AND analytic forms for the minimizer.</p>
+<ul class="simple">
+<li><p>The analytic solution can be solved on paper and pencil by solving when <span class="math notranslate nohighlight">\(\frac{\partial J}{\partial b} = 0\)</span>. Compute this by hand. You don’t need to show your work because you have to code it in python anyway.</p></li>
+<li><p>Compute the closed form solution of OLS in python. <a class="reference external" href="https://numpy.org/doc/stable/reference/routines.linalg.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg</span></code></a> is your friend; be sure to import is as <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">numpy.linalg</span> <span class="pre">as</span> <span class="pre">linalg</span></code>.</p></li>
+<li><p>Plot the analytic solution as a line against the steps of gradient descent.</p></li>
+</ul>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/dc34eef875f923b7f0c32e982cba88c66fc0ecf5b7be74c94a3351caac269254.png" src="../_images/dc34eef875f923b7f0c32e982cba88c66fc0ecf5b7be74c94a3351caac269254.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-8-2-points">
+<h3>Part 8 (2 points)<a class="headerlink" href="#part-8-2-points" title="Link to this heading">#</a></h3>
+<p>One of the amazing things about python (and other open source languages) is the rich ecosystem of packages. These packages help us so we don’t have to reinvent the wheel everytime we do an analysis. (Although, in this case, we wanted you all to do it from the ground up to learn something!)</p>
+<p>Within the <code class="docutils literal notranslate"><span class="pre">linalg</span></code> submodule of <code class="docutils literal notranslate"><span class="pre">numpy</span></code> there is a function called <code class="docutils literal notranslate"><span class="pre">lstsq</span></code> for performing least squares regression. Check the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.lstsq.html">documentation</a> about how to use it.</p>
+<ul class="simple">
+<li><p>Perform regression using <code class="docutils literal notranslate"><span class="pre">lstsq</span></code>.</p></li>
+<li><p>Plot the solution from <code class="docutils literal notranslate"><span class="pre">lstsq</span></code> as a line against the steps of gradient descent.</p></li>
+</ul>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/dc34eef875f923b7f0c32e982cba88c66fc0ecf5b7be74c94a3351caac269254.png" src="../_images/dc34eef875f923b7f0c32e982cba88c66fc0ecf5b7be74c94a3351caac269254.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-9-2-points">
+<h3>Part 9 (2 points)<a class="headerlink" href="#part-9-2-points" title="Link to this heading">#</a></h3>
+<p>Now that we’ve computed the optimal <span class="math notranslate nohighlight">\(b\)</span> three ways, let’s take a look at what it produces.</p>
+<p>Plot:</p>
+<ul class="simple">
+<li><p>the data we used to fit the model, i.e. <code class="docutils literal notranslate"><span class="pre">t</span></code> and <code class="docutils literal notranslate"><span class="pre">x</span></code> as <strong>dots</strong>.</p></li>
+<li><p>the true underlying function <code class="docutils literal notranslate"><span class="pre">sin()</span></code> at the resolution of the <code class="docutils literal notranslate"><span class="pre">xplot</span></code> indices as a <strong>green line</strong>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(bX\)</span> from our gradient descent solution, at <code class="docutils literal notranslate"><span class="pre">xplot</span></code> resolution as a <strong>blue line</strong>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(bX\)</span> from our analytic solution at <code class="docutils literal notranslate"><span class="pre">xplot</span></code> resolution as a <strong>cyan line</strong>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(bX\)</span> from our <code class="docutils literal notranslate"><span class="pre">lstsq</span></code> solution at <code class="docutils literal notranslate"><span class="pre">xplot</span></code> resolution as a <strong>red dotted line</strong>.</p></li>
+<li><p>Be sure to label your axes as we did above.</p></li>
+<li><p>Add a legend to keep the different lines clear.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> Describe the most prominent feature of the closed form and regression solution. (For the time being ignore anything you might notice about the gradient descent solution.) In what way is it qualitatively different than the <code class="docutils literal notranslate"><span class="pre">sin</span></code> function used to generate the data?</p>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/564251a93f6af60adf074543cf97bee5547a7d44afde53dbac3efef496079f76.png" src="../_images/564251a93f6af60adf074543cf97bee5547a7d44afde53dbac3efef496079f76.png" />
+</div>
+</div>
+<p>To get a clearer picture how the sum of these polynomial functions produce an approximation to the <code class="docutils literal notranslate"><span class="pre">sin</span></code> function, plot some sums of the polynomials, increaseing from only the 0-th order entry, the 0-th and 1-st, etc. Plot the 0-th order only, 0-th through 3-rd order, and 0-th through 6-th order. Plot them in different colors so you can distinguish them, and also plot the data, and include a legend. Use the gradient descent least squares solution.</p>
+<p><strong>You should notice that as we add higher order polynomails, we get closer to the data</strong>.</p>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5b0742373b1c98ce42862c530bf3af807f5e73e01ef960d143b8cb15896bbb96.png" src="../_images/5b0742373b1c98ce42862c530bf3af807f5e73e01ef960d143b8cb15896bbb96.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-10-2-points">
+<h3>Part 10 (2 points)<a class="headerlink" href="#part-10-2-points" title="Link to this heading">#</a></h3>
+<p>Why did we select the learning rate for gradient descent to be what we did? Let’s explore! Perform gradient descent again with a learning rate <code class="docutils literal notranslate"><span class="pre">100</span></code> times smaller. (See the power of writing functions now!??!)</p>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice that is different compared to the larger learning rate?</p>
+<p>Plot the objective function across gradient iterations, as above, for both learning rates.</p>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6bb00aeedda5d029b57c93bbe8274de9710dfa0dafde663f581615ee8cd47938.png" src="../_images/6bb00aeedda5d029b57c93bbe8274de9710dfa0dafde663f581615ee8cd47938.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-11-2-points">
+<h3>Part 11 (2 points)<a class="headerlink" href="#part-11-2-points" title="Link to this heading">#</a></h3>
+<p>Perform gradient descent (<span class="math notranslate nohighlight">\(\alpha = 0.1\)</span>), solve for the analytic form of ordinary least squares, and perform regression using <code class="docutils literal notranslate"><span class="pre">lstsq</span></code> <strong>AGAIN</strong> but this time, with polynomials up to order 3. (Note that you will have to reinitialize <span class="math notranslate nohighlight">\(b\)</span>, and change the number of coefficients in it.)</p>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice that is different compared to using polynomials up to order 9? This is an example of something we will discuss extensively throughout the rest of the module and is a critical concept in more advanced machine learning methods.</p>
+<p>Plot the results of all three solutions for up to order 3 polynomial approximation, like we did above.</p>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6b205fbc62a1e70036e85c3e3ab02d11edec0b6541729ba7747a09f5171a83a0.png" src="../_images/6b205fbc62a1e70036e85c3e3ab02d11edec0b6541729ba7747a09f5171a83a0.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-12-2-points">
+<h3>Part 12 (2 points)<a class="headerlink" href="#part-12-2-points" title="Link to this heading">#</a></h3>
+<p>Now, perform gradient descent (<span class="math notranslate nohighlight">\(\alpha = 0.01\)</span>), solve for the analytic form of ordinary least squares, and perform regression using <code class="docutils literal notranslate"><span class="pre">lstsq</span></code> <strong>AGAIN</strong> with polynomials up to order 9, <strong>BUT</strong> with the data at <code class="docutils literal notranslate"><span class="pre">xplot</span></code> resolution.(Note that you will have to reinitialize <span class="math notranslate nohighlight">\(b\)</span>, and change the number of coefficients in it.)</p>
+<p><strong>NOTE</strong>: You have to regenerate <span class="math notranslate nohighlight">\(t\)</span> for the case when we have more data. Use <code class="docutils literal notranslate"><span class="pre">seed=3</span></code> again and generate the <strong>noisy</strong> data just as we did before.</p>
+<p><strong>Notice</strong> that we are now using 100 datapoints (10 times as many)!</p>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice that is different compared to using only 10 datapoints, when using polynomials up to order 9? This is also an example of something we will discuss extensively throughout the rest of the module and is a critical concept in more advanced machine learning methods.</p>
+<p>Plot the results of all three solutions like we did above.</p>
+<p>Your plot should look like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/351beb1f4424df8fd7f7f16d797de6613827f6d13f9ebf7bcd5a68ecd1401f7f.png" src="../_images/351beb1f4424df8fd7f7f16d797de6613827f6d13f9ebf7bcd5a68ecd1401f7f.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p>## Final thoughts</p>
+<p>We increased and decreased the number of polynomials we used to fit our model AND we increased and decreased the amount of data, and we saw different results that depended on these choices. Guess, if you can, how these things are related to each other in this model. Comment on outcomes with varying amounts of data and polynomials in the fit and how these two factors relate to each other.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="homework-2-2-20-points">
+<h2>Homework 2.2 (20 points)<a class="headerlink" href="#homework-2-2-20-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will:</p>
+<ul class="simple">
+<li><p>Continue to exercise our skills in more advanced python features (functions, list comprehensions)</p></li>
+<li><p>Fit models to data with regularized least squares regression</p></li>
+<li><p>Perform cross-validation to find the best predictive model</p></li>
+<li><p>Analyze how cross-validation performance changes with model complexity, and how model complexity can be controlled by regularization</p></li>
+</ul>
+<hr class="docutils" />
+<p>Load the same libraries that we used in <em>Assignment 2.1</em>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+</ul>
+<p>Now is also a good time to set the default font size to 16.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">'font.size'</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="part-1-1-points">
+<h3>Part 1 (1 points)<a class="headerlink" href="#part-1-1-points" title="Link to this heading">#</a></h3>
+<p>Regenerate our <code class="docutils literal notranslate"><span class="pre">sin</span></code> data from assisgnemtn 2.1:</p>
+<ul class="simple">
+<li><p>use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace"><code class="docutils literal notranslate"><span class="pre">np.linspace</span></code></a>, to generate a set of 12 time indices and call it <code class="docutils literal notranslate"><span class="pre">x</span></code>. For simplicity have those indices range from 0 to 1 - <span class="math notranslate nohighlight">\(\frac{1}{12}\)</span> (subtract the <span class="math notranslate nohighlight">\(\frac{1}{12}\)</span> so the indices don’t loop back onto themself.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.sin</span></code> to create a set of 12 temperature measurements called <code class="docutils literal notranslate"><span class="pre">y</span></code>. Be sure to set the frequency to a period of 1 year.</p></li>
+<li><p>For plotting purposes, we want to sample time more densely. So create another time index array (call it <code class="docutils literal notranslate"><span class="pre">xplot</span></code>). Use np.arange to create a time index vector from 0 to 1 in steps of 0.01.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">np.random.seed</span></code> and set the <code class="docutils literal notranslate"><span class="pre">seed=3</span></code>. This is so we all have the same random data.</p></li>
+<li><p>Add independent Gaussian noise with <code class="docutils literal notranslate"><span class="pre">std=0.25</span></code> to <code class="docutils literal notranslate"><span class="pre">y</span></code>. Call this noisy version of the <code class="docutils literal notranslate"><span class="pre">sin</span></code> function <code class="docutils literal notranslate"><span class="pre">t</span></code>. NOTE THE LARGER STD.</p></li>
+<li><p>Plot xplot vs np.sin(xplot) (with appropriate frequency). It should look like you expect :)</p></li>
+<li><p>Label the xlabel with month, the ylabel with Temperature. Use plt.xticks to re-label the xticks with the months starting from April and also rotate the labels so you can read them.</p></li>
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">t</span></code> alongside our <code class="docutils literal notranslate"><span class="pre">sin</span></code> function (at the <code class="docutils literal notranslate"><span class="pre">xplot</span></code> spacing)</p></li>
+</ul>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/19996fa66f822d9c7af9bd29f9093ddba5c484e9a37432a8ed9b7d5112c39ef6.png" src="../_images/19996fa66f822d9c7af9bd29f9093ddba5c484e9a37432a8ed9b7d5112c39ef6.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id1">
+<h3>Part 2 (2 points)<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Regenerate several of our helpful functions from assignment 2.1.</p>
+<ul class="simple">
+<li><p>Write a function that takes <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span></code> as an input and returns all polynomials up to order <code class="docutils literal notranslate"><span class="pre">n-1</span></code> of each entry of <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p></li>
+<li><p>Write a function that takes <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> as an input and returns the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html">dot product</a> of <code class="docutils literal notranslate"><span class="pre">b</span></code> with a matrix of all <code class="docutils literal notranslate"><span class="pre">x</span></code> values raised to polynomials of order <span class="math notranslate nohighlight">\(n - 1\)</span>. This function should use the function you defined previously for computing polynomial powers of <code class="docutils literal notranslate"><span class="pre">x</span></code>. The output should be of dimension 12 (for all 12 datapoints).</p></li>
+<li><p>Write a function that computes the squared difference between the <span class="math notranslate nohighlight">\(bX\)</span> and our data <span class="math notranslate nohighlight">\(t\)</span> (i.e., our objective function). This function should call the function you wrote previously for computing the dot product <span class="math notranslate nohighlight">\(bX\)</span>.</p></li>
+<li><p>Write a function that computes the analytic solution for ordinary least squares. <a class="reference external" href="https://numpy.org/doc/stable/reference/routines.linalg.html"><code class="docutils literal notranslate"><span class="pre">numpy.linalg</span></code></a> is your friend; be sure to import is as <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">numpy.linalg</span> <span class="pre">as</span> <span class="pre">linalg</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-3-1-points">
+<h3>Part 3 (1 points)<a class="headerlink" href="#part-3-1-points" title="Link to this heading">#</a></h3>
+<p>To perform cross-validation we need data for training the model, and then <strong>new</strong> data to test the model. Generate a new dataset called <code class="docutils literal notranslate"><span class="pre">ttest</span></code> by adding new random noise to <code class="docutils literal notranslate"><span class="pre">y</span></code>. Use <code class="docutils literal notranslate"><span class="pre">seed=4</span></code>.</p>
+<p>🚩 <strong>Common mistake:</strong> <code class="docutils literal notranslate"><span class="pre">ttest</span></code> should be the noiseless <code class="docutils literal notranslate"><span class="pre">y</span></code> plus new noise, not <code class="docutils literal notranslate"><span class="pre">t</span></code> plus noise. Adding to <code class="docutils literal notranslate"><span class="pre">t</span></code> gives test data carrying both noise draws (larger variance), and the test error will come out wrong without any error message.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-4-4-points">
+<h3>Part 4 (4 points)<a class="headerlink" href="#part-4-4-points" title="Link to this heading">#</a></h3>
+<p>In assignment 2.1, we began to see the signs of overfitting: overly complex models will fit the training data <strong>too</strong> well. Let’s explore this more quantitatively.</p>
+<ul class="simple">
+<li><p>Using a list comprehension and your function for the analytic least squares solution, compute the set of coefficients (i.e., <code class="docutils literal notranslate"><span class="pre">b</span></code>) that minimizes our objective function over a range of models that use polynomials ranging from only the 0-th order polynomial, to a model that includes up to the 9-th order polynomial of <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p></li>
+<li><p>Using a list comprehension and your function for the value of the objective function, compute the model error over the training data, for all your models.</p></li>
+<li><p>Using a list comprehension and your function for the value of the objective function, compute the model error over the <strong>test</strong> data, for all your models.</p></li>
+<li><p>Plot the training (in red) and test (in blue) error as a function of model complexity. Labels the axes and include a legend.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice about the falloff in error for the training data, and for the testing data, respectively?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7df42e14e1d2276a7dad69ddd76a88624882fc1083eef736a3361c5df570cdf1.png" src="../_images/7df42e14e1d2276a7dad69ddd76a88624882fc1083eef736a3361c5df570cdf1.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id2">
+<h3>Part 5 (2 points)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Let’s take a look at the different models we fit, depending on the error of the model.</p>
+<ul class="simple">
+<li><p>Use two subplots.</p></li>
+<li><p>In the left subplot, plot the training data (with black dots) and the model that minimizes the training error (in red) and the testing error (in cyan).</p></li>
+<li><p>In the right subplot, plot the test data (with blue x’s) and the model that minimizes the training error (in red) and the testing error (in cyan).</p></li>
+<li><p>Labels the axes and include a legend.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice about the different model fits when comparing them against the training data and the testing data, respectively?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ff8aeee15e5296d2f620e4a4875b3a4a9020bb0ea9425e84c3df3a3e829f9176.png" src="../_images/ff8aeee15e5296d2f620e4a4875b3a4a9020bb0ea9425e84c3df3a3e829f9176.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3>Part 6 (2 points)<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Above, we have shown that testing error will increase if our model is too complex. This means that we are not doing as good a job predicting new data as we could with a simpler model. In lecture, we discussed how regularization can maintain model simplicity while still predicting the data.</p>
+<p>Recall that the regularized least sqaures objective function is: $<span class="math notranslate nohighlight">\(J = \frac{1}{2}||t - bX||^2 + \frac{\lambda}{2}||b||^2,\)</span><span class="math notranslate nohighlight">\( where \)</span>\lambda$ is a parameter that controls how strong the regularizing term is.</p>
+<p>In class, we analyticaly computed the value of <span class="math notranslate nohighlight">\(b\)</span> that minimizes this objective function. Write a python function that computes <span class="math notranslate nohighlight">\(b\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-7-4-points">
+<h3>Part 7 (4 points)<a class="headerlink" href="#part-7-4-points" title="Link to this heading">#</a></h3>
+<p>Recall from lecture that in order to pick the value of <span class="math notranslate nohighlight">\(\lambda\)</span> that finds the simplest model, we have to scan over values of <span class="math notranslate nohighlight">\(\lambda\)</span> and find the one that minimzes the test error.</p>
+<ul class="simple">
+<li><p>Using a list comprehension and your function for the <strong>regularized</strong> analytic least squares solution, compute the set of coffeficients (i.e., <code class="docutils literal notranslate"><span class="pre">b</span></code>) that minimizes our objective function over a range of models that use values of <span class="math notranslate nohighlight">\(\lambda\)</span> that range from <span class="math notranslate nohighlight">\(10^{-14}\)</span> to <span class="math notranslate nohighlight">\(10^{13}\)</span>.</p></li>
+<li><p>Using a list comprehension and your function for the value of the objective function, compute the model error over the training data, for all models with different values of <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p>Using a list comprehension and your function for the value of the objective function, compute the model error over the <strong>test</strong> data, for all models with different values of <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p>Plot the training (in red) and test (in blue) error as a function of <span class="math notranslate nohighlight">\(log_{10}(\lambda)\)</span>. Labels the axes and include a legend.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice about the falloff in error for the training data, and for the testing data, respectively?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/05fcfdb5b417441b4da1e0debbfe2bc4a372e29abdefaf67269d1960213eb04c.png" src="../_images/05fcfdb5b417441b4da1e0debbfe2bc4a372e29abdefaf67269d1960213eb04c.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>Part 8 (2 points)<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Let’s take a look at the different models we fit, depending on the error of the model.</p>
+<ul class="simple">
+<li><p>Use two subplots.</p></li>
+<li><p>In the left subplot, plot the training data (with black dots), the model that minimizes the training error (in red), the model that minimizes the testing error (in cyan), and the model with the largest value of <span class="math notranslate nohighlight">\(\lambda\)</span> (i.e, in the most regularized model; in green).</p></li>
+<li><p>In the right subplot, plot the test data (with blue x’s) and the model that minimizes the training error (in red), the model that minimizes the testing error (in cyan), and the model with the largest value of <span class="math notranslate nohighlight">\(\lambda\)</span> (i.e, in the most regularized model; in green).</p></li>
+<li><p>Labels the axes and include a legend.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice about the models fits for the training data and the testing data, respectively? What do you notice about the most regularized model?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/65f6e8dcbb588e91313772aebdfdf25eed1074a32cd06f580928478b79344f0f.png" src="../_images/65f6e8dcbb588e91313772aebdfdf25eed1074a32cd06f580928478b79344f0f.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3>Part 9 (2 points)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>What is regularization doing? One way to see this is to examine the coefficients of <span class="math notranslate nohighlight">\(b\)</span> for each model.</p>
+<ul class="simple">
+<li><p>Plot the <span class="math notranslate nohighlight">\(b\)</span> weight values (polynomial order on the x-axis, log-scaled value on the y axis) for the following 3 models: the model that minimizes the training error (in red), the model that minimizes the test error (in cyan), and the model with the largest value of <span class="math notranslate nohighlight">\(\lambda\)</span> (i.e, in the most regularized model; in green).</p></li>
+<li><p>Labels the axes and include a legend.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice about the model that best fits the training data? What about the one that best fits the testing data? What do you notice about the most regularized model?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b495a6d5507070d81fbc6f5ff1f30170051864c5cbdf3a80a8c7fd485483d5ba.png" src="../_images/b495a6d5507070d81fbc6f5ff1f30170051864c5cbdf3a80a8c7fd485483d5ba.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="homework-2-3-42-points">
+<h2>Homework 2.3 (42 points)<a class="headerlink" href="#homework-2-3-42-points" title="Link to this heading">#</a></h2>
+<p><strong>Learning objectives:</strong></p>
+<p>In this assignment, we will:</p>
+<ul class="simple">
+<li><p>Continue to strengthen our understanding of gradient descent, especially how regularization influences our gradient updates.</p></li>
+<li><p>Take a quick crash course through python objects, methods, and attributes, so that we can use scikit-learn.</p></li>
+<li><p>Fit ridge regression, lasso, and logistic regression with scikit-learn!</p></li>
+</ul>
+<hr class="docutils" />
+<p>Load the libraries we’ve been using, and set the default font size to 16.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> (as <code class="docutils literal notranslate"><span class="pre">np</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot</span></code> (as <code class="docutils literal notranslate"><span class="pre">plt</span></code>)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">'font.size'</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="id6">
+<h3>Part 1 (1 points)<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>We are going to dig in to one more gradient descent example, this time for case in which we do ridge regression, to hopefully get a better feel for what the regularization term in ridge is doing.</p>
+<p>Let’s generate some synthetic data, like in our homework, but much simplier. Actually, we are going to follow the exact same example as in the <a class="reference external" href="https://colab.research.google.com/drive/10WUSP0aq3CaiUXYuYcqXFnV7Tar1q6P0?usp=sharing">gradient descent tutorial</a> that was posted last week.</p>
+<ul class="simple">
+<li><p>use <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace"><code class="docutils literal notranslate"><span class="pre">np.linspace</span></code></a>, to generate a set of <code class="docutils literal notranslate"><span class="pre">x</span></code> 100 values from -5 to 5.</p></li>
+<li><p>Define a parameter <code class="docutils literal notranslate"><span class="pre">bstar=2</span></code> that we want to use to generate data, and that we will try to find using least squares.</p></li>
+<li><p>Create a set of <code class="docutils literal notranslate"><span class="pre">y</span></code> values such that <code class="docutils literal notranslate"><span class="pre">y=bstar*x</span></code>.</p></li>
+<li><p>Add independent Gaussian noise with <code class="docutils literal notranslate"><span class="pre">std=1</span></code> to <code class="docutils literal notranslate"><span class="pre">y</span></code>. Call this noisy version <code class="docutils literal notranslate"><span class="pre">t</span></code>. Use <code class="docutils literal notranslate"><span class="pre">np.random.seed</span></code> and set the <code class="docutils literal notranslate"><span class="pre">seed=3</span></code>. This is so we all have the same random data.</p></li>
+<li><p>For plotting purposes, we want to sample time more densely. So create another time index array (call it <code class="docutils literal notranslate"><span class="pre">xplot</span></code>). Use np.arange to create a time index vector from -5 to 5 in steps of 0.01.</p></li>
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">xplot</span></code> vs <code class="docutils literal notranslate"><span class="pre">bstar*xplot</span></code>, and label the axes appropirately.</p></li>
+</ul>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b28731a040d00a34063fbdaa69ac82a352a55366c9ca9f010ef81fe548c42f72.png" src="../_images/b28731a040d00a34063fbdaa69ac82a352a55366c9ca9f010ef81fe548c42f72.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3>Part 2 (2 points)<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>Recall that the regularized least squares objective function is: $<span class="math notranslate nohighlight">\(J = \frac{1}{2}||t - bX||^2 + \frac{\lambda}{2}||b||^2,\)</span><span class="math notranslate nohighlight">\( where \)</span>\lambda$ is a parameter that controls how strong the regularizing term is.</p>
+<ul class="simple">
+<li><p>Write a python function that computes <code class="docutils literal notranslate"><span class="pre">J</span></code> for ridge regression.</p></li>
+<li><p>Define a parameter <code class="docutils literal notranslate"><span class="pre">lam</span></code> (i.e. <span class="math notranslate nohighlight">\(\lambda\)</span>) and set is to 1e-6, i.e. a very weak regularization.</p></li>
+<li><p>Scan over a range of <code class="docutils literal notranslate"><span class="pre">b</span></code> (call it <code class="docutils literal notranslate"><span class="pre">bplot</span></code>) from 1.5 to 2.5, and plot the objective function vs. those values.</p></li>
+</ul>
+<p>As expected, <code class="docutils literal notranslate"><span class="pre">J</span></code> should be a quadratic function of <code class="docutils literal notranslate"><span class="pre">b</span></code>. And it looks like the lowest point of J is very very close to 2. Which it should be! bstar = 2 and our regularization term <span class="math notranslate nohighlight">\(\lambda\)</span> is very small. Remember that the point of gradient descent is to find bstar when we dont’ know it.</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ec605958044f9f5b30a6f3a2e9577b2d02a5ea6faba5298e9a9418e8340d6d91.png" src="../_images/ec605958044f9f5b30a6f3a2e9577b2d02a5ea6faba5298e9a9418e8340d6d91.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3>Part 3 (2 points)<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Write a python function that computes the gradient of <code class="docutils literal notranslate"><span class="pre">J</span></code> for ridge regression. (See lecture 2.2 for the correct equation. Or better yet, try to compute it yourself from <code class="docutils literal notranslate"><span class="pre">J</span></code> defined above!).</p></li>
+</ul>
+<p><strong>Have your function return the gradient in TWO SEPERATE PARTS: the component that corresponds to the normal least squares component of the objective, and the part that corresponds to the regulariation term. See the gradient descent tutorial for an example that has the gradient only for the unregularized least squares solution.</strong></p>
+<ul class="simple">
+<li><p>Pick a random initial <code class="docutils literal notranslate"><span class="pre">b=2.5</span></code>, as our starting point for gradient descent, pretending we don’t know where <code class="docutils literal notranslate"><span class="pre">bstar</span></code> actually is.</p></li>
+<li><p>Perform 200 iterations of gradient descent with learning rate of <code class="docutils literal notranslate"><span class="pre">alpha=0.0001</span></code>. Save the values of <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">J</span></code>, and both terms of the gradient <strong>multiplied by <code class="docutils literal notranslate"><span class="pre">alpha</span></code></strong> for each iteration.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3>Part 4 (2 points)<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">bplot</span></code> vs <code class="docutils literal notranslate"><span class="pre">J</span></code> for the values of <code class="docutils literal notranslate"><span class="pre">J</span></code> you computed above (i.e. J as a function of <code class="docutils literal notranslate"><span class="pre">bplot</span></code>) as a function of <code class="docutils literal notranslate"><span class="pre">bplot</span></code>, as a <em>green line</em>.</p></li>
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">b</span></code> vs. <code class="docutils literal notranslate"><span class="pre">J</span></code> for the values you obtained during gradient descent as <em>black dots</em> on top of your green line. They should look like the are moving towards <code class="docutils literal notranslate"><span class="pre">bstar</span></code>.</p></li>
+<li><p>In a second plot, plot <code class="docutils literal notranslate"><span class="pre">b</span></code> as a function of the gradient descent iteration. Is it approaching <code class="docutils literal notranslate"><span class="pre">bstar</span></code>?</p></li>
+</ul>
+<p><strong>Your plots should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fa2b342bc1849228a32131bdeaeaa6c05db34e39dc2d63e6978d496677fd5181.png" src="../_images/fa2b342bc1849228a32131bdeaeaa6c05db34e39dc2d63e6978d496677fd5181.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/73596f008761d0ce87fc97f30f50b8fcd6e29183f810f1a7ddad0ffb1b127ff5.png" src="../_images/73596f008761d0ce87fc97f30f50b8fcd6e29183f810f1a7ddad0ffb1b127ff5.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>Part 5 (2 points)<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>We want to now examine gradient descent with stronger regularization.</p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">lam=1e2</span></code>.</p></li>
+<li><p>Scan over a range of <code class="docutils literal notranslate"><span class="pre">b</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">bplot</span></code> that you created above) and plot the objective function vs. those values for our objective function we use use <code class="docutils literal notranslate"><span class="pre">lambda=1e2</span></code>.</p></li>
+<li><p>Perform 200 iterations of gradient descent with learning rate of <code class="docutils literal notranslate"><span class="pre">alpha=0.0001</span></code>. For each value of <code class="docutils literal notranslate"><span class="pre">b</span></code> compute the value of <code class="docutils literal notranslate"><span class="pre">J</span></code> for ridge regression using <code class="docutils literal notranslate"><span class="pre">lam=1e2</span></code> and ALSO the value of the <strong>UNCONSTRAINED</strong> least squares objective (i.e. the value of our objective function when <code class="docutils literal notranslate"><span class="pre">lam=0</span></code>). Save the values of <code class="docutils literal notranslate"><span class="pre">b</span></code> and both terms of the gradient for each iteration, and also values of <code class="docutils literal notranslate"><span class="pre">J</span></code> for both cases.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/80417e6113afa44c77d8a15ba7777beff8263d96df2bbb40f13347357dcc79c5.png" src="../_images/80417e6113afa44c77d8a15ba7777beff8263d96df2bbb40f13347357dcc79c5.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3>Part 6 (2 points)<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">bplot</span></code> vs <code class="docutils literal notranslate"><span class="pre">J</span></code> for the values of <code class="docutils literal notranslate"><span class="pre">J</span></code> you computed above (when using <code class="docutils literal notranslate"><span class="pre">bplot</span></code> and <code class="docutils literal notranslate"><span class="pre">lam=1e-6</span></code>), as a function of <code class="docutils literal notranslate"><span class="pre">bplot</span></code>, as a <em>green line</em>.</p></li>
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">bplot</span></code> vs <code class="docutils literal notranslate"><span class="pre">J</span></code> for the values of <code class="docutils literal notranslate"><span class="pre">J</span></code> you computed above (when using <code class="docutils literal notranslate"><span class="pre">bplot</span></code> and <code class="docutils literal notranslate"><span class="pre">lam=1e2</span></code>), as a function of <code class="docutils literal notranslate"><span class="pre">bplot</span></code>, as a <em>green dotted line</em>.</p></li>
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">b</span></code> vs. <code class="docutils literal notranslate"><span class="pre">J</span></code> for the values of <code class="docutils literal notranslate"><span class="pre">J</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> you obtained during gradient descent when b was used <strong>IN THE UNCONSTRAINED OBJECTIVE</strong> (i.e. <code class="docutils literal notranslate"><span class="pre">lam=0</span></code>) as <em>black dots</em> on top of your <strong>green line</strong>. They should look like the are moving towards <code class="docutils literal notranslate"><span class="pre">bstar</span></code>, but then they go right past it!</p></li>
+<li><p>Plot <code class="docutils literal notranslate"><span class="pre">b</span></code> vs. <code class="docutils literal notranslate"><span class="pre">J</span></code> for the values of <code class="docutils literal notranslate"><span class="pre">J</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> you obtained during gradient descent <strong>ON THE CONSTRAINED OBJECTIVE</strong> (i.e. when <code class="docutils literal notranslate"><span class="pre">lam=1e2</span></code>) as <em>black stars</em> on top of your <strong>green dotted line</strong>. They should look like the are moving towards <code class="docutils literal notranslate"><span class="pre">bstar</span></code>, but then they go right past it!</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice about the difference between the this regularized solution and the one you computed above with very weak regularization? Why do the values of <code class="docutils literal notranslate"><span class="pre">b</span></code> pass right by <code class="docutils literal notranslate"><span class="pre">bstar</span></code>?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f1336ea40138639293bbab95725bedb7160fe9539a2b0f1952e4213f2eb85de5.png" src="../_images/f1336ea40138639293bbab95725bedb7160fe9539a2b0f1952e4213f2eb85de5.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-6-1-point">
+<h3>Part 6 (1 point)<a class="headerlink" href="#part-6-1-point" title="Link to this heading">#</a></h3>
+<p>Plot <code class="docutils literal notranslate"><span class="pre">b</span></code> found during gradient descent as a function of the gradient descent iteration when <code class="docutils literal notranslate"><span class="pre">lam=1e-6</span></code> and when <code class="docutils literal notranslate"><span class="pre">lam=1e2</span></code>.</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d3ab63809e17547dd0729a74bcd0b787f25326b6833f7e7ffc1aa902da0418a1.png" src="../_images/d3ab63809e17547dd0729a74bcd0b787f25326b6833f7e7ffc1aa902da0418a1.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h3>Part 7 (4 points)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>Using two subplots, plot the two separate components of the gradient (the term corresponding to the unconstrained component as stars (<code class="docutils literal notranslate"><span class="pre">*</span></code>) and the term corresponding to the regularization component as a dotted line) and the sum of the two components as a solid line. Plot these values for the gradients when <code class="docutils literal notranslate"><span class="pre">lam=1e-6</span></code> in blue on the left and when <code class="docutils literal notranslate"><span class="pre">lam=1e2</span></code> in red on the right.</p>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice about the two seperate terms for <code class="docutils literal notranslate"><span class="pre">lam=1e2</span></code>? How do these terms relate to each other, numerically? What does it mean that they have opposite signs of one another?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/47b03aead7306c3b45f5cfc0c160bc3644fb0e539898e70b55f62f24069c008f.png" src="../_images/47b03aead7306c3b45f5cfc0c160bc3644fb0e539898e70b55f62f24069c008f.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-8-0-points">
+<h3>Part 8 (0 points)<a class="headerlink" href="#part-8-0-points" title="Link to this heading">#</a></h3>
+<p>One way to understand what’s going on here is to plot each component of the gradient as a line pointing in the direction it wants to pull <code class="docutils literal notranslate"><span class="pre">b</span></code>, overlayed over our plots that looked at how <code class="docutils literal notranslate"><span class="pre">b</span></code> changed during gradient descent. Like so:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bplot</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="s1">'g-'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bplot</span><span class="p">,</span> <span class="n">J2</span><span class="p">,</span> <span class="s1">'g--'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bs2</span><span class="p">,</span> <span class="n">Js2</span><span class="p">,</span> <span class="s1">'k.'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bs2</span><span class="p">,</span> <span class="n">Js3</span><span class="p">,</span> <span class="s1">'k*'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">bs2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">Js3</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">gs2</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">bs2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">Js3</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">gs2</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">bs2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">Js2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">gs2</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">bs2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">Js2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="n">gs2</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'J'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'b'</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/efd30b5e1a99eddf285741a92907a72a949a8ae06fc7e17967ae52248ac461e5.png" src="../_images/efd30b5e1a99eddf285741a92907a72a949a8ae06fc7e17967ae52248ac461e5.png" />
+</div>
+</div>
+<p>What we can see from this that each term is pulling <code class="docutils literal notranslate"><span class="pre">b</span></code> in opposite directions, and when gradient descent converges, those two terms are equal and opposite. In the <strong>CONSTRAINED</strong> objective function, that corresponds to a minimum. In the <strong>UNCONSTRAINED</strong> funcdtion (which is simply PART of the constrained function) is does not – because the regularization term is pulling it away!</p>
+</section>
+<hr class="docutils" />
+<section id="part-9-1-points">
+<h3>Part 9 (1 points)<a class="headerlink" href="#part-9-1-points" title="Link to this heading">#</a></h3>
+<p>We will now switch gears a bit and use <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> to fit <a class="reference external" href="https://en.wikipedia.org/wiki/Lasso_(statistics)">lasso</a> on the prostate cancer dataset introduced in class. Scikit-learn is a super helpful machine learning python library that can perform lots of standard but algorithmically challenging analyses so you don’t have to write them all from scratch! Yippee!!</p>
+<ul class="simple">
+<li><p>First thing we need to do is load our prostate cancer dataset. These data are stored in a .csv (comma separated values) file at the following URL:</p></li>
+</ul>
+<p><a class="reference external" href="https://raw.githubusercontent.com/empathy87/The-Elements-of-Statistical-Learning-Python-Notebooks/master/data/Prostate%20Cancer.txt">https://raw.githubusercontent.com/empathy87/The-Elements-of-Statistical-Learning-Python-Notebooks/master/data/Prostate Cancer.txt</a></p>
+<p>To do this, use the <code class="docutils literal notranslate"><span class="pre">genfromtxt</span></code> function in numpy (i.e. <code class="docutils literal notranslate"><span class="pre">np.genfromtxt</span></code>) to load the data directly from this URL into a variable called <code class="docutils literal notranslate"><span class="pre">data</span></code>.  Since this is a .csv file, you will need to set the delimeter to ‘,’ (a comma in single quotes).  The first row in the file contains column labels.  You can use the option <code class="docutils literal notranslate"><span class="pre">skip_header=1</span></code> to skip the first line and only read the numerical data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some of the columns of this array contain features of the data that we don’t need. Use the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.delete.html">np.delete</a> function to create a new array called <code class="docutils literal notranslate"><span class="pre">X</span></code> that does not include the 1st, 2nd to last, and final columns of <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h3>Part 10 (2 points)<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>In class, we discussed the <a class="reference external" href="https://en.wikipedia.org/wiki/Correlation#correlation%20matrices">correlation matrix</a>, which are simply the correlation values of all pairs of your independent variables.</p>
+<ul class="simple">
+<li><p>Create a list of strings for each of the dependent variables: <code class="docutils literal notranslate"><span class="pre">lcavol</span></code>, <code class="docutils literal notranslate"><span class="pre">lweight</span></code>, <code class="docutils literal notranslate"><span class="pre">age</span></code>, <code class="docutils literal notranslate"><span class="pre">lbph</span></code>, <code class="docutils literal notranslate"><span class="pre">svi</span></code>, <code class="docutils literal notranslate"><span class="pre">lcp</span></code>, <code class="docutils literal notranslate"><span class="pre">gleason</span></code>, <code class="docutils literal notranslate"><span class="pre">pgg45</span></code>.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> method <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.corrcoef.html"><code class="docutils literal notranslate"><span class="pre">corrcoef</span></code></a> to compute the correlation matrix. Note that you may have to take the transpose of <code class="docutils literal notranslate"><span class="pre">X</span></code>; your correlation matrix should have dimensions equal to the number of independent variables, not the number of data samples.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> function <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imshow.html"><code class="docutils literal notranslate"><span class="pre">imshow</span></code></a> to plot your correlation matrix. Label each row and column with the appropriate name of each variable.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> Are <code class="docutils literal notranslate"><span class="pre">lcp</span></code> and <code class="docutils literal notranslate"><span class="pre">lcavol</span></code> strongly correlated, like they were in lecture? Print the value of the correlation between these two dependent variables.</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/215c9af46c89103650fbbc1e46b69a54f227f4e12efcf15a97f64008a4b77346.png" src="../_images/215c9af46c89103650fbbc1e46b69a54f227f4e12efcf15a97f64008a4b77346.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-11-1-points">
+<h3>Part 11 (1 points)<a class="headerlink" href="#part-11-1-points" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://pandas.pydata.org/">Pandas</a> is another python package that we will make use of in the future. It can be especially useful for looking at structured data arrays, and computing some simple statistics on them. We won’t use it extensively here, just a quick peek at it.</p>
+<ul class="simple">
+<li><p>Import the pandas library into python as <code class="docutils literal notranslate"><span class="pre">pd</span></code>.</p></li>
+<li><p>Use the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">dataframe</a> method to create a tabular dataframe called <code class="docutils literal notranslate"><span class="pre">df</span></code> for our data. The <code class="docutils literal notranslate"><span class="pre">columns</span></code> argument should be equal to the list of features we created above. No other arguments are required, beyond the data itself, <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">columns</span></code>.</p></li>
+<li><p>Use the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.head.html"><code class="docutils literal notranslate"><span class="pre">dataframe.head()</span></code></a> method to show the first <code class="docutils literal notranslate"><span class="pre">n=10</span></code> rows of your dataframe <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
+</ul>
+<p><strong>Your dataframe should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-e70d4fb1-b713-4b0b-9480-e60ae3162231">
+    <div class="colab-df-container">
+      <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lcavol</th>
+      <th>lweight</th>
+      <th>age</th>
+      <th>lbph</th>
+      <th>svi</th>
+      <th>lcp</th>
+      <th>gleason</th>
+      <th>pgg45</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.579818</td>
+      <td>2.769459</td>
+      <td>50.0</td>
+      <td>-1.386294</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.994252</td>
+      <td>3.319626</td>
+      <td>58.0</td>
+      <td>-1.386294</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.510826</td>
+      <td>2.691243</td>
+      <td>74.0</td>
+      <td>-1.386294</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>7.0</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.203973</td>
+      <td>3.282789</td>
+      <td>58.0</td>
+      <td>-1.386294</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.751416</td>
+      <td>3.432373</td>
+      <td>62.0</td>
+      <td>-1.386294</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>-1.049822</td>
+      <td>3.228826</td>
+      <td>50.0</td>
+      <td>-1.386294</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.737164</td>
+      <td>3.473518</td>
+      <td>64.0</td>
+      <td>0.615186</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.693147</td>
+      <td>3.539509</td>
+      <td>58.0</td>
+      <td>1.536867</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>-0.776529</td>
+      <td>3.539509</td>
+      <td>47.0</td>
+      <td>-1.386294</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.223144</td>
+      <td>3.244544</td>
+      <td>63.0</td>
+      <td>-1.386294</td>
+      <td>0.0</td>
+      <td>-1.386294</td>
+      <td>6.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-e70d4fb1-b713-4b0b-9480-e60ae3162231')"
+              title="Convert this dataframe to an interactive table."
+              style="display:none;">
+        
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M0 0h24v24H0V0z" fill="none"/>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"/><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"/>
+  </svg>
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-e70d4fb1-b713-4b0b-9480-e60ae3162231 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-e70d4fb1-b713-4b0b-9480-e60ae3162231');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  </div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-12-1-points">
+<h3>Part 12 (1 points)<a class="headerlink" href="#part-12-1-points" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.corr.html"><code class="docutils literal notranslate"><span class="pre">dataframe.corr()</span></code></a> method to again compute the correlation matrix of your indepedent variables that are organized within <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> Are the correlation matrices the same when you use <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and when you use <code class="docutils literal notranslate"><span class="pre">pandas</span></code>? Good!</p>
+<p><strong>Your dataframe should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-f1384f60-4e3d-4e1c-81ba-f6d44486b2f1">
+    <div class="colab-df-container">
+      <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lcavol</th>
+      <th>lweight</th>
+      <th>age</th>
+      <th>lbph</th>
+      <th>svi</th>
+      <th>lcp</th>
+      <th>gleason</th>
+      <th>pgg45</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>lcavol</th>
+      <td>1.000000</td>
+      <td>0.280521</td>
+      <td>0.225000</td>
+      <td>0.027350</td>
+      <td>0.538845</td>
+      <td>0.675310</td>
+      <td>0.432417</td>
+      <td>0.433652</td>
+    </tr>
+    <tr>
+      <th>lweight</th>
+      <td>0.280521</td>
+      <td>1.000000</td>
+      <td>0.347969</td>
+      <td>0.442264</td>
+      <td>0.155385</td>
+      <td>0.164537</td>
+      <td>0.056882</td>
+      <td>0.107354</td>
+    </tr>
+    <tr>
+      <th>age</th>
+      <td>0.225000</td>
+      <td>0.347969</td>
+      <td>1.000000</td>
+      <td>0.350186</td>
+      <td>0.117658</td>
+      <td>0.127668</td>
+      <td>0.268892</td>
+      <td>0.276112</td>
+    </tr>
+    <tr>
+      <th>lbph</th>
+      <td>0.027350</td>
+      <td>0.442264</td>
+      <td>0.350186</td>
+      <td>1.000000</td>
+      <td>-0.085843</td>
+      <td>-0.006999</td>
+      <td>0.077820</td>
+      <td>0.078460</td>
+    </tr>
+    <tr>
+      <th>svi</th>
+      <td>0.538845</td>
+      <td>0.155385</td>
+      <td>0.117658</td>
+      <td>-0.085843</td>
+      <td>1.000000</td>
+      <td>0.673111</td>
+      <td>0.320412</td>
+      <td>0.457648</td>
+    </tr>
+    <tr>
+      <th>lcp</th>
+      <td>0.675310</td>
+      <td>0.164537</td>
+      <td>0.127668</td>
+      <td>-0.006999</td>
+      <td>0.673111</td>
+      <td>1.000000</td>
+      <td>0.514830</td>
+      <td>0.631528</td>
+    </tr>
+    <tr>
+      <th>gleason</th>
+      <td>0.432417</td>
+      <td>0.056882</td>
+      <td>0.268892</td>
+      <td>0.077820</td>
+      <td>0.320412</td>
+      <td>0.514830</td>
+      <td>1.000000</td>
+      <td>0.751905</td>
+    </tr>
+    <tr>
+      <th>pgg45</th>
+      <td>0.433652</td>
+      <td>0.107354</td>
+      <td>0.276112</td>
+      <td>0.078460</td>
+      <td>0.457648</td>
+      <td>0.631528</td>
+      <td>0.751905</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-f1384f60-4e3d-4e1c-81ba-f6d44486b2f1')"
+              title="Convert this dataframe to an interactive table."
+              style="display:none;">
+        
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M0 0h24v24H0V0z" fill="none"/>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"/><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"/>
+  </svg>
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-f1384f60-4e3d-4e1c-81ba-f6d44486b2f1 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-f1384f60-4e3d-4e1c-81ba-f6d44486b2f1');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  </div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-13-1-points">
+<h3>Part 13 (1 points)<a class="headerlink" href="#part-13-1-points" title="Link to this heading">#</a></h3>
+<p>Just to prove to yourself that you’ve ‘earned’ the right to graduate to using scikit-learn, let’s check that the solution it provides when we perform ridge regression is the same that we know how to compute ourselves.</p>
+<ul class="simple">
+<li><p>Our dependent variable <code class="docutils literal notranslate"><span class="pre">lpsa</span></code>	(log prostate specific antigen) is the second to last entry of our data matrix <code class="docutils literal notranslate"><span class="pre">data</span></code>. Create a variable <code class="docutils literal notranslate"><span class="pre">t</span></code> that is equal to that column of <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p></li>
+<li><p>Import the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html"><code class="docutils literal notranslate"><span class="pre">Ridge</span></code></a> function from <code class="docutils literal notranslate"><span class="pre">sklearn.linear_model</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-14-2-points">
+<h3>Part 14 (2 points)<a class="headerlink" href="#part-14-2-points" title="Link to this heading">#</a></h3>
+<p>Python is an object oriented language, so it works a little differently than Matlab. With Scikit-learn, we are going to be seeing a lot more of this.</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> function to create what is called an ‘instance of an object’ class, and call this instance <code class="docutils literal notranslate"><span class="pre">clf</span></code>. For arguments to <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> use <code class="docutils literal notranslate"><span class="pre">alpha=1.0</span></code> (i.e. weak regulariztion) and <code class="docutils literal notranslate"><span class="pre">fit_intercept=False</span></code> (i.e. don’t learn a constant term). Note that when we wrote the ridge objective function down we used <span class="math notranslate nohighlight">\(\lambda\)</span> as the coefficient that controls the strength of regularization, but scikit-learn calls this parameter <code class="docutils literal notranslate"><span class="pre">alpha</span></code>.</p></li>
+</ul>
+<p>Notice that after we do this, we haven’t actually done anything yet, just created a sort of ‘container’ called an object instance, that we will later do stuff on.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-15-2-points">
+<h3>Part 15 (2 points)<a class="headerlink" href="#part-15-2-points" title="Link to this heading">#</a></h3>
+<p>In an object oriented language, once you’ve created an instance of something, that thing has ‘methods’ associated with it. Methods are functions that can do things on that object. The way to ‘call’ a method associated with an instance of a object is to use a <code class="docutils literal notranslate"><span class="pre">.</span></code> after the instance: i.e. <code class="docutils literal notranslate"><span class="pre">object.method()</span></code></p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method on your <code class="docutils literal notranslate"><span class="pre">clf</span></code> object instance class using <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> as data. See the documentation from <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> for additional documentation for each method associated with an instance of ridge, such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge.fit"><code class="docutils literal notranslate"><span class="pre">fit</span></code></a>.</p></li>
+</ul>
+<p>Now we actually did something to <code class="docutils literal notranslate"><span class="pre">clf</span></code> – we fit it using our data!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ridge(fit_intercept=False)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Object instances also have what are knowns as attributes, which are kind of like ‘stuff’ inside the object that you might want to know something about. The way to see an attribute, confusingly, is also to use a <code class="docutils literal notranslate"><span class="pre">.</span></code>, i.e. <code class="docutils literal notranslate"><span class="pre">object.attribute</span></code>. This can be confusing at first (i.e. how do you know what is an attribute and what is a method!?) but it will get easier with time.</p>
+<ul class="simple">
+<li><p>A ridge instance has an attribute called <code class="docutils literal notranslate"><span class="pre">coef_</span></code> which is the coefficients of the model. Print out <code class="docutils literal notranslate"><span class="pre">clf.coef_</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.55869858,  0.60999902, -0.01933688,  0.09273029,  0.68885563,
+       -0.08888248,  0.06981158,  0.00404428])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-16-2-points">
+<h3>Part 16 (2 points)<a class="headerlink" href="#part-16-2-points" title="Link to this heading">#</a></h3>
+<p>We know how to find the coefficients of a ridge regression model! Go back to assignment 2.2 and find your function for the analytical solution for ridge regression. Use that function, with <code class="docutils literal notranslate"><span class="pre">lambda=1.0</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">alpha</span></code> in scikit-learn language) to show that the solution you get with your homebrewed function is the same as what we get with scikit-learn.</p>
+<p><strong>Your results should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.55869858,  0.60999902, -0.01933688,  0.09273029,  0.68885563,
+       -0.08888248,  0.06981158,  0.00404428])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-17-2-points">
+<h3>Part 17 (2 points)<a class="headerlink" href="#part-17-2-points" title="Link to this heading">#</a></h3>
+<p>Now that we have our feet a bit wet with python objects, methods, and attributes, we are ready to harness the power of scikit-learn for fitting our lasso model! Good thing we don’t have to optimize the parameters of the lasso model ourselves – what a pain!</p>
+<ul class="simple">
+<li><p>Import the <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.linear_model"><code class="docutils literal notranslate"><span class="pre">Lasso</span></code></a> function from <code class="docutils literal notranslate"><span class="pre">sklearn.linear_model</span></code>.</p></li>
+</ul>
+<p>Recall that the Lasso objective function is $<span class="math notranslate nohighlight">\(J = \frac{1}{2}||t - bX||^2 + \frac{\lambda}{2}\sum_i |b_i|,\)</span>$</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">Lasso</span></code> function to create an ‘instance of an object’ class, and call this instance <code class="docutils literal notranslate"><span class="pre">clf</span></code>. For arguments to <code class="docutils literal notranslate"><span class="pre">Lasso</span></code> use <code class="docutils literal notranslate"><span class="pre">alpha=0.1</span></code>. Again, scikit-learn <code class="docutils literal notranslate"><span class="pre">alpha</span></code> is our <span class="math notranslate nohighlight">\(\lambda\)</span> from above.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method on your <code class="docutils literal notranslate"><span class="pre">clf</span></code> object instance class using <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> as data. See the documentation from <code class="docutils literal notranslate"><span class="pre">Lasso</span></code> for additional documentation for each method associated with an instance of Lasso, such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso.fit"><code class="docutils literal notranslate"><span class="pre">fit</span></code></a>.</p></li>
+<li><p>A Lasso instance has an attribute called <code class="docutils literal notranslate"><span class="pre">coef_</span></code> which is the coefficients of the model. Print out <code class="docutils literal notranslate"><span class="pre">clf.coef_</span></code>.</p></li>
+</ul>
+<p>Was that easy or what!?</p>
+<p><strong>Your results should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.57789584,  0.04282022, -0.00555591,  0.07637548,  0.        ,
+        0.        , -0.        ,  0.00671169])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-18-2-points">
+<h3>Part 18 (2 points)<a class="headerlink" href="#part-18-2-points" title="Link to this heading">#</a></h3>
+<p>Let’s check out how the coefficients of the Lasso model change as we increase or decrease the severity of the regulariation.</p>
+<ul class="simple">
+<li><p>Use a list comprehension to compute the Lasso coefficients when <code class="docutils literal notranslate"><span class="pre">alpha</span></code> (i.e. <span class="math notranslate nohighlight">\(\lambda\)</span>) ranges from <code class="docutils literal notranslate"><span class="pre">0.001</span></code> to <code class="docutils literal notranslate"><span class="pre">0.93</span></code>. Use 100 different values of alpha within that range.</p></li>
+<li><p>Plot the values of each coefficient as a function of the sum of all cofficients for that setting of <code class="docutils literal notranslate"><span class="pre">alpha</span></code>. Add a legend so you can see which parameter is which. Make your plot big so you can see everything clearly.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> <code class="docutils literal notranslate"><span class="pre">lcp</span></code> was the feature that we noticed was correlated with <code class="docutils literal notranslate"><span class="pre">lcavol</span></code>. What happens to the coefficient for <code class="docutils literal notranslate"><span class="pre">lcp</span></code> was the regularization is increased?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/aefe10b65bcec60673c7b4a15e041263522fe64c5f92c5ffaadc2bbc096f407d.png" src="../_images/aefe10b65bcec60673c7b4a15e041263522fe64c5f92c5ffaadc2bbc096f407d.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-19-2-points">
+<h3>Part 19 (2 points)<a class="headerlink" href="#part-19-2-points" title="Link to this heading">#</a></h3>
+<p>Now that we are experts in using objects in python, and using scikit-learn, lets give logistic regression a try with it!</p>
+<p>First we have to create some fake data that we are going to fit our model to. (As we have been doing, for didactic purposes). In lecture 2.5, I described a behavioral experiment where rats listen to a series of auditory pulses, and they have to ‘count’ how many pulses are to their left and right, and then make a choice depending on if there were more left or right pulses. Let’s model this simple decision making task.</p>
+<ul class="simple">
+<li><p>Create 1000 ‘trials’ of behavioral data, by creating two arrays, <code class="docutils literal notranslate"><span class="pre">L</span></code> and <code class="docutils literal notranslate"><span class="pre">R</span></code> that each contain the number of leftward or rightward pulses on a trial. To do this, use the numpy function <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html"><code class="docutils literal notranslate"><span class="pre">random.randint</span></code></a>. Use <code class="docutils literal notranslate"><span class="pre">-4</span></code> as your lower limit and <code class="docutils literal notranslate"><span class="pre">4</span></code> as your upper limit.</p></li>
+<li><p>Stack these two arrays on top of each other to create a 2 by 1000 array called <code class="docutils literal notranslate"><span class="pre">x</span></code>. Use the numpy function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.stack.html">stack</a>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-20-2-points">
+<h3>Part 20 (2 points)<a class="headerlink" href="#part-20-2-points" title="Link to this heading">#</a></h3>
+<p>Recall that in our logistic regression model, these independent variables relate to the probability of a discrete event (i.e. a 0 or 1, which in our model here corresponds to which way the animal chose) by a <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function">logistic function</a>: $<span class="math notranslate nohighlight">\(Pr(t_i = 1) = y_i = f(x_i)\)</span>$.</p>
+<ul class="simple">
+<li><p>We need some coefficients <span class="math notranslate nohighlight">\(b\)</span> to combine the left and right clicks with, to generate <span class="math notranslate nohighlight">\(y_i\)</span>. Choose this to be <code class="docutils literal notranslate"><span class="pre">bstar</span></code> and set <code class="docutils literal notranslate"><span class="pre">bstar</span> <span class="pre">=</span> <span class="pre">[-1,1]</span></code>. This corresponds to left pulses <em>decreasing</em> the probability of a rightward choice (becuase the first term is -1) and right pulses <em>increasing</em> the probability of a rightward choice (because the second term is +1).</p></li>
+<li><p>Compute the dot product of <code class="docutils literal notranslate"><span class="pre">bstar</span></code> and <code class="docutils literal notranslate"><span class="pre">x</span></code> and call it <code class="docutils literal notranslate"><span class="pre">X</span></code>, i.e <span class="math notranslate nohighlight">\(X_i = b^*x_i\)</span>. This is the total input into our logistic function, and can be helpful for understanding the relationship between the inputs to the logistic function and its output.</p></li>
+<li><p>Plot the output of the logistic function with <code class="docutils literal notranslate"><span class="pre">X</span></code> as its input, i.e. $<span class="math notranslate nohighlight">\(y_i = \frac{1}{1+exp(-X_i)}\)</span>$. Use dots or stars in your plot instead of lines (otherwise it will look like a total jumble).</p></li>
+</ul>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/184a865b584d692629d280e3def63a8be044de79dfd36cbf2828b7dbf23d6c61.png" src="../_images/184a865b584d692629d280e3def63a8be044de79dfd36cbf2828b7dbf23d6c61.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-21-2-points">
+<h3>Part 21 (2 points)<a class="headerlink" href="#part-21-2-points" title="Link to this heading">#</a></h3>
+<p>To generate our data, which is corrputed by noise, we need to draw random samples from a Bernoulli distribution, using <code class="docutils literal notranslate"><span class="pre">y</span></code> as the probability that each datapoint is a 0 or a 1. In other words, recall that each datapoint <span class="math notranslate nohighlight">\(t_i\)</span> is distributed Bernoulli: $<span class="math notranslate nohighlight">\( t_i \sim B(y_i)\)</span><span class="math notranslate nohighlight">\( where \)</span><span class="math notranslate nohighlight">\(y_i = f(x_i)\)</span><span class="math notranslate nohighlight">\( and \)</span>f()$ is the logistic function.</p>
+<ul class="simple">
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to do this. The <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bernoulli.html"><code class="docutils literal notranslate"><span class="pre">Bernoulli</span></code></a> distribution is what you want to use.</p></li>
+<li><p>Revisit some of Module 1’s assignments (such as 1.3) if you’ve forgotten how to use <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> and <code class="docutils literal notranslate"><span class="pre">rvs</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-22-2-points">
+<h3>Part 22 (2 points)<a class="headerlink" href="#part-22-2-points" title="Link to this heading">#</a></h3>
+<p>To get a sense of how the noisy data (i.e. t_i) relates to the probability of the data (i.e. y_i) plot <code class="docutils literal notranslate"><span class="pre">X</span></code> vs <code class="docutils literal notranslate"><span class="pre">y</span></code> as above and overlay it with two histograms, one for the <code class="docutils literal notranslate"><span class="pre">X</span></code> values when <code class="docutils literal notranslate"><span class="pre">t=0</span></code> and one for the <code class="docutils literal notranslate"><span class="pre">X</span></code> values when <code class="docutils literal notranslate"><span class="pre">t=1</span></code>. For <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.hist.html">hist</a> use the arguments <code class="docutils literal notranslate"><span class="pre">density=True</span></code> and <code class="docutils literal notranslate"><span class="pre">alpha=0.5</span></code>.</p>
+<p><font color='red'><strong>SHORT ANSWER:</strong> What do you notice about the distributions whe <code class="docutils literal notranslate"><span class="pre">t=1</span></code> and <code class="docutils literal notranslate"><span class="pre">t=0</span></code>?</p>
+<p><strong>Your plot should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your code here</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1b2fa63c91314337d9fcf7fd24e8bd036acdef1f5b8f53d2a8ec0c87618ee538.png" src="../_images/1b2fa63c91314337d9fcf7fd24e8bd036acdef1f5b8f53d2a8ec0c87618ee538.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="part-23-2-points">
+<h3>Part 23 (2 points)<a class="headerlink" href="#part-23-2-points" title="Link to this heading">#</a></h3>
+<p>OK let’s recover <code class="docutils literal notranslate"><span class="pre">bstar</span></code> from our data using scikit-learn’s <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression">Logistic Regression</a>.</p>
+<ul class="simple">
+<li><p>Import scikit-learn’s <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression">Logistic Regression</a> class as <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code>.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> function to create an ‘instance of an object’ class, and call this instance <code class="docutils literal notranslate"><span class="pre">clf</span></code>. For arguments to <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> use <code class="docutils literal notranslate"><span class="pre">penalty='none'</span></code> and <code class="docutils literal notranslate"> <span class="pre">fit_intercept=False</span></code>.</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method on your <code class="docutils literal notranslate"><span class="pre">clf</span></code> object instance class using <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> as data. See the documentation from <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> for additional documentation for each method associated with an instance of <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code>, such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression.fit"><code class="docutils literal notranslate"><span class="pre">fit</span></code></a>. Note tht you may to take the tranpose of <code class="docutils literal notranslate"><span class="pre">x</span></code> if the dimensions don’t work out correctly.</p></li>
+<li><p>A LogisticRegression instance has an attribute called <code class="docutils literal notranslate"><span class="pre">coef_</span></code> which is the coefficients of the model. Print out <code class="docutils literal notranslate"><span class="pre">clf.coef_</span></code>.</p></li>
+</ul>
+<p><font color='red'><strong>SHORT ANSWER:</strong> Did <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> recover <code class="docutils literal notranslate"><span class="pre">bstar</span></code>?</p>
+<p><strong>Your results should look like this:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">coef_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-1.00792295,  1.0125503 ]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./homework"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../modules/module2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Module 2: Regression and model fitting</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../modules/module3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Module 3: Classification and clustering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-2-1-24-points">Homework 2.1 (24 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-2-points">Part 1 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-2-points">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-2-points">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-2-points">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-5-2-points">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-2-points">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-2-points">Part 7 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-2-points">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-2-points">Part 9 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-10-2-points">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-2-points">Part 11 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-2-points">Part 12 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-2-2-20-points">Homework 2.2 (20 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-1-points">Part 1 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-1-points">Part 3 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-4-4-points">Part 4 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-7-4-points">Part 7 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Part 8 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Part 9 (2 points)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homework-2-3-42-points">Homework 2.3 (42 points)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Part 1 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Part 2 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Part 3 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Part 4 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Part 5 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Part 6 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-6-1-point">Part 6 (1 point)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Part 7 (4 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-8-0-points">Part 8 (0 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-9-1-points">Part 9 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Part 10 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-11-1-points">Part 11 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-12-1-points">Part 12 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-13-1-points">Part 13 (1 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-14-2-points">Part 14 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-15-2-points">Part 15 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-16-2-points">Part 16 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-17-2-points">Part 17 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-18-2-points">Part 18 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-19-2-points">Part 19 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-20-2-points">Part 20 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-21-2-points">Part 21 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-22-2-points">Part 22 (2 points)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#part-23-2-points">Part 23 (2 points)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Brian DePasquale, Michael Economo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
